@@ -9,12 +9,15 @@ from pyspark.sql.functions import row_number, monotonically_increasing_id
 
 
 def list_s3_by_prefix(bucket, prefix, filter_func=None):
+    print(f"list_s3_by_prefix bucket: {bucket}, prefix: {prefix}")
     s3_bucket = boto3.resource('s3').Bucket(bucket)
     if filter_func is None:
         key_list = [s.key for s in s3_bucket.objects.filter(Prefix=prefix)]
     else:
         key_list = [s.key for s in s3_bucket.objects.filter(
             Prefix=prefix) if filter_func(s.key)]
+    
+    print("list_s3_by_prefix return:", key_list)
     return key_list
 
 
@@ -44,12 +47,12 @@ if out_prefix.endswith("/"):
     out_prefix = out_prefix[:-1]
 
 input_file = "s3://{}/{}".format(bucket, args.s3_input_key_prefix)
-emr_output_file = "s3://{}/{}/tmp-emr-out/".format(bucket, out_prefix)
-output_file = "s3://{}/{}/item_map.csv".format(bucket, out_prefix)
+emr_output_key_prefix = "{}/tmp-emr-out/".format(out_prefix)
+output_file_key = "{}/item_map.csv".format(out_prefix)
 
 print("input_file:", input_file)
-print("emr_output_file:", emr_output_file)
-print("output_file:", output_file)
+print("emr_output_key_prefix:", emr_output_key_prefix)
+print("output_file_key:", output_file_key)
 
 with SparkSession.builder.appName("Gen item map").getOrCreate() as spark:
     # This is needed to save RDDs which is the only way to write nested Dataframes into CSV format
@@ -68,18 +71,18 @@ with SparkSession.builder.appName("Gen item map").getOrCreate() as spark:
         Window.orderBy(monotonically_increasing_id())))
     df_final = df_index.select(col("index"), col("id"), col('item_clean'))
     df_final.coalesce(1).write.mode("overwrite").option(
-        "header", "false").option("sep", "\t").csv(emr_output_file)
+        "header", "false").option("sep", "\t").csv(emr_output_key_prefix)
     print("It take {:.2f} mimutes to finish".format(
         (time.time() - Timer1) / 60))
 
 
 emr_output_file_key = list_s3_by_prefix(
     bucket,
-    emr_output_file,
+    emr_output_key_prefix,
     lambda key: key.endswith(".csv"))[0]
 
 print("emr_output_file_key:", emr_output_file_key)
 
-s3_copy(bucket, emr_output_file_key, output_file)
+s3_copy(bucket, emr_output_file_key, output_file_key)
 
-print("Done! outputfile:", output_file)
+print("Done! output file:", output_file_key)

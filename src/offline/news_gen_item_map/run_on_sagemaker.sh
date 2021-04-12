@@ -3,7 +3,7 @@ AWS_PROFILE='--profile aoyu'
 AWS_REGION='us-east-1'
 
 TIMESTAMP=$(date '+%Y%m%dT%H%M%S')
-repoName=inverted-list
+repoName=news-gen-item-map
 
 JOB_NAME=${repoName}-${TIMESTAMP}-${RANDOM}
 
@@ -19,6 +19,6 @@ output_prefix=recommender-system-news-open-toutiao/system/item-data/emr-out/
 aws sagemaker ${AWS_PROFILE} --region  ${AWS_REGION}   create-processing-job \
 --processing-job-name ${JOB_NAME} \
 --role-arn ${role} \
---processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.m4.xlarge,VolumeSizeInGB=2}' \
+--processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.m5.xlarge,VolumeSizeInGB=5}' \
 --app-specification "ImageUri=${IMAGEURI},ContainerArguments=--s3_bucket,${bucket},--s3_input_key_prefix,${input_prefix},--s3_output_key_prefix ${output_prefix}"
 
