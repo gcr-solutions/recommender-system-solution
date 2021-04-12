@@ -20,5 +20,5 @@ aws sagemaker ${AWS_PROFILE} --region  ${AWS_REGION}   create-processing-job \
 --processing-job-name ${JOB_NAME} \
 --role-arn ${role} \
 --processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.m5.xlarge,VolumeSizeInGB=5}' \
---app-specification "ImageUri=${IMAGEURI},ContainerArguments=--s3_bucket,${bucket},--s3_input_key_prefix,${input_prefix},--s3_output_key_prefix ${output_prefix}"
+--app-specification "ImageUri=${IMAGEURI},ContainerArguments=--s3_bucket,${bucket},--s3_input_key_prefix,${input_prefix},--s3_output_key_prefix,${output_prefix}"
 
