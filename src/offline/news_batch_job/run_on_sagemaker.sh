@@ -18,6 +18,6 @@ s3_key_prefix=recommender-system-news-open-toutiao
 aws sagemaker ${AWS_PROFILE} --region  ${AWS_REGION}   create-processing-job \
 --processing-job-name ${JOB_NAME} \
 --role-arn ${role} \
---processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.p2.xlarge,VolumeSizeInGB=5}' \
+--processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.p2.xlarge,VolumeSizeInGB=10}' \
 --app-specification "ImageUri=${IMAGEURI},ContainerArguments=--s3_bucket,${bucket},--s3_key_prefix,${s3_key_prefix}"
 
