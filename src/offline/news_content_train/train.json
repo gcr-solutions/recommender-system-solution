@@ -1,139 +1,35 @@
 {
-    "TrainingJobName": "",
-    "HyperParameters": {
-        "KeyName": ""
-    },
-    "AlgorithmSpecification": {
-        "TrainingImage": "",
-        "AlgorithmName": "",
-        "TrainingInputMode": "Pipe",
-        "MetricDefinitions": [
-            {
-                "Name": "",
-                "Regex": ""
-            }
-        ],
-        "EnableSageMakerMetricsTimeSeries": true
-    },
-    "RoleArn": "",
-    "InputDataConfig": [
-        {
-            "ChannelName": "",
-            "DataSource": {
-                "S3DataSource": {
-                    "S3DataType": "AugmentedManifestFile",
-                    "S3Uri": "",
-                    "S3DataDistributionType": "ShardedByS3Key",
-                    "AttributeNames": [
-                        ""
-                    ]
-                },
-                "FileSystemDataSource": {
-                    "FileSystemId": "",
-                    "FileSystemAccessMode": "rw",
-                    "FileSystemType": "EFS",
-                    "DirectoryPath": ""
-                }
-            },
-            "ContentType": "",
-            "CompressionType": "None",
-            "RecordWrapperType": "RecordIO",
-            "InputMode": "File",
-            "ShuffleConfig": {
-                "Seed": 0
-            }
-        }
-    ],
-    "OutputDataConfig": {
-        "KmsKeyId": "",
-        "S3OutputPath": ""
-    },
-    "ResourceConfig": {
-        "InstanceType": "ml.p2.8xlarge",
-        "InstanceCount": 0,
-        "VolumeSizeInGB": 0,
-        "VolumeKmsKeyId": ""
-    },
-    "VpcConfig": {
-        "SecurityGroupIds": [
-            ""
-        ],
-        "Subnets": [
-            ""
-        ]
-    },
-    "StoppingCondition": {
-        "MaxRuntimeInSeconds": 0,
-        "MaxWaitTimeInSeconds": 0
-    },
-    "Tags": [
-        {
-            "Key": "",
-            "Value": ""
-        }
-    ],
-    "EnableNetworkIsolation": true,
-    "EnableInterContainerTrafficEncryption": true,
-    "EnableManagedSpotTraining": true,
-    "CheckpointConfig": {
-        "S3Uri": "",
-        "LocalPath": ""
-    },
-    "DebugHookConfig": {
-        "LocalPath": "",
-        "S3OutputPath": "",
-        "HookParameters": {
-            "KeyName": ""
-        },
-        "CollectionConfigurations": [
-            {
-                "CollectionName": "",
-                "CollectionParameters": {
-                    "KeyName": ""
-                }
-            }
-        ]
-    },
-    "DebugRuleConfigurations": [
-        {
-            "RuleConfigurationName": "",
-            "LocalPath": "",
-            "S3OutputPath": "",
-            "RuleEvaluatorImage": "",
-            "InstanceType": "ml.m5.12xlarge",
-            "VolumeSizeInGB": 0,
-            "RuleParameters": {
-                "KeyName": ""
-            }
-        }
-    ],
-    "TensorBoardOutputConfig": {
-        "LocalPath": "",
-        "S3OutputPath": ""
-    },
-    "ExperimentConfig": {
-        "ExperimentName": "",
-        "TrialName": "",
-        "TrialComponentDisplayName": ""
-    },
-    "ProfilerConfig": {
-        "S3OutputPath": "",
-        "ProfilingIntervalInMilliseconds": 0,
-        "ProfilingParameters": {
-            "KeyName": ""
-        }
-    },
-    "ProfilerRuleConfigurations": [
-        {
-            "RuleConfigurationName": "",
-            "LocalPath": "",
-            "S3OutputPath": "",
-            "RuleEvaluatorImage": "",
-            "InstanceType": "ml.r5.16xlarge",
-            "VolumeSizeInGB": 0,
-            "RuleParameters": {
-                "KeyName": ""
-            }
-        }
+  "TrainingJobName": "recommender-system-train-kge-20210413T212407-17032",
+  "HyperParameters": {
+    "graph_bucket": "sagemaker-us-east-1-002224604296",
+    "kg_dbpedia_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/kg_dbpedia.txt",
+    "kg_entity_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/entities_dbpedia.dict",
+    "kg_relation_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/relations_dbpedia.dict",
+    "kg_entity_industry_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/entity_industry.txt",
+    "kg_vocab_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/vocab.json",
+    "data_input_key": " ",
+    "train_output_key": "recommender-system-news-open-toutiao/model/sort/content/kg/news/gw/"
+  },
+  "AlgorithmSpecification": {
+    "TrainingImage": "002224604296.dkr.ecr.us-east-1.amazonaws.com/recommender-system-train-kge:latest",
+    "TrainingInputMode": "File",
+    "MetricDefinitions": [
+      {
+        "Name": "average loss",
+        "Regex": "average loss: (.*)"
+      }
     ]
+  },
+  "RoleArn": "arn:aws:iam::002224604296:role/service-role/RSSagemakerRole",
+  "OutputDataConfig": {
+    "S3OutputPath": "s3://sagemaker-us-east-1-002224604296/recommender-system-news-open-toutiao/model/null"
+  },
+  "ResourceConfig": {
+    "InstanceCount": 1,
+    "InstanceType": "ml.p2.xlarge",
+    "VolumeSizeInGB": 5
+  },
+  "StoppingCondition": {
+    "MaxRuntimeInSeconds": 36000
+  }
 }

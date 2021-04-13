@@ -1,16 +1,15 @@
 Input:
 
-raw_data_folder = '{}/system/user-data/raw_action_data/'.format(key_prefix)
-news_map_folder = '{}/model/news_map.csv'.format(key_prefix)
-user_map_folder = '{}/model/user_map.csv'.format(key_prefix)
-news_encoding_folder = '{}/model/news_encoding.csv'.format(key_prefix)
+{}/system/user-data/raw_action_data/
+{}/model/news_map.csv
+{}/model/user_map.csv
+{}/model/news_encoding.csv
 
 
 Output:
 
-# train_folder = '{}/model/dkn_data/train.csv.sample'.format(key_prefix)
-# val_folder = '{}/model/dkn_data/val.csv.sample'.format(key_prefix)
+{}/model/sort/action/dkn/train.csv
+{}/model/sort/action/dkn/test.csv
 
-train_folder = '{}/model/sort/action/dkn/train.csv'.format(key_prefix)
-val_folder = '{}/model/sort/action/dkn/test.csv'.format(key_prefix)
-
+# {}/model/dkn_data/train.csv.sample
+# {}/model/dkn_data/val.csv.sample

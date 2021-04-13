@@ -1,0 +1,12 @@
+Input:
+
+{}/model/sort/content/words/mapping/kg_dbpedia.txt
+{}/model/sort/content/words/mapping/entities_dbpedia.dict
+{}/model/sort/content/words/mapping/relations_dbpedia.dict
+{}/model/sort/content/words/mapping/entity_industry.txt
+{}/model/sort/content/words/mapping/vocab.json
+
+Output:
+
+{}/model/sort/content/kg/news/gw/dkn_entity_embedding.npy
+{}/model/sort/content/kg/news/gw/dkn_relation_embedding.npy

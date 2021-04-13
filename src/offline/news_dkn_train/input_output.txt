@@ -1,0 +1,16 @@
+Input:
+
+{}/model/sort/action/dkn/train.csv/
+{}/model/sort/action/dkn/test.csv/
+
+{}/model/sort/action/dkn/train.csv/context_embeddings_TransE_128.npy
+{}/model/sort/action/dkn/train.csv/entity_embeddings_TransE_128.npy
+{}/model/sort/action/dkn/train.csv/word_embeddings_300.npy
+
+# {}/model/sort/content/kg/news/gw/dkn_context_embedding.npy
+# {}/model/sort/content/kg/news/gw/dkn_entity_embedding.npy
+# {}/model/sort/content/words/sgns-mixed-large/dkn_word_embedding.npy
+
+Output:
+
+{}/model/sort/action/dkn/output/news-dkn-train-20210413T180008-10288/output/model.tar.gz
