@@ -57,9 +57,13 @@ news_map_folder = '{}/model/news_map.csv'.format(key_prefix)
 user_map_folder = '{}/model/user_map.csv'.format(key_prefix)
 news_encoding_folder = '{}/model/news_encoding.csv'.format(key_prefix)
 
-train_folder = '{}/model/dkn_data/train.csv.sample'.format(key_prefix)
-val_folder = '{}/model/dkn_data/val.csv.sample'.format(key_prefix)
-                
+# train_folder = '{}/model/dkn_data/train.csv.sample'.format(key_prefix)
+# val_folder = '{}/model/dkn_data/val.csv.sample'.format(key_prefix)
+# model/sort/action/dkn/train.csv
+
+train_folder = '{}/model/sort/action/dkn/train.csv'.format(key_prefix)
+val_folder = '{}/model/sort/action/dkn/test.csv'.format(key_prefix)
+
 args={}
 args['S3_SOURCE'] = 's3://{}'.format(bucket)
 args['RAW_DATA'] = raw_data_folder
