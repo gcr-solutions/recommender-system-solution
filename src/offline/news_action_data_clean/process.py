@@ -1,4 +1,5 @@
-import time
+import argparse
+import boto3
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession, Window
 from pyspark.ml.feature import OneHotEncoder, StringIndexer
@@ -15,7 +16,7 @@ import pyspark.sql.functions as f
 # from awsglue.dynamicframe import DynamicFrame
 
 import os
-# import time
+import time
 # from pyspark import SparkContext, SparkConf
 # from pyspark.sql import SparkSession, Window
 # from pyspark.ml.feature import OneHotEncoder, StringIndexer
@@ -35,14 +36,29 @@ import os
 # job = Job(glueContext)
 # job.init(args['JOB_NAME'], args)
 
+parser = argparse.ArgumentParser(description="app inputs and outputs")
+parser.add_argument("--s3_bucket", type=str, help="s3 bucket")
+parser.add_argument("--s3_key_prefix", type=str,
+                    help="s3 input key prefix")
 
-bucket = 'sagemaker-us-east-1-002224604296'
-raw_data_folder = 'recsys_ml_pipeline/dkn_data/action_data_sample'
-news_map_folder = 'recsys_ml_pipeline/model/news_map.csv'
-user_map_folder = 'recsys_ml_pipeline/model/user_map.csv'
-news_encoding_folder = 'recsys_ml_pipeline/model/news_encoding.csv'
-train_folder = 'recsys_ml_pipeline/dkn_data/train.csv.sample'
-val_folder = 'recsys_ml_pipeline/dkn_data/val.csv.sample'
+args = parser.parse_args()
+
+print("args:", args)
+
+bucket = args.s3_bucket
+key_prefix = args.s3_key_prefix
+if key_prefix.endswith("/"):
+    input_prefix = key_prefix[:-1]
+
+print(f"bucket:{bucket}, key_prefix:{key_prefix}")
+# s3://sagemaker-us-east-1-002224604296/recommender-system-news-open-toutiao/system/user-data/raw_action_data/
+raw_data_folder = '{}/system/user-data/raw_action_data/'.format(key_prefix)
+news_map_folder = '{}/model/news_map.csv'.format(key_prefix)
+user_map_folder = '{}/model/user_map.csv'.format(key_prefix)
+news_encoding_folder = '{}/model/news_encoding.csv'.format(key_prefix)
+
+train_folder = '{}/model/dkn_data/train.csv.sample'.format(key_prefix)
+val_folder = '{}/model/dkn_data/val.csv.sample'.format(key_prefix)
                 
 args={}
 args['S3_SOURCE'] = 's3://{}'.format(bucket)
@@ -58,6 +74,8 @@ raw_data_path = os.path.join(args['S3_SOURCE'], args['RAW_DATA'])
 news_map_path = os.path.join(args['S3_SOURCE'], args['NEWS_MAP_FOLDER'])
 user_map_path = os.path.join(args['S3_SOURCE'], args['USER_MAP_FOLDER'])
 news_encoding_path = os.path.join(args['S3_SOURCE'], args['NEWS_ENCODING_FOLDER'])
+
+# outputs
 train_path = os.path.join(args['S3_SOURCE'], args['TRAIN_KEY'])
 val_path = os.path.join(args['S3_SOURCE'], args['VAL_KEY'])
 

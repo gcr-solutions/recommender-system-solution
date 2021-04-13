@@ -33,22 +33,26 @@ def s3_copy(bucket, from_key, to_key):
 
 parser = argparse.ArgumentParser(description="app inputs and outputs")
 parser.add_argument("--s3_bucket", type=str, help="s3 bucket")
-parser.add_argument("--s3_input_key_prefix", type=str,
+parser.add_argument("--s3_key_prefix", type=str,
                     help="s3 input key prefix")
-parser.add_argument("--s3_output_key_prefix", type=str,
-                    help="s3 output key prefix")
+
 args = parser.parse_args()
 
 print("args:", args)
 
 bucket = args.s3_bucket
-out_prefix = args.s3_output_key_prefix
-if out_prefix.endswith("/"):
-    out_prefix = out_prefix[:-1]
+key_prefix = args.s3_key_prefix
+if key_prefix.endswith("/"):
+    input_prefix = key_prefix[:-1]
 
-input_file = "s3://{}/{}".format(bucket, args.s3_input_key_prefix)
-emr_output_key_prefix = "{}/tmp-emr-out/".format(out_prefix)
-output_file_key = "{}/item_map.csv".format(out_prefix)
+print(f"bucket:{bucket}, key_prefix:{key_prefix}")
+
+# input_prefix=recommender-system-news-open-toutiao/system/item-data/raw-input/
+# output_prefix=recommender-system-news-open-toutiao/system/item-data/emr-out/
+
+input_file = "s3://{}/{}/system/item-data/raw-input/".format(bucket, key_prefix)
+emr_output_key_prefix = "{}/system/item-data/emr-out/tmp-emr-out/".format(key_prefix)
+output_file_key = "{}/system/item-data/emr-out/item_map.csv".format(key_prefix)
 
 print("input_file:", input_file)
 print("emr_output_key_prefix:", emr_output_key_prefix)

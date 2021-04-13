@@ -1,0 +1,7 @@
+Input:
+input_file = "s3://{}/{}/system/item-data/raw-input/".format(bucket, key_prefix)
+
+
+Output:
+output_file_key = "{}/system/item-data/emr-out/item_map.csv".format(key_prefix)
+

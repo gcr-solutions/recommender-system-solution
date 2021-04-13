@@ -1,0 +1,13 @@
+Input:
+
+raw_data_folder = '{}/system/user-data/raw_action_data/'.format(key_prefix)
+news_map_folder = '{}/model/news_map.csv'.format(key_prefix)
+user_map_folder = '{}/model/user_map.csv'.format(key_prefix)
+news_encoding_folder = '{}/model/news_encoding.csv'.format(key_prefix)
+
+
+Output:
+
+train_folder = '{}/model/dkn_data/train.csv.sample'.format(key_prefix)
+val_folder = '{}/model/dkn_data/val.csv.sample'.format(key_prefix)
+

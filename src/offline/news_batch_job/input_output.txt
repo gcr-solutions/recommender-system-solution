@@ -1,0 +1,12 @@
+Input:
+
+{}/system/item-data/raw-input/toutiao_cat_data.txt.format(key_prefix)
+{}/system/item-data/emr-out/item_map.csv.format(key_prefix)
+{}/model/sort/content/words/sgns-mixed-large/dkn_word_embedding.npy.format(key_prefix)
+{}/model/sort/content/kg/news/gw/dkn_entity_embedding.npy.format(key_prefix)
+
+{}/model/sort/content/words/mapping/kg_dbpedia.txt
+{}/model/sort/content/words/mapping/entities_dbpedia.dict
+{}/model/sort/content/words/mapping/relations_dbpedia.dict
+{}/model/sort/content/words/mapping/entity_industry.txt
+{}/model/sort/content/words/mapping/vocab.json
