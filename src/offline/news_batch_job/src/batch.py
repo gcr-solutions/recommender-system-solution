@@ -360,15 +360,15 @@ def batch_process(bucket, key_prefix):
     train_word_nd_array = X_train_word.astype('float32')
 
     index_batch_file_list = []
-    index_batch_file_list.append('recommender-system-news-toutiao-entity-vector.index')
+    index_batch_file_list.append('news-entity-vector.index')
     entity_index.train(train_entity_nd_array)
     entity_index.add(train_entity_nd_array)
     save_local_path = os.path.join(save_folder, index_batch_file_list[-1])
     faiss.write_index(entity_index, save_local_path)
     print("finish dump {} to {}".format(
        index_batch_file_list[-1], save_local_path))
-    index_batch_file_list = []
-    index_batch_file_list.append('recommender-system-news-toutiao-word-vector.index')
+
+    index_batch_file_list.append('news-word-vector.index')
     word_index.train(train_word_nd_array)
     word_index.add(train_word_nd_array)
     save_local_path = os.path.join(save_folder, index_batch_file_list[-1])
@@ -378,28 +378,31 @@ def batch_process(bucket, key_prefix):
     # ########################################
     # # upload batch data to s3
     # ########################################
-    # print("finish batch and upload to s3 position!")
-    # print("upload pickle file")
-    # s3_batch_pickle_folder = "recommender-system-news-open-toutiao/feature/content/inverted-list/"
-    # for f in pickle_batch_file_list:
-    #     print("upload batch pickle file {}: upload src key {} to dst key {}".format(f, os.path.join(
-    #         save_folder, f), os.path.join(s3_batch_pickle_folder, f)))
-    #     s3client.upload_file( os.path.join(
-    #         save_folder, f), bucket, os.path.join(s3_batch_pickle_folder, f))
-    # print("upload encoding file")
-    # s3_batch_encoding_folder = "recommender-system-news-open-toutiao/feature/content/encode/"
-    # for f in encoding_batch_file_list:
-    #     print("upload batch encode file {}: upload src key {} to dst key {}".format(f, os.path.join(
-    #         save_folder, f), os.path.join(s3_batch_encoding_folder, f)))
-    #     s3client.upload_file( os.path.join(
-    #         save_folder, f), bucket, os.path.join(s3_batch_encoding_folder, f))
-    # print("upload index file")
-    # s3_batch_index_folder = "recommender-system-news-open-toutiao/model/recall/vector/"
-    # for f in encoding_batch_file_list:
-    #     print("upload batch encode file {}: upload src key {} to dst key {}".format(f, os.path.join(
-    #         save_folder, f), os.path.join(s3_batch_index_folder, f)))
-    #     s3client.upload_file( os.path.join(
-    #         save_folder, f), bucket, os.path.join(s3_batch_index_folder, f))
+    print("finish batch and upload to s3 position!")
+
+    print("upload pickle file")
+    s3_batch_pickle_folder = "{}/feature/content/inverted-list/".format(key_prefix)
+    for f in pickle_batch_file_list:
+        print("upload batch pickle file {}: upload src key {} to dst key {}".format(f, os.path.join(
+            save_folder, f), os.path.join(s3_batch_pickle_folder, f)))
+        s3client.upload_file( os.path.join(
+            save_folder, f), bucket, os.path.join(s3_batch_pickle_folder, f))
+
+    print("upload encoding file")
+    s3_batch_encoding_folder = "{}/feature/content/encode/".format(key_prefix)
+    for f in encoding_batch_file_list:
+        print("upload batch encode file {}: upload src key {} to dst key {}".format(f, os.path.join(
+            save_folder, f), os.path.join(s3_batch_encoding_folder, f)))
+        s3client.upload_file( os.path.join(
+            save_folder, f), bucket, os.path.join(s3_batch_encoding_folder, f))
+
+    print("upload index file")
+    s3_batch_index_folder = "{}/model/recall/vector/".format(key_prefix)
+    for f in index_batch_file_list:
+        print("upload batch index file {}: upload src key {} to dst key {}".format(f, os.path.join(
+            save_folder, f), os.path.join(s3_batch_index_folder, f)))
+        s3client.upload_file( os.path.join(
+            save_folder, f), bucket, os.path.join(s3_batch_index_folder, f))
 
     print("pickle_batch_file_list", pickle_batch_file_list)
     print("encoding_batch_file_list", encoding_batch_file_list)
