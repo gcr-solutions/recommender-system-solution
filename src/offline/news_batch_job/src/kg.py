@@ -44,10 +44,12 @@ class Kg:
             os.makedirs(self.kg_folder)
         if not os.path.exists(self.kg_dbpedia_key):
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_dbpedia_key))
+            print("downloading s3://{}/{}".format(self.kg_folder, self.kg_dbpedia_key))
             s3client.download_file(self.kg_folder, self.kg_dbpedia_key, os.path.join(self.kg_folder ,self.kg_dbpedia_key))
             # s3client.download_file("sagemaker-us-east-1-002224604296", "recsys_ml_pipeline/model/kg_dbpedia.txt", os.path.join("sagemaker-us-east-1-002224604296","recsys_ml_pipeline/model/kg_dbpedia.txt"))
         if not os.path.exists(self.kg_entity_key):
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_entity_key))
+            print("downloading s3://{}/{}".format(self.kg_folder, self.kg_entity_key))
             s3client.download_file(self.kg_folder, self.kg_entity_key, os.path.join(self.kg_folder ,self.kg_entity_key))
         entities = pd.read_csv(os.path.join(self.kg_folder, self.kg_entity_key), header=None)
         for r in zip(entities[0], entities[1]):
@@ -57,6 +59,7 @@ class Kg:
         if not os.path.exists(self.kg_relation_key):
             # self.check_parent_dir(self.kg_folder, self.kg_relation_key)
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_relation_key))
+            print("downloading s3://{}/{}".format(self.kg_folder, self.kg_relation_key))
             s3client.download_file(self.kg_folder, self.kg_relation_key, os.path.join(self.kg_folder ,self.kg_relation_key))
         relations = pd.read_csv(os.path.join(self.kg_folder, self.kg_relation_key), header=None)
         for r in zip(relations[0], relations[1]):
@@ -66,6 +69,7 @@ class Kg:
         if not os.path.exists(self.kg_entity_industry_key):
             # self.check_parent_dir(self.kg_folder, self.kg_entity_industry_key)
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_entity_industry_key))
+            print("downloading s3://{}/{}".format(self.kg_folder, self.kg_entity_industry_key))
             s3client.download_file(self.kg_folder, self.kg_entity_industry_key, os.path.join(self.kg_folder ,self.kg_entity_industry_key))
         with open(os.path.join(self.kg_folder, self.kg_entity_industry_key), 'r') as f:
             for word in f:
@@ -225,9 +229,16 @@ class Kg:
         if self.train_output_key != None:
             print("upload to {}".format(self.train_output_key))
             s3client.upload_file(os.path.join(self.train_output_key, generate_entity_name), self.kg_folder, os.path.join(self.train_output_key, upload_entity_name))
+            print("uploaded s3://{}/{}".format(self.kg_folder, os.path.join(self.train_output_key, upload_entity_name)))
             s3client.upload_file(os.path.join(self.train_output_key, generate_relation_name), self.kg_folder, os.path.join(self.train_output_key, upload_relation_name))
+            print(
+                "uploaded s3://{}/{}".format(self.kg_folder, os.path.join(self.train_output_key, upload_relation_name)))
             if upload_context == True:
                 s3client.upload_file(os.path.join(self.train_output_key, generate_context_name), self.kg_folder, os.path.join(self.train_output_key, upload_context_name))
+                print(
+                    "uploaded s3://{}/{}".format(self.kg_folder,
+                                                  os.path.join(self.train_output_key, upload_context_name)))
+#
 #             for name in glob.glob(os.path.join(self.train_output_key,'*.npy')):
 #                 print("upload {}".format(name))
 #                 s3client.upload_file(name, self.kg_folder, os.path.join(self.train_output_key,name.split('/')[-1]))

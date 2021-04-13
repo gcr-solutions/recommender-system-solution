@@ -91,13 +91,13 @@ def batch_process(bucket, key_prefix):
     news_entity_embed_path = os.path.join(local_folder, file_name_list[0])
     # prepare model for batch process
     os.environ['GRAPH_BUCKET'] = bucket
-    os.environ['KG_DBPEDIA_KEY'] = '{}/model/sort/content/words/mapping/kg_dbpedia.txt'
-    os.environ['KG_ENTITY_KEY'] = '{}/model/sort/content/words/mapping/entities_dbpedia.dict'
-    os.environ['KG_RELATION_KEY'] = '{}/model/sort/content/words/mapping/relations_dbpedia.dict'
-    os.environ['KG_ENTITY_INDUSTRY_KEY'] = '{}/model/sort/content/words/mapping/entity_industry.txt'
-    os.environ['KG_VOCAB_KEY'] = '{}/model/sort/content/words/mapping/vocab.json'
+    os.environ['KG_DBPEDIA_KEY'] = '{}/model/sort/content/words/mapping/kg_dbpedia.txt'.format(key_prefix)
+    os.environ['KG_ENTITY_KEY'] = '{}/model/sort/content/words/mapping/entities_dbpedia.dict'.format(key_prefix)
+    os.environ['KG_RELATION_KEY'] = '{}/model/sort/content/words/mapping/relations_dbpedia.dict'.format(key_prefix)
+    os.environ['KG_ENTITY_INDUSTRY_KEY'] = '{}/model/sort/content/words/mapping/entity_industry.txt'.format(key_prefix)
+    os.environ['KG_VOCAB_KEY'] = '{}/model/sort/content/words/mapping/vocab.json'.format(key_prefix)
     os.environ['DATA_INPUT_KEY'] = ''
-    os.environ['TRAIN_OUTPUT_KEY'] = '{}/model/sort/content/kg/news/gw/'
+    os.environ['TRAIN_OUTPUT_KEY'] = '{}/model/sort/content/kg/news/gw/'.format(key_prefix)
     kg_path = os.environ['GRAPH_BUCKET']
     dbpedia_key = os.environ['KG_DBPEDIA_KEY']
     entity_key = os.environ['KG_ENTITY_KEY']
@@ -117,6 +117,8 @@ def batch_process(bucket, key_prefix):
         'DATA_INPUT_KEY': data_input_key,
         'TRAIN_OUTPUT_KEY': train_output_key
     }
+
+    print("Kg env:", env)
     graph = kg.Kg(env)  # Where we keep the model when it's loaded
     model = encoding.encoding(graph, env)
     ########################################
