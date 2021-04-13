@@ -1,0 +1,139 @@
+{
+    "TrainingJobName": "",
+    "HyperParameters": {
+        "KeyName": ""
+    },
+    "AlgorithmSpecification": {
+        "TrainingImage": "",
+        "AlgorithmName": "",
+        "TrainingInputMode": "Pipe",
+        "MetricDefinitions": [
+            {
+                "Name": "",
+                "Regex": ""
+            }
+        ],
+        "EnableSageMakerMetricsTimeSeries": true
+    },
+    "RoleArn": "",
+    "InputDataConfig": [
+        {
+            "ChannelName": "",
+            "DataSource": {
+                "S3DataSource": {
+                    "S3DataType": "AugmentedManifestFile",
+                    "S3Uri": "",
+                    "S3DataDistributionType": "ShardedByS3Key",
+                    "AttributeNames": [
+                        ""
+                    ]
+                },
+                "FileSystemDataSource": {
+                    "FileSystemId": "",
+                    "FileSystemAccessMode": "rw",
+                    "FileSystemType": "EFS",
+                    "DirectoryPath": ""
+                }
+            },
+            "ContentType": "",
+            "CompressionType": "None",
+            "RecordWrapperType": "RecordIO",
+            "InputMode": "File",
+            "ShuffleConfig": {
+                "Seed": 0
+            }
+        }
+    ],
+    "OutputDataConfig": {
+        "KmsKeyId": "",
+        "S3OutputPath": ""
+    },
+    "ResourceConfig": {
+        "InstanceType": "ml.p2.8xlarge",
+        "InstanceCount": 0,
+        "VolumeSizeInGB": 0,
+        "VolumeKmsKeyId": ""
+    },
+    "VpcConfig": {
+        "SecurityGroupIds": [
+            ""
+        ],
+        "Subnets": [
+            ""
+        ]
+    },
+    "StoppingCondition": {
+        "MaxRuntimeInSeconds": 0,
+        "MaxWaitTimeInSeconds": 0
+    },
+    "Tags": [
+        {
+            "Key": "",
+            "Value": ""
+        }
+    ],
+    "EnableNetworkIsolation": true,
+    "EnableInterContainerTrafficEncryption": true,
+    "EnableManagedSpotTraining": true,
+    "CheckpointConfig": {
+        "S3Uri": "",
+        "LocalPath": ""
+    },
+    "DebugHookConfig": {
+        "LocalPath": "",
+        "S3OutputPath": "",
+        "HookParameters": {
+            "KeyName": ""
+        },
+        "CollectionConfigurations": [
+            {
+                "CollectionName": "",
+                "CollectionParameters": {
+                    "KeyName": ""
+                }
+            }
+        ]
+    },
+    "DebugRuleConfigurations": [
+        {
+            "RuleConfigurationName": "",
+            "LocalPath": "",
+            "S3OutputPath": "",
+            "RuleEvaluatorImage": "",
+            "InstanceType": "ml.m5.12xlarge",
+            "VolumeSizeInGB": 0,
+            "RuleParameters": {
+                "KeyName": ""
+            }
+        }
+    ],
+    "TensorBoardOutputConfig": {
+        "LocalPath": "",
+        "S3OutputPath": ""
+    },
+    "ExperimentConfig": {
+        "ExperimentName": "",
+        "TrialName": "",
+        "TrialComponentDisplayName": ""
+    },
+    "ProfilerConfig": {
+        "S3OutputPath": "",
+        "ProfilingIntervalInMilliseconds": 0,
+        "ProfilingParameters": {
+            "KeyName": ""
+        }
+    },
+    "ProfilerRuleConfigurations": [
+        {
+            "RuleConfigurationName": "",
+            "LocalPath": "",
+            "S3OutputPath": "",
+            "RuleEvaluatorImage": "",
+            "InstanceType": "ml.r5.16xlarge",
+            "VolumeSizeInGB": 0,
+            "RuleParameters": {
+                "KeyName": ""
+            }
+        }
+    ]
+}
