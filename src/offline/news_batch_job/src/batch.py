@@ -80,7 +80,7 @@ def batch_process(bucket, key_prefix):
     news_word_embed_path = os.path.join(local_folder, file_name_list[0])
     # load entity embedding data
     file_name_list = ['dkn_entity_embedding.npy']
-    s3_folder = '{}/model/sort/content/kg/news/gw/'.format(key_prefix)
+    s3_folder = '{}/model/sort/content/kg/'.format(key_prefix)
     if not os.path.exists(local_folder):
         os.makedirs(local_folder)
     for f in file_name_list:
