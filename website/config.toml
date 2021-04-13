@@ -6,5 +6,4 @@ contentDir = "../docs"
 canonifyURLs = true
 
 [params]
-  themeVariant = "cloudfrontext"
   disableLandingPageButton = true
