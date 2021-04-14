@@ -1,0 +1,142 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    (SO8010)
+
+    CloudFormation for RecSys Lambda
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.8
+    MemorySize: 1024
+    Environment:
+      Variables:
+        botoConfig: '{"user_agent_extra": "AwsSolution/SO8010/0.1.0"}'
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,DELETE,PUT'"
+      AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+      AllowOrigin: "'*'"
+
+Parameters:
+  Bucket:
+    Description: S3 Bucket for RecSys
+    Type: String
+
+  LevelOneFolder:
+    Type: String
+    Default: recommender-system-film-mk
+
+  StageName:
+    Description: Stage Name
+    Type: String
+    Default: beta
+
+  StepFunName:
+    Description: Step Func Name
+    Type: String
+    Default: "RS-OverAllStepFunc"
+
+  SNSName:
+    Type: String
+    Default: "rs-offline-sns"
+
+  OnlineLoaderURL:
+    Type: String
+
+Resources:
+  RSLambdaAndStepFuncsRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: RSLambdaAndStepFuncsRole
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - states.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+      Policies:
+        - PolicyName: rs-role-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+
+  RSSMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: RSSMRole
+      Path: /service-role/
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - sagemaker.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+      Policies:
+        - PolicyName: rs-role-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+
+  PreCheckLabmda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: rs-PreCheckLabmda
+      Handler: precheck-lambda.lambda_handler
+      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      CodeUri: ./precheck-lambda.zip
+
+  S3UtilLabmda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: rs-S3UtilLabmda
+      Handler: s3-util-lambda.lambda_handler
+      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      CodeUri: ./s3-util-lambda.zip
+      Timeout: 900
+
+  QueryTrainingResultLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: rs-QueryTrainingResultLambda
+      Handler: query-training-result-lambda.lambda_handler
+      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      CodeUri: ./query-training-result-lambda.zip
+
+  SNSMessageLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: rs-SNSMessageLambda
+      Handler: sns-message-lambda.lambda_handler
+      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      CodeUri: ./sns-message-lambda.zip
+      Timeout: 900
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${SNSName}"
+          LEVEL_ONE_FOLDER: !Sub "${LevelOneFolder}"
+          ONLINE_LOADER_URL: !Sub "${OnlineLoaderURL}"
+

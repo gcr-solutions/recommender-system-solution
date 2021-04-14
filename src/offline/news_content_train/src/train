@@ -25,15 +25,16 @@ import os
 import sys
 import subprocess
 import traceback
+import json
 
-kg_path = os.environ['GRAPH_BUCKET']
-dbpedia_key = os.environ['KG_DBPEDIA_KEY']
-entity_key = os.environ['KG_ENTITY_KEY']
-relation_key = os.environ['KG_RELATION_KEY']
-entity_industry_key = os.environ['KG_ENTITY_INDUSTRY_KEY']
-vocab_key = os.environ['KG_VOCAB_KEY']
-data_input_key = os.environ['DATA_INPUT_KEY']
-train_output_key = os.environ['TRAIN_OUTPUT_KEY']
+# kg_path = os.environ['GRAPH_BUCKET']
+# dbpedia_key = os.environ['KG_DBPEDIA_KEY']
+# entity_key = os.environ['KG_ENTITY_KEY']
+# relation_key = os.environ['KG_RELATION_KEY']
+# entity_industry_key = os.environ['KG_ENTITY_INDUSTRY_KEY']
+# vocab_key = os.environ['KG_VOCAB_KEY']
+# data_input_key = os.environ['DATA_INPUT_KEY']
+# train_output_key = os.environ['TRAIN_OUTPUT_KEY']
 
 # These are the paths to where SageMaker mounts interesting things in your container.
 prefix = '/opt/ml/'
@@ -41,6 +42,26 @@ input_path = os.path.join(prefix,'input/data')
 output_path = os.path.join(prefix, 'output')
 model_path = os.path.join(prefix, 'model')
 param_path = os.path.join(prefix, 'input/config/hyperparameters.json')
+
+# "graph_bucket": "sagemaker-us-east-1-002224604296",
+# "kg_dbpedia_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/kg_dbpedia.txt",
+# "kg_entity_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/entities_dbpedia.dict",
+# "kg_relation_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/relations_dbpedia.dict",
+# "kg_entity_industry_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/entity_industry.txt",
+# "kg_vocab_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/vocab.json",
+# "data_input_key": " ",
+# "train_output_key": "recommender-system-news-open-toutiao/model/sort/content/kg/news/gw/"
+
+with open(param_path) as f:
+    hp = json.load(f)
+    kg_path = hp['graph_bucket']
+    dbpedia_key = hp['kg_dbpedia_key']
+    entity_key = hp['kg_entity_key']
+    relation_key = hp['kg_relation_key']
+    entity_industry_key = hp['kg_entity_industry_key']
+    vocab_key = hp['kg_vocab_key']
+    data_input_key = hp['data_input_key']
+    train_output_key = hp['train_output_key']
 
 # This algorithm has a single channel of input data called 'training'. Since we run in
 # File mode, the input files are copied to the directory specified here.
