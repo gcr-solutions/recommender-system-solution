@@ -1,5 +1,0 @@
-{
-  "Bucket": "gcr-rs-ops-__REGION__-__AWS_ACCOUNT_ID__",
-  "LevelOneFolder": "recommender-system-film-mk",
-  "OnlineLoaderURL": "http://a6500b130ef7c45eb96f1727f55bafb6-1149103410.__REGION__.elb.amazonaws.com/loader/notice"
-}

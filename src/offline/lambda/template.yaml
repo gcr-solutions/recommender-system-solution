@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-    (SO8010)
+  (SO8010)
 
-    CloudFormation for RecSys Lambda
+  CloudFormation for RecSys Lambda
 
 Globals:
   Function:
@@ -24,32 +24,29 @@ Parameters:
     Description: S3 Bucket for RecSys
     Type: String
 
-  LevelOneFolder:
+  S3Prefix:
     Type: String
-    Default: recommender-system-film-mk
-
-  StageName:
-    Description: Stage Name
-    Type: String
-    Default: beta
+    Default: rsdemo
 
   StepFunName:
     Description: Step Func Name
     Type: String
-    Default: "RS-OverAllStepFunc"
-
-  SNSName:
-    Type: String
-    Default: "rs-offline-sns"
+    Default: "rsdemo-News-OverAllStepFunc"
 
   OnlineLoaderURL:
     Type: String
+    Default: ""
 
 Resources:
+  RSOfflineSNS:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: "rsdemo-offline-sns"
+
   RSLambdaAndStepFuncsRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: RSLambdaAndStepFuncsRole
+      RoleName: rsdemo-LambdaAndStepFuncsRole
       Path: /
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -77,7 +74,7 @@ Resources:
   RSSMRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: RSSMRole
+      RoleName: rsdemo-SMRole
       Path: /service-role/
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -104,39 +101,46 @@ Resources:
   PreCheckLabmda:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: rs-PreCheckLabmda
+      FunctionName: rsdemo-PreCheckLabmda
       Handler: precheck-lambda.lambda_handler
       Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
-      CodeUri: ./precheck-lambda.zip
+      CodeUri:
+        Bucket: !Ref Bucket
+        Key: !Sub "${S3Prefix}/code/lambda/precheck-lambda.zip"
 
   S3UtilLabmda:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: rs-S3UtilLabmda
+      FunctionName: rsdemo-S3UtilLabmda
       Handler: s3-util-lambda.lambda_handler
       Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
-      CodeUri: ./s3-util-lambda.zip
+      CodeUri:
+        Bucket: !Ref Bucket
+        Key: !Sub "${S3Prefix}/code/lambda/s3-util-lambda.zip"
       Timeout: 900
 
   QueryTrainingResultLambda:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: rs-QueryTrainingResultLambda
+      FunctionName: rsdemo-QueryTrainingResultLambda
       Handler: query-training-result-lambda.lambda_handler
       Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
-      CodeUri: ./query-training-result-lambda.zip
+      CodeUri:
+        Bucket: !Ref Bucket
+        Key: !Sub "${S3Prefix}/code/lambda/query-training-result-lambda.zip"
+
 
   SNSMessageLambda:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: rs-SNSMessageLambda
+      FunctionName: rsdemo-SNSMessageLambda
       Handler: sns-message-lambda.lambda_handler
       Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
-      CodeUri: ./sns-message-lambda.zip
+      CodeUri:
+        Bucket: !Ref Bucket
+        Key: !Sub "${S3Prefix}/code/lambda/sns-message-lambda.zip"
       Timeout: 900
       Environment:
         Variables:
-          SNS_TOPIC_ARN: !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${SNSName}"
-          LEVEL_ONE_FOLDER: !Sub "${LevelOneFolder}"
+          SNS_TOPIC_ARN: !Ref RSOfflineSNS
           ONLINE_LOADER_URL: !Sub "${OnlineLoaderURL}"
-

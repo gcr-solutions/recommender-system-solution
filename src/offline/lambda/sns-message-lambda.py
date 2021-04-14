@@ -67,93 +67,120 @@ def lambda_handler(event, context):
 
 def do_handler(event, context):
     sns_topic_arn = os.environ['SNS_TOPIC_ARN']
-    level_1_folder = os.environ.get(
-        'LEVEL_ONE_FOLDER', 'recommender-system-film-mk')
     online_loader_url = os.environ.get('ONLINE_LOADER_URL', '')
 
     print("sns_topic_arn='{}'".format(sns_topic_arn))
     print("online_loader_url='{}'".format(online_loader_url))
 
     bucket = event['bucket']
-    region_id = event['region_id']
+    message_type = event['message_type']
     file_types = event['file_type'].split(",")
+    s3_key_prefix = event('s3_key_prefix')
 
-    bucket_and_prefix = "s3://{}/{}/{}".format(
-        bucket, level_1_folder, region_id)
+    if s3_key_prefix.endswith('/'):
+        s3_key_prefix = s3_key_prefix[:-1]
+
+    bucket_and_prefix = "s3://{}/{}".format(
+        bucket, s3_key_prefix)
     print("bucket_and_prefix={}".format(bucket_and_prefix))
-    mk_msg_dict = {
-        "action-new": [
-            "{}/feature/content/inverted-list/movie_actor_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_category_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_director_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_id_movie_property_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_language_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_level_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_year_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
 
-            "{}/feature/recommend-list/portrait/portrait.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/recommend-list/movie/rank_batch_result.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/recommend-list/movie/rank_batch_result.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/recommend-list/movie/filter_batch_result.pickle".format(
-                bucket_and_prefix),
-            "{}/model/recall/recall_config.pickle".format(bucket_and_prefix),
-        ],
+    msg_dict = get_message_dict(message_type)
 
-        "item-new": [
-            "{}/feature/content/inverted-list/movie_actor_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_category_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_director_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_id_movie_property_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_language_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_level_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/content/inverted-list/movie_year_movie_ids_dict.pickle".format(
-                bucket_and_prefix),
+    msg_file_types = []
+    if message_type == 'movie':
+        for file_type in file_types:
+            if file_type == "action-new":
+                msg_file_types.extend(["inverted-list"])
+            elif file_type == "train-model":
+                msg_file_types.extend(
+                    ["action-model", "embeddings", "vector-index"])
+            elif file_type == "item-new":
+                msg_file_types.extend(
+                    ["inverted-list", "embeddings", "vector-index", "action-model"])
+            else:
+                msg_file_types.append(file_type)
+    elif message_type == 'news':
+        for file_type in file_types:
+            if file_type == "action-new":
+                msg_file_types.extend(["action-model"])
+            elif file_type == "knowledge-mapping":
+                msg_file_types.extend(
+                    ["action-model", "embeddings", "vector-index", "action-model"])
+            elif file_type == "item-new":
+                msg_file_types.extend(
+                    ["inverted-list", "embeddings", "vector-index"])
+            else:
+                msg_file_types.append(file_type)
 
-            "{}/feature/action/embed_raw_item_mapping.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/action/embed_raw_user_mapping.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/action/raw_embed_item_mapping.pickle".format(
-                bucket_and_prefix),
-            "{}/feature/action/raw_embed_user_mapping.pickle".format(
-                bucket_and_prefix),
-            "{}/model/recall/youtubednn/user_embeddings.h5".format(
-                bucket_and_prefix),
-            "{}/feature/action/ub_item_embeddings.npy".format(
-                bucket_and_prefix),
+    print("msg_file_types: {}".format(msg_file_types))
 
-            "{}/feature/action/ub_item_vector.index".format(bucket_and_prefix),
+    messages_sent = []
+    for file_type in set(msg_file_types):
+        print("send sns message for file_type: {}".format(file_type))
 
-            "{}/model/rank/action/deepfm/latest/deepfm_model.tar.gz".format(
-                bucket_and_prefix),
-        ],
+        notification_file_path = "{}/notification/{}/".format(
+            bucket_and_prefix, file_type)
+        file_names = []
+        message = {
+            # "region_id": region_id,
+            "file_type": file_type,
+            "file_path": "/".join(notification_file_path.split("/")[3:]),
+            "file_name": file_names
+        }
 
-        "train-model": [
-            "{}/feature/action/ub_item_embeddings.npy".format(
-                bucket_and_prefix),
-            "{}/feature/action/ub_item_vector.index".format(bucket_and_prefix),
-            "{}/model/recall/youtubednn/user_embeddings.h5".format(
-                bucket_and_prefix),
-            "{}/model/rank/action/deepfm/latest/deepfm_model.tar.gz".format(
-                bucket_and_prefix),
-        ],
+        for s3_file in message_type[file_type]:
+            src_key = "/".join(s3_file.split("/")[3:])
+            src_name = src_key.split("/")[-1]
+            s3_copy(bucket, bucket, src_key, "{}{}".format(
+                message['file_path'], src_name))
+            file_names.append(src_name)
 
+        sns_client.publish(
+            TopicArn=sns_topic_arn,
+            Message=json.dumps(message),
+            Subject="RS Offline Notification",
+            MessageAttributes={
+                "message_type": {
+                    "DataType": "String",
+                    "StringValue": str(message_type),
+                },
+                "file_type": {
+                    "DataType": "String",
+                    "StringValue": str(file_type),
+                }
+            }
+        )
+
+        messages_sent.append(message)
+
+        if online_loader_url:
+            post_request(online_loader_url,
+                         {"message": message},
+                         {'message_type': str(message_type)})
+
+    return success_response(json.dumps(messages_sent))
+
+
+def post_request(url, data, headers):
+    print("send post request to {}".format(url))
+    print("data: {}".format(json.dumps(data)))
+    retry_count = 0
+    while True:
+        retry_count += 1
+        try:
+            r = requests.post(url, data=json.dumps(data), headers=headers)
+            print("status_code: {}".format(r.status_code))
+            return r.status_code
+        except Exception as e:
+            if retry_count > 3:
+                break
+            time.sleep(5)
+            print("retry: {}, Error: {}".format(retry_count, repr(e)))
+
+
+def get_message_dict(bucket_and_prefix, message_type):
+    print("message_type: {}".format(message_type))
+    movie_msg_dict = {
         "inverted-list": [
             "{}/feature/content/inverted-list/movie_actor_movie_ids_dict.pickle".format(
                 bucket_and_prefix),
@@ -208,83 +235,38 @@ def do_handler(event, context):
         ],
     }
 
-    msg_file_types = []
-    for file_type in file_types:
-        if file_type == "action-new":
-            msg_file_types.extend(["inverted-list"])
-        elif file_type == "train-model":
-            msg_file_types.extend(
-                ["action-model", "embeddings", "vector-index"])
-        elif file_type == "item-new":
-            msg_file_types.extend(
-                ["inverted-list", "embeddings", "vector-index", "action-model"])
-        else:
-            msg_file_types.append(file_type)
+    news_msg_dict = {
+        "inverted-list": [
+            "{}/feature/content/inverted-list/news_id_news_title_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_news_type_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_type_news_ids_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_keywords_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/keywords_news_ids_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_word_ids_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_entity_ids_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/word_id_news_ids_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/entity_id_news_ids_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_keywords_tfidf_dict.pickle".format(bucket_and_prefix),
+        ],
+        "vector-index": [
+            "{}/model/recall/vector/news-entity-vector.index".format(bucket_and_prefix),
+            "{}/model/recall/vector/news-word-vector.index".format(bucket_and_prefix),
+        ],
+        "action-model": [
+            "{}/model/sort/action/dkn/output/news-dkn-train-20210413T180008-10288/output/model.tar.gz".format(
+                bucket_and_prefix),
+        ],
+        "embeddings": [
+            "{}/model/sort/content/kg/news/gw/dkn_context_embedding.npy".format(bucket_and_prefix),
+            "{}/model/sort/content/kg/news/gw/dkn_entity_embedding.npy".format(bucket_and_prefix),
+            "{}/model/sort/content/kg/news/gw/dkn_relation_embedding.npy".format(bucket_and_prefix),
+        ],
+    }
 
-    print("msg_file_types: {}".format(msg_file_types))
-
-    messages_sent = []
-    for file_type in set(msg_file_types):
-        print("send sns message for file_type: {}".format(file_type))
-
-        notification_file_path = "{}/notification/{}/".format(
-            bucket_and_prefix, file_type)
-        file_names = []
-        message = {
-            # "region_id": region_id,
-            "file_type": file_type,
-            "file_path": "/".join(notification_file_path.split("/")[3:]),
-            "file_name": file_names
-        }
-
-        for s3_file in mk_msg_dict[file_type]:
-            src_key = "/".join(s3_file.split("/")[3:])
-            src_name = src_key.split("/")[-1]
-            s3_copy(bucket, bucket, src_key, "{}{}".format(
-                message['file_path'], src_name))
-            file_names.append(src_name)
-
-        sns_client.publish(
-            TopicArn=sns_topic_arn,
-            Message=json.dumps(message),
-            Subject="RS Offline Notification",
-            MessageAttributes={
-                "region_id": {
-                    "DataType": "String",
-                    "StringValue": str(region_id),
-                },
-                "file_type": {
-                    "DataType": "String",
-                    "StringValue": str(file_type),
-                }
-            }
-        )
-
-        messages_sent.append(message)
-
-        if online_loader_url:
-            post_request(online_loader_url,
-                         {"message": message},
-                         {'regionId': str(region_id)})
-
-    return success_response(json.dumps(messages_sent))
-
-
-def post_request(url, data, headers):
-    print("send post request to {}".format(url))
-    print("data: {}".format(json.dumps(data)))
-    retry_count = 0
-    while True:
-        retry_count += 1
-        try:
-            r = requests.post(url, data=json.dumps(data), headers=headers)
-            print("status_code: {}".format(r.status_code))
-            return r.status_code
-        except Exception as e:
-            if retry_count > 3:
-                break
-            time.sleep(5)
-            print("retry: {}, Error: {}".format(retry_count, repr(e)))
+    if message_type == 'movie':
+        return movie_msg_dict
+    if message_type == 'news':
+        return news_msg_dict
 
 
 def success_response(message):
