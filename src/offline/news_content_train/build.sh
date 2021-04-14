@@ -6,7 +6,7 @@ AWS_PROFILE=aoyu
 account_id=`aws --profile ${AWS_PROFILE} sts get-caller-identity --query Account --output text`
 region=us-east-1
 # repo 相关信息
-repo_name=news-dkn-train
+repo_name=news-content-train
 #tag=`date '+%Y%m%d%H%M%S'`
 tag="latest"
 

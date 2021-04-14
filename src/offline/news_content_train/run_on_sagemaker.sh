@@ -3,7 +3,7 @@ AWS_PROFILE='--profile aoyu'
 AWS_REGION='us-east-1'
 
 TIMESTAMP=$(date '+%Y%m%dT%H%M%S')
-repoName=recommender-system-train-kge
+repoName=news-content-train
 
 JOB_NAME=${repoName}-${TIMESTAMP}-${RANDOM}
 

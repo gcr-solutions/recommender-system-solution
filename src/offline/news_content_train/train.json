@@ -1,5 +1,5 @@
 {
-  "TrainingJobName": "recommender-system-train-kge-20210413T212407-17032",
+  "TrainingJobName": "news-content-train-20210414T102211-7004",
   "HyperParameters": {
     "graph_bucket": "sagemaker-us-east-1-002224604296",
     "kg_dbpedia_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/kg_dbpedia.txt",
@@ -11,7 +11,7 @@
     "train_output_key": "recommender-system-news-open-toutiao/model/sort/content/kg/news/gw/"
   },
   "AlgorithmSpecification": {
-    "TrainingImage": "002224604296.dkr.ecr.us-east-1.amazonaws.com/recommender-system-train-kge:latest",
+    "TrainingImage": "002224604296.dkr.ecr.us-east-1.amazonaws.com/news-content-train:latest",
     "TrainingInputMode": "File",
     "MetricDefinitions": [
       {
