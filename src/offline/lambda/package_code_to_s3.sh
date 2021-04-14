@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#export PROFILE=rsops
+#export REGION=ap-southeast-1
+
 if [[ -z $PROFILE ]];then
    PROFILE='default'
 fi

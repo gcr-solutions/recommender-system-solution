@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  (SO8010)
+
+  CloudFormation for RecSys StepFuncs
+
+
+Parameters:
+  Bucket:
+    Type: String
+
+  S3Prefix:
+    Type: String
+    Default: rsdemo
+
+  StepFuncAndLambdaRoleName:
+    Type: String
+    Default: rsdemo-LambdaAndStepFuncsRole
+    # arn:aws:iam::${AWS::AccountId}:role/RSLambdaAndStepFuncsRole
+
+  SagemakerRoleName:
+    Type: String
+    Default: rsdemo-SMRole
+    # arn:aws:iam::${AWS::AccountId}:role/service-role/RSSMRole
+
+  S3UtilLabmda:
+    Type: String
+    Default: rsdemo-S3UtilLabmda
+
+  PreCheckLabmda:
+    Type: String
+    Default: rsdemo-PreCheckLabmda
+
+  SNSMessageLambda:
+    Type: String
+    Default: rsdemo-SNSMessageLambda
+
+Resources:
+  ItemNewStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-KnowledgeMappingStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Train content model",
+          "TimeoutSeconds": 36000,
+          "States": {
+            "Train content model": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-TrainContentModelStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.TrainContentModel",
+              "Next": "Batch job"
+            },
+            "Batch job": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-BatchJobStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.BatchJob",
+              "Next": "Action data clean"
+            },
+            "Action data clean": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionDataCleanStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.ActionDataClean",
+              "Next": "DKN Train"
+            },
+            "DKN Train": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-DKNTrainStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.DKNTrain",
+              "Next": "Send notification"
+            },
+            "Send notification": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${SNSMessageLambda}",
+                "Payload": {
+                  "bucket": "${Bucket}",
+                  "file_type": "knowledge-mapping",
+                  "message_type": "news"
+                }
+              },
+              "ResultSelector": {
+                "Payload.$": "$.Payload"
+              },
+              "Next": "Succeed",
+              "ResultPath": "$.Notification"
+            },
+            "Succeed": {
+              "Type": "Succeed"
+            }
+          }
+        }

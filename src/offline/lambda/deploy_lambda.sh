@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#export PROFILE=rsops
+#export REGION=ap-southeast-1
+
 echo "run $0 ..."
 pwd
 

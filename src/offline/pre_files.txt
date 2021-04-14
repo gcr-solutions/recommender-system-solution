@@ -1,9 +1,13 @@
 {}/model/sort/content/words/sgns-mixed-large/dkn_word_embedding.npy
-{}/model/news_map.csv
-{}/model/user_map.csv
+{}/model/news_map.csv/news_map.csv
+{}/model/user_map.csv/user_map.csv
 {}/model/sort/content/words/mapping/kg_dbpedia.txt
 {}/model/sort/content/words/mapping/entities_dbpedia.dict
 {}/model/sort/content/words/mapping/relations_dbpedia.dict
 {}/model/sort/content/words/mapping/entity_industry.txt
 {}/model/sort/content/words/mapping/vocab.json
+
+
+{}/system/user-data/raw_action_data/
+{}/system/item-data/raw-input/toutiao_cat_data.txt
 

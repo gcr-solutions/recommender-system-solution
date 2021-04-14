@@ -1,0 +1,97 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  (SO8010)
+
+  CloudFormation for RecSys StepFuncs
+
+
+Parameters:
+  Bucket:
+    Type: String
+
+  S3Prefix:
+    Type: String
+    Default: rsdemo
+
+  StepFuncAndLambdaRoleName:
+    Type: String
+    Default: rsdemo-LambdaAndStepFuncsRole
+    # arn:aws:iam::${AWS::AccountId}:role/RSLambdaAndStepFuncsRole
+
+  SagemakerRoleName:
+    Type: String
+    Default: rsdemo-SMRole
+    # arn:aws:iam::${AWS::AccountId}:role/service-role/RSSMRole
+
+  S3UtilLabmda:
+    Type: String
+    Default: rsdemo-S3UtilLabmda
+
+  PreCheckLabmda:
+    Type: String
+    Default: rsdemo-PreCheckLabmda
+
+  SNSMessageLambda:
+    Type: String
+    Default: rsdemo-SNSMessageLambda
+
+Resources:
+  ItemNewStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-ItemNewStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Generate item map",
+          "TimeoutSeconds": 36000,
+          "States": {
+            "Generate item map": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-GenItemMapStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.GenItemMap",
+              "Next": "Batch job"
+            },
+            "Batch job": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-BatchJobStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.BatchJob",
+              "Next": "Send notification"
+            },
+            "Send notification": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${SNSMessageLambda}",
+                "Payload": {
+                  "bucket": "${Bucket}",
+                  "file_type": "item-new",
+                  "message_type": "news"
+                }
+              },
+              "ResultSelector": {
+                "Payload.$": "$.Payload"
+              },
+              "Next": "Succeed",
+              "ResultPath": "$.Notification"
+            },
+            "Succeed": {
+              "Type": "Succeed"
+            }
+          }
+        }

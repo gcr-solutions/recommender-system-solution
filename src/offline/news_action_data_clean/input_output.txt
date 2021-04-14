@@ -1,8 +1,8 @@
 Input:
 
 {}/system/user-data/raw_action_data/
-{}/model/news_map.csv
-{}/model/user_map.csv
+{}/model/news_map.csv/news_map.csv
+{}/model/user_map.csv/user_map.csv
 {}/model/news_encoding.csv
 
 
