@@ -7,8 +7,8 @@ AWS CloudShell is a browser-based shell that makes it easy to securely manage, e
 
 ## Get started with AWS CloudShell
 
-1. Go to [CloudShell](https://console.aws.amazon.com/cloudshell/home?region=us-east-1#)
-2. In the top right corner of the console, make sure you’re using this region: **N. Virginia (us-east-1)**
+1. Go to [CloudShell](https://console.aws.amazon.com/cloudshell/home?region=us-west-2#)
+2. In the top right corner of the console, make sure you’re using this region: **N. Virginia (us-west-2)**
 
 When AWS CloudShell launches in a new browser window for the first time, a welcome panel displays and lists key features. After you close this panel, status updates are provided while the shell configures and forwards your console credentials. When the command prompt displays, the shell is ready for interaction.
 

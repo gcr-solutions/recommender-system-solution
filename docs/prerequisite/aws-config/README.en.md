@@ -8,11 +8,11 @@ To configure your credentials, run below command
     aws configure
 
 
-Type your credentials and type **us-east-1** in terms of region name
+Type your credentials and type **us-west-2** in terms of region name
 
     AWS Access Key ID [None]: <type your access key id> 
     AWS Secret Access Key [None]: <type your secret access key> 
-    Default region name [None]: us-east-1
+    Default region name [None]: us-west-2
     Default output format [None]: 
 
 {{% notice note %}}
