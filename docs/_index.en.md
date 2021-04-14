@@ -18,6 +18,6 @@ The core services of the recommender system are constructed using Amazon EKS, in
 
 The offline logic is implemented using AWS Step Functions and Amazon Sagemaker. This includes data preprocess, model training, model validation, batch process and so on. Whenever new files or models are generated, the online services will be noticed to reload.
 
-#### End-to-end Development
+#### End-to-end Development (not included in this workshop)
 
 The CI/CD of system is implemented using AWS CodeBuild and Argo CD. This design helps the customers deploy the latest software into the production environment.
