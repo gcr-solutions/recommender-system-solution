@@ -1,5 +1,5 @@
 ---
-title: Deploy a Lambda@Edge function to authenticate with Cognito
+title: Deploy The Offline Logic
 weight: 1
 ---
 

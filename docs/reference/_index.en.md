@@ -1,6 +1,6 @@
 ---
 title: Reference & Resources
-weight: 20
+weight: 70
 ---
 
 To perform this workshop, you’ll need the following:
