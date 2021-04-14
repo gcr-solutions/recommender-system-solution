@@ -19,11 +19,9 @@
 
 from __future__ import print_function
 
-import encoding
 import kg
 
 import os
-import json
 import sys
 import subprocess
 import traceback
@@ -107,6 +105,8 @@ if __name__ == '__main__':
             'DATA_INPUT_KEY': data_input_key,
             'TRAIN_OUTPUT_KEY': train_output_key
         }
+
+        print("env for kg:", env)
         graph = kg.Kg(env) # Where we keep the model when it's loaded
         graph.train(max_step=200)
 

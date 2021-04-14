@@ -1,5 +1,5 @@
 {
-  "TrainingJobName": "news-content-train-20210414T102211-7004",
+  "TrainingJobName": "news-content-train-20210414T104057-3958",
   "HyperParameters": {
     "graph_bucket": "sagemaker-us-east-1-002224604296",
     "kg_dbpedia_key": "recommender-system-news-open-toutiao/model/sort/content/words/mapping/kg_dbpedia.txt",
