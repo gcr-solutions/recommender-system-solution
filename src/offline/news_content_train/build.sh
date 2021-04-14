@@ -4,7 +4,11 @@ AWS_PROFILE=aoyu
 
 # account_id和region是对应最后要push的ECR
 account_id=`aws --profile ${AWS_PROFILE} sts get-caller-identity --query Account --output text`
-region=us-east-1
+
+#s = boto3.session.Session()
+#s.region_name
+
+region=us-east-1  # aws configure --profile $AWS_PROFILE get region
 # repo 相关信息
 repo_name=news-content-train
 #tag=`date '+%Y%m%d%H%M%S'`
