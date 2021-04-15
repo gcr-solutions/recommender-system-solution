@@ -3,9 +3,6 @@
 echo "run $0 ..."
 pwd
 
-#export PROFILE=rsops
-#export REGION=ap-southeast-1
-
 if [[ -z $PROFILE ]];then
    PROFILE='default'
 fi
@@ -16,6 +13,8 @@ fi
 
 echo "PROFILE: $PROFILE"
 echo "REGION: $REGION"
+
+
 AWS_ACCOUNT_ID=$(aws --profile $PROFILE sts get-caller-identity  --o text | awk '{print $1}')
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 

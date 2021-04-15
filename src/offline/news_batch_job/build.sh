@@ -1,27 +1,72 @@
-AWS_PROFILE='--profile aoyu'
-AWS_REGION='us-east-1'
-AWS_ECR=002224604296.dkr.ecr.us-east-1.amazonaws.com
-repoName=news-batch-job
+#AWS_PROFILE='--profile aoyu'
+#AWS_REGION='us-east-1'
 
-IMAGEURI=${AWS_ECR}/$repoName:latest
+if [[ -z $PROFILE ]];then
+   PROFILE='default'
+fi
 
-aws ecr create-repository $AWS_PROFILE \
-  --repository-name $repoName \
+if [[ -z $REGION ]];then
+    REGION='us-east-1'
+fi
+
+
+echo "PROFILE: $PROFILE"
+echo "REGION: $REGION"
+
+AWS_REGION=$REGION
+AWS_PROFILE=$PROFILE
+
+repo_name=news-batch-job
+#tag=`date '+%Y%m%d%H%M%S'`
+tag="latest"
+
+aws ecr create-repository --profile $AWS_PROFILE \
+  --repository-name $repo_name \
   --image-scanning-configuration scanOnPush=true \
   --region $AWS_REGION >/dev/null 2>&1
 
-BASE_ECR=763104351884.dkr.ecr.us-east-1.amazonaws.com/tensorflow-training
+# account_id和region是对应最后要push的ECR
+account_id=`aws --profile ${AWS_PROFILE} sts get-caller-identity --query Account --output text`
 
-aws ecr get-login-password ${AWS_PROFILE} --region ${AWS_REGION} | docker login --username AWS --password-stdin ${BASE_ECR}
+aws --profile ${AWS_PROFILE} ecr create-repository \
+  --repository-name $repo_name \
+  --image-scanning-configuration scanOnPush=true \
+  --region $AWS_REGION >/dev/null 2>&1
 
-docker build -t $repoName .
 
-docker tag $repoName:latest ${IMAGEURI}
+# 基础镜像相关的account_id以及ecr的地址
+if [[ $AWS_REGION =~ ^cn.* ]]
+then
+    registry_id="727897471807"
+    registry_uri="${registry_id}.dkr.ecr.${AWS_REGION}.amazonaws.com.cn"
+    account_uri="${account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com.cn"
+else
+    registry_id="763104351884"
+    registry_uri="${registry_id}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    account_uri="${account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+fi
 
-echo ${IMAGEURI}
 
-aws ecr get-login-password ${AWS_PROFILE} --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR}
+echo "registry_uri (base): $registry_uri"
+echo "account_uri: $account_uri"
 
-docker push ${IMAGEURI}
+
+# login 到基础镜像的ecr
+aws --profile ${AWS_PROFILE} ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${registry_uri}
+
+# build image
+docker build -t $repo_name . --build-arg REGISTRY_URI=${registry_uri}
+
+# 打tag
+docker tag $repo_name $account_uri/$repo_name:${tag}
+
+# login 到自己的ecr
+aws --profile ${AWS_PROFILE} ecr get-login-password --region ${AWS_REGION} | docker login --username AWS  --password-stdin ${account_uri}
+# 判断自己的账户下有没有相应的repo
+#aws --profile ${AWS_PROFILE} ecr describe-repositories --repository-names $repo_name || aws --profile ${AWS_PROFILE} ecr create-repository --repository-name $repo_name
+
+# push repo
+docker push $account_uri/$repo_name:${tag}
+
 
 

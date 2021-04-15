@@ -1,5 +1,4 @@
-ARG REGISTRY_URI=763104351884.dkr.ecr.us-east-1.amazonaws.com
-
+ARG REGISTRY_URI
 FROM ${REGISTRY_URI}/tensorflow-training:1.15.3-cpu-py37-ubuntu18.04
 # 763104351884.dkr.ecr.us-east-1.amazonaws.com/tensorflow-training:1.15.3-cpu-py37-ubuntu18.04
 
