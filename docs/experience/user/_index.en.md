@@ -50,6 +50,14 @@ The second part is generated from the similar contents of what you clicked. If y
 ![Recommend-type-1](/images/recommend-type-1.png)
 ![Recommend-type-2](/images/recommend-type-2.png)
 
+You will also notice that there are scores for the type of news you may like:
+
+![User-Portrait](/images/user-portrait.png)
+
+If you navigate the recommendating list, you will notice some results with disparity tag. This means the system will push some types of news that you never read to discover the possible interests:
+
+![Disparity](/images/disparity.png)
+
 
 
 
