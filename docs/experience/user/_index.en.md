@@ -19,7 +19,7 @@ Next time, you can input the same name to get recommendations based on the relat
 
 ![Look-Around](/images/look-around.png)
 
-Suppose you input **gcr-recsys-user** in the input field and login the system and you will see the following page:
+Suppose you login the system as the **gcr-recsys-user**. You will see the following page:
 
 ![Cold-Start](/images/cold-start.png)
 
