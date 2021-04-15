@@ -35,9 +35,20 @@ Since you are the new user, you get the recommendation list generated from the *
 
 ![Cold-Start-News](/images/cold-start-news.png)
 
-Actually, you can navigate different types of news and pick up what you like:
+Actually, you can navigate different types of news and pick up what you like. The reading history and user portrait will change accordingly:
 
 ![Different-Types-News](/images/different-types-news.png)
+
+After clicking at three pieces of news, you will see the recommendating list in the first channel. The recommendating result consists of two parts. The first 
+part is top recommendating according to the most interested type in your portrait. In this example, it seems that **gcr-recsys-user** is very interested in
+the entertainment, the first 2-3 lines of recommendating list are entertainment news:
+
+![Top-Type-News](/images/top-type-news.png)
+
+The second part is generated from the similar contents of what you clicked. If you click 'recommend' again, you will get another recommendating list:
+
+![Recommend-type-1](/images/recommend-type-1.png)
+![Recommend-type-2](/images/recommend-type-2.png)
 
 
 
