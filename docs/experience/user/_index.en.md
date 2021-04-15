@@ -71,6 +71,22 @@ If you click news at least 3 times, the recommendating list will come from the a
 
 ![Application Logic](/images/application-logic.png)
 
+In real recommender system, it is not a good idea to apply complex models to all the items. We need some efficient methods to find promising candidates for the
+current user. This is what the recall(retrieve) stage should do. For instance, the recall logic can find top 1,000 items from the whole 1,000,000. Then, we use
+complex algorithms to rank these 1,000 items and find top 100 ones. Before pushing to the end user, we may add some custom logic to these ranked items, like disparity logic. This stage is called filter logic:
+
+![Recall-Rank-Filter](/images/recall-rank-filter.png)
+
+This is the 4-way recall logic, including news type, news keywords, news entity embedding learned from knowledge graph and user portrait. The recall logic finds
+the mosting promising candidates from these perspectives:
+
+![Recall-Logic](/images/recall-logic.png)
+
+The rank logic is the knowledge-graph based ranking algorithm (DKN). The click history of the current user is sent to the model. All the news are encoded using
+knowledge graph and the model predicts whether the current user will click the candidated news:
+
+![Rank-Logic](/images/rank-logic.png)
+
 
 
 
