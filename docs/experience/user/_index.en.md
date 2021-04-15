@@ -3,6 +3,7 @@ title: Experience As An End User
 weight: 40
 ---
 
+## Explore the user experience
 Copy the URL you just generate to the browser and you will see the following page:
 
 ![End-User-GUI](/images/end-user-gui.png)
@@ -57,6 +58,18 @@ You will also notice that there are scores for the type of news you may like:
 If you navigate the recommendating list, you will notice some results with disparity tag. This means the system will push some types of news that you never read to discover the possible interests:
 
 ![Disparity](/images/disparity.png)
+
+Now, you know almost everything about this demo. Please feel free to have a try!
+
+## How to generate recommendating list (optional)
+
+If you have interests in understanding more about the knowledge behind this engine, you can check the following content. 
+
+If it is the first time that you login, the recommendating list will come from cold start logic. And each time you click the news, the user portrait will update.
+
+If you click news at least 3 times, the recommendating list will come from the a sequence of logic, from recall to filter:
+
+![Application Logic](/images/application-logic.png)
 
 
 
