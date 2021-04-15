@@ -38,7 +38,7 @@ Since you are the new user, you get the recommendation list generated from the *
 
 Actually, you can navigate different types of news and pick up what you like. The reading history and user portrait will change accordingly:
 
-![Different-Types-News](/images/different-types-news.png)
+![Different-Types-News](/images/dtn.png)
 
 After clicking at three pieces of news, you will see the recommendating list in the first channel. The recommendating result consists of two parts. The first 
 part is top recommendating according to the most interested type in your portrait. In this example, it seems that **gcr-recsys-user** is very interested in
