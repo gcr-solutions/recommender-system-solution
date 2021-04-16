@@ -1,32 +1,18 @@
-from __future__ import print_function
-import os
-import sys
-import math
-import pickle
-import boto3
-import os
-import numpy as np
-import kg
-import encoding
-import pandas as pd
-# from tqdm import tqdm
-import time
 import argparse
 import logging
+import os
+import pickle
 import re
-
-# tqdm.pandas()
-# pandarallel.initialize(progress_bar=True)
-# bucket = os.environ.get("BUCKET_NAME", " ")
-# raw_data_folder = os.environ.get("RAW_DATA", " ")
+import argparse
+import boto3
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
 s3client = boto3.client('s3')
 
-########################################
-# 从s3同步数据
-########################################
-s3client = boto3.client('s3')
-
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                    datefmt='%Y-%m-%d:%H:%M:%S',
+                    level=logging.INFO)
 
 def sync_s3(file_name_list, s3_folder, local_folder):
     for f in file_name_list:
@@ -68,9 +54,12 @@ out_s3_path = "s3://{}/{}/feature/content/inverted-list".format(bucket, prefix)
 local_folder = 'info'
 if not os.path.exists(local_folder):
     os.makedirs(local_folder)
+local_folder = 'info'
+if not os.path.exists(local_folder):
+    os.makedirs(local_folder)
 # 行为/物品数据同步
-file_name_list = ['action.csv']
-s3_folder = '{}/system/action-data'.format(prefix)
+file_name_list = ['user.csv']
+s3_folder = '{}/system/user-data'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
 file_name_list = ['item.csv']
 s3_folder = '{}/system/item-data'.format(prefix)
@@ -78,179 +67,44 @@ sync_s3(file_name_list, s3_folder, local_folder)
 
 df_filter_item = pd.read_csv('info/item.csv',sep='_!_',names=['news_id','type_code','type','title','keywords','popularity','new'])
 
-df_filter_action = pd.read_csv('info/action.csv',sep='_!_',names=['user_id','news_id','timestamp','action_type','action'])
+df_filter_user = pd.read_csv('info/user.csv',sep='_!_',names=['user_id','gender','age','timestamp'])
 
-df_item_stats = df_filter_action[['news_id','action_type','action']]
-df_item_stats = df_item_stats.groupby(['news_id','action_type']).sum()
-df_item_stats = df_item_stats.reset_index()
-df_item_stats['action'] = df_item_stats['action'] / df_item_stats['action'].abs().max() * 10.0
+# generate lable encoding/ sparse feature
+lbe = LabelEncoder()
+df_filter_item['encode_id'] = lbe.fit_transform(df_filter_item['news_id'])
+df_filter_user['encode_id'] = lbe.fit_transform(df_filter_user['user_id'])
 
-pd_merge_result = pd.merge(df_filter_item, df_item_stats, on="news_id", how="left").drop(columns=['action_type'])
-pd_merge_result = pd_merge_result.fillna(0)
+# constructu mapping dictionary
+raw_user_id_list = list(map(str, df_filter_user['user_id'].values))
+code_user_id_list = list(map(int, df_filter_user['encode_id'].values))
+raw_embed_user_id_dict = dict(zip(raw_user_id_list, code_user_id_list))
+embed_raw_user_id_dict = dict(zip(code_user_id_list, raw_user_id_list))
 
-# prepare model for batch process
-os.environ['GRAPH_BUCKET'] = 'sagemaker-us-east-1-002224604296'
-os.environ['KG_DBPEDIA_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/kg_dbpedia.txt'
-os.environ['KG_ENTITY_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/entities_dbpedia.dict'
-os.environ['KG_RELATION_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/relations_dbpedia.dict'
-os.environ['KG_ENTITY_INDUSTRY_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/entity_industry.txt'
-os.environ['KG_VOCAB_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/vocab.json'
-os.environ['DATA_INPUT_KEY'] = ''
-os.environ['TRAIN_OUTPUT_KEY'] = 'recommender-system-data/model/sort/content/kg/news/gw/'
-kg_path = os.environ['GRAPH_BUCKET']
-dbpedia_key = os.environ['KG_DBPEDIA_KEY']
-entity_key = os.environ['KG_ENTITY_KEY']
-relation_key = os.environ['KG_RELATION_KEY']
-entity_industry_key = os.environ['KG_ENTITY_INDUSTRY_KEY']
-vocab_key = os.environ['KG_VOCAB_KEY']
-data_input_key = os.environ['DATA_INPUT_KEY']
-train_output_key = os.environ['TRAIN_OUTPUT_KEY']
+raw_item_id_list = list(map(str, df_filter_item['news_id'].values))
+code_item_id_list = list(map(int, df_filter_item['encode_id'].values))
+raw_embed_item_id_dict = dict(zip(raw_item_id_list, code_item_id_list))
+embed_raw_item_id_dict = dict(zip(code_item_id_list, raw_item_id_list))
 
-env = {
-    'GRAPH_BUCKET': kg_path,
-    'KG_DBPEDIA_KEY': dbpedia_key,
-    'KG_ENTITY_KEY': entity_key,
-    'KG_RELATION_KEY': relation_key,
-    'KG_ENTITY_INDUSTRY_KEY': entity_industry_key,
-    'KG_VOCAB_KEY': vocab_key,
-    'DATA_INPUT_KEY': data_input_key,
-    'TRAIN_OUTPUT_KEY': train_output_key
-}
-graph = kg.Kg(env)  # Where we keep the model when it's loaded
-model = encoding.encoding(graph, env)
+file_name = 'info/raw_embed_user_mapping.pickle'
+output_file = open(file_name, 'wb')
+pickle.dump(raw_embed_user_id_dict, output_file)
+output_file.close()
+write_to_s3(file_name, bucket, "{}/feature/action/{}".format(prefix, file_name.split('/')[-1]))
 
-# generate dict_id_keywords for tfidf
-dict_keywords_id = {}
-for row in df_filter_item.iterrows():
-    item_row = row[1]
-    program_id = str(item_row['news_id'])
-    for kw in item_row['keywords'].split(','):
-        if kw not in dict_keywords_id.keys():
-            dict_keywords_id[kw] = [program_id]
-            continue
-        current_list = dict_keywords_id[kw]
-        current_list.append(program_id)
-        dict_keywords_id[kw].append(program_id)
-n_keyword_whole = len(dict_keywords_id)
+file_name = 'info/embed_raw_user_mapping.pickle'
+output_file = open(file_name, 'wb')
+pickle.dump(embed_raw_user_id_dict, output_file)
+output_file.close()
+write_to_s3(file_name, bucket, "{}/feature/action/{}".format(prefix, file_name.split('/')[-1]))
 
-def get_tfidf(category_property):
-    if not category_property or str(category_property).lower() in ['nan', 'nr', '']:
-        return [None]
-    if not category_property:
-        return [None]
-    value = [item.strip() for item in category_property.split(',')]
-    keywords_tfidf = {}
-    for keyword in value:
-        current_score = 1 / len(value)*math.log(n_keyword_whole / len(dict_keywords_id[keyword]))
-        keywords_tfidf[keyword] = current_score
-    return keywords_tfidf
-        
-def get_category(category_property):
-    if not category_property or str(category_property).lower() in ['nan', 'nr', '']:
-        return [None]
-    if not category_property:
-        return [None]
-    return [item.strip().lower() for item in category_property.split(',')]
-            
-def get_single_item(item):
-    if not item or str(item).lower().strip() in ['nan', 'nr', '']:
-        return [None]
-    return [str(item).lower().strip()]
+file_name = 'info/raw_embed_item_mapping.pickle'
+output_file = open(file_name, 'wb')
+pickle.dump(raw_embed_item_id_dict, output_file)
+output_file.close()
+write_to_s3(file_name, bucket, "{}/feature/action/{}".format(prefix, file_name.split('/')[-1]))
 
-def get_entities(title):
-    return model[title]
-
-def single_dict(raw_dict, feat, item_id):
-    if feat not in raw_dict.keys():
-        raw_dict[feat] = [item_id]
-    else:
-        current_list = raw_dict[feat]
-        current_list.append(item_id)
-        raw_dict[feat] = current_list
-
-def list_dict(raw_dict, feat_list, item_id):
-    for feat in feat_list:
-        single_dict(raw_dict, feat, item_id)
-
-def update_popularity(item_df, action_df):
-    pd_merge_result = pd.merge(item_df, action_df, on="news_id", how="left").drop(columns=['action_type'])
-    pd_merge_result = pd_merge_result.fillna(0)
-    df_update = pd_merge_result.drop(columns=['popularity']).rename(columns={"action":"popularity"})
-    return df_update
-        
-def sort_by_score(df):
-    logging.info("sort_by_score() enter, df.columns: {}".format(df.columns))
-    df['popularity'].fillna(0, inplace=True)
-
-    df['popularity_log'] = np.log1p(df['popularity'])
-    popularity_log_max = df['popularity_log'].max()
-    popularity_log_min = df['popularity_log'].min()
-
-    df['popularity_scaled'] = ((df['popularity_log'] - popularity_log_min) / (
-            popularity_log_max - popularity_log_min)) * 10
-
-    df_sorted = df.sort_values(by='popularity_scaled', ascending=False)
-    
-    df_sorted = df_sorted.drop(
-        ['popularity_log', 'popularity_scaled'], axis=1)
-
-    logging.info("sort_by_score() return, df.columns: {}".format(df_sorted.columns))
-    return df_sorted
-
-def get_bucket_key_from_s3_path(s3_path):
-    m = re.match(r"s3://(.*?)/(.*)", s3_path)
-    return m.group(1), m.group(2)
-
-def gen_pickle_files(df, action_df):
-    df_update = update_popularity(df, action_df)
-    df_sort = sort_by_score(df_update)
-    
-    news_id_news_property_dict = {}
-    news_type_news_ids_dict = {}
-    news_keywords_news_ids_dict = {}
-    news_entities_news_ids_dict = {}
-    news_words_news_ids_dict = {}
-    
-    for row in df_sort.iterrows():
-        item_row = row[1]
-        program_id = str(item_row['news_id'])
-        current_entities = get_entities(item_row['title'])[0]
-        current_words = get_entities(item_row['title'])[1]
-        program_dict = {
-            'title': get_single_item(item_row['title']),
-            'type': get_single_item(item_row['type']),
-            'keywords': get_category(item_row['keywords']),
-            'tfidf': get_tfidf(item_row['keywords']),
-            'entities': current_entities,
-            'words': current_words
-        }
-        news_id_news_property_dict[program_id] = program_dict
-        list_dict(news_type_news_ids_dict, program_dict['type'], program_id)
-        list_dict(news_keywords_news_ids_dict, program_dict['keywords'], program_id)
-        list_dict(news_entities_news_ids_dict, program_dict['entities'], program_id)
-        list_dict(news_words_news_ids_dict, program_dict['words'], program_id)
-
-    result_dict = {
-        'news_id_news_property_dict': news_id_news_property_dict,
-        'news_type_news_ids_dict': news_type_news_ids_dict,
-        'news_keywords_news_ids_dict': news_keywords_news_ids_dict,
-        'news_entities_news_ids_dict': news_entities_news_ids_dict,
-        'news_words_news_ids_dict': news_words_news_ids_dict
-    }
-    return result_dict
-
-rd = gen_pickle_files(df_filter_item, df_item_stats)
-
-bucket, out_prefix = get_bucket_key_from_s3_path(out_s3_path)
-for dict_name, dict_val in rd.items():
-    file_name = f'{dict_name}.pickle'
-    # print("pickle =>", file_name)
-    out_file = open(file_name, 'wb')
-    pickle.dump(dict_val, out_file)
-    out_file.close()
-    # s3_url = S3Uploader.upload(file_name, out_s3_path)
-    s3_url = write_to_s3(file_name, bucket, f'{out_prefix}/{file_name}')
-    logging.info("write {}".format(s3_url))
-
-
-
+file_name = 'info/embed_raw_item_mapping.pickle'
+output_file = open(file_name, 'wb')
+pickle.dump(embed_raw_item_id_dict, output_file)
+output_file.close()
+write_to_s3(file_name, bucket, "{}/feature/action/{}".format(prefix, file_name.split('/')[-1]))
