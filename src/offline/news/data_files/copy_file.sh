@@ -8,3 +8,8 @@ for file in $(ls action*csv);
 do
    aws s3 --profile rsops cp $file s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/system/ingest-data/action/ --acl bucket-owner-full-control
 done
+
+for file in $(ls item_*.csv);
+do
+  aws s3 --profile rsops cp $file s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/system/ingest-data/item/ --acl bucket-owner-full-control
+done
