@@ -51,8 +51,10 @@ print(f"bucket:{bucket}, key_prefix:{key_prefix}")
 # output_prefix=recommender-system-news-open-toutiao/system/item-data/emr-out/
 
 input_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, key_prefix)
-emr_output_key_prefix = "s3://{}/{}/system/emr/action-preprocessing/output/".format(bucket, key_prefix)
-output_file_key = "s3://{}/{}/system/action-data/action.csv".format(bucket, key_prefix)
+emr_output_key_prefix = "{}/system/emr/action-preprocessing/output/".format(key_prefix)
+emr_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_output_key_prefix)
+
+output_file_key = "{}/system/action-data/action.csv".format(key_prefix)
 
 print("input_file:", input_file)
 with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreate() as spark:
@@ -63,7 +65,7 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
 
     df_input = spark.read.text(input_file)
     df_input.coalesce(1).write.mode("overwrite").option(
-        "header", "false").option("sep", "\t").csv(emr_output_key_prefix)
+        "header", "false").option("sep", "\t").csv(emr_output_bucket_key_prefix)
 
     print("It take {:.2f} minutes to finish".format(
         (time.time() - Timer1) / 60))
