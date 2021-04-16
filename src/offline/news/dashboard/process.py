@@ -238,8 +238,8 @@ with SparkSession.builder.appName("Spark App - item preprocessing").getOrCreate(
 
 print("static_dict:", static_dict)
 file_name = "dashboard.json"
-with open(file_name, 'w') as out:
-    json.dump(static_dict, out, indent=1)
+with open(file_name, 'w', encoding='utf8') as out:
+    json.dump(static_dict, out, indent=1, ensure_ascii=False)
 
 s3_upload(file_name, bucket, output_file_key)
 print("Done!")
