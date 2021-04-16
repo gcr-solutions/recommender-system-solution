@@ -176,6 +176,8 @@ def update_popularity(item_df, action_df):
     pd_merge_result = pd.merge(item_df, action_df, on="news_id", how="left").drop(columns=['action_type'])
     pd_merge_result = pd_merge_result.fillna(0)
     df_update = pd_merge_result.drop(columns=['popularity']).rename(columns={"action":"popularity"})
+    df_update.loc[df_update.new == 1, 'popularity'] = 10.0
+    df_update.loc[df_update.new == 1, 'new'] = 0
     return df_update
         
 def sort_by_score(df):
