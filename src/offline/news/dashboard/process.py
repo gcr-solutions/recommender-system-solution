@@ -1,10 +1,9 @@
 import argparse
 import json
-import time
 
 import boto3
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, size, expr, from_unixtime, to_timestamp, hour
+from pyspark.sql.functions import col, size, lit, window
 
 
 def list_s3_by_prefix(bucket, prefix, filter_func=None):
@@ -70,6 +69,7 @@ print("user_input_file:", user_input_file)
 # user_input_file = '/Users/yonmzn/tmp/user/'
 
 static_dict = {}
+WIN_SIZE = "60 minutes"
 
 
 def item_static(df_item_input):
@@ -90,26 +90,41 @@ def item_static(df_item_input):
 def action_static(df_action_input, df_item_input, df_user_input):
     print("action_static enter")
     global static_dict
-    df_item = df_item_input.select("id", "title_raw").dropDuplicates(["id"])
+    df_item = df_item_input.select(col("id").alias("item_id"),
+                                   col("item_type_code"),
+                                   col("item_type"),
+                                   col("title_raw").alias("title")).dropDuplicates(["item_id"])
     df_item.cache()
 
+    df_item_type_codes = df_item.select("item_type_code", "item_type").dropDuplicates(["item_type_code"]).collect()
+    item_type_code_value_dict = {
+        "1": "recommend"
+    }
+    for row in df_item_type_codes:
+        item_type_code_value_dict[row['item_type_code']] = row['item_type']
+
+    df_user = df_user_input.select("user_id", "user_name")
+    df_user.cache()
+
     print("begin finding top_users ...")
-    df_action_1 = df_action_input.where(col("action_value") == '1') \
-        .withColumn("timestamp_bigint", expr("cast(timestamp as bigint)")). \
-        withColumn("date_time",
-                   to_timestamp(from_unixtime(col('timestamp_bigint'), 'yyyy-MM-dd HH:mm:ss'), 'yyyy-MM-dd HH:mm:ss')). \
-        drop(col('timestamp_bigint')).drop(col('action_type')).drop(col('action_value')).drop(col('timestamp'))
-    df_action_2 = df_action_1.withColumn('date', col('date_time').cast("date")) \
-        .withColumn('hour', hour(col('date_time')))
-    df_action_2.cache()
+    df_action_event = df_action_input. \
+        where(col("action_value") == '1'). \
+        withColumn("timestamp_bigint", col('timestamp').cast('bigint')). \
+        withColumn("event_time", col('timestamp_bigint').cast('timestamp')). \
+        drop(col('timestamp_bigint')). \
+        drop(col('action_type')). \
+        drop(col('action_value')). \
+        drop(col('timestamp'))
 
     join_type = "left_outer"
-    df_action_2_with_user_name = df_action_2.groupby("user_id", "date", "hour") \
-        .count().join(df_user_input, ['user_id'], join_type)
+    df_action_event_full = df_action_event.join(df_item, ['item_id'], join_type) \
+        .join(df_user, ['user_id'], join_type)
 
-    df_action_3 = df_action_2_with_user_name.orderBy(
-        [col("date").desc(), col("hour").desc(), col("count").desc()])
-    user_rows = df_action_3.select(col("user_id"), col("user_name")).take(100)
+    # df_action_hour = df_action_event_full.withColumn('date', col('event_time').cast("date")).withColumn('hour', hour(col('event_time')))
+    df_action_user_window = df_action_event_full.groupBy(window(col('event_time'), WIN_SIZE), col('user_id'),
+                                                         col('user_name')).count()
+    df_action_user_window_sort = df_action_user_window.orderBy([col('window').desc(), col('count').desc()])
+    user_rows = df_action_user_window_sort.select(col("user_id"), col("user_name")).take(100)
 
     top_10_user_ids = []
     top_10_user = []
@@ -128,15 +143,11 @@ def action_static(df_action_input, df_item_input, df_user_input):
     static_dict['top_users'] = top_10_user
 
     print("begin finding top_items ...")
-    item_click_count = df_action_2.groupby("item_id", "date", "hour").count()
-    item_meta_df = df_item_input.select(col("id").alias("item_id"), col('title_raw'), col('item_type_code'), col('item_type'))
-    item_meta_df.cache()
+    df_action_item_window = df_action_event_full.groupBy(window(col('event_time'), WIN_SIZE), col('item_id'),
+                                                         col('title')).count()
+    df_action_item_window_sort = df_action_item_window.orderBy([col('window').desc(), col('count').desc()])
+    item_rows = df_action_item_window_sort.select(col("item_id"), col("title")).take(100)
 
-    df_item_click_sort = item_click_count.join(item_meta_df, ["item_id"], join_type).orderBy(
-        [col("date").desc(), col("hour").desc(), col("count").desc()]).select(col("item_id"),
-                                                                              col("title_raw").alias("title"))
-
-    item_rows = df_item_click_sort.select(col("item_id"), col("title")).take(100)
     top_10_item_ids = []
     top_10_item = []
     for item_row in item_rows:
@@ -152,6 +163,31 @@ def action_static(df_action_input, df_item_input, df_user_input):
             break
 
     static_dict['top_items'] = top_10_item
+
+    print("begin finding click_count_by_source ...")
+    df_action_source_window = df_action_event_full.groupBy(window(col('event_time'), WIN_SIZE), col('source')).count()
+    n_hours = 8
+    start_time = \
+        df_action_source_window.select(col("window")['start']).orderBy([col('window.start').desc()]).take(n_hours)[-1][
+            'window.start']
+    df_action_source_n_hours = df_action_source_window.where(col("window")['start'] >= start_time).orderBy(
+        [col('window').desc()])
+    source_n_hours = df_action_source_n_hours.collect()
+
+    clicked_by_source = []
+    for row in source_n_hours:
+        start_time = int(row['window']['start'].timestamp())
+        end_time = int(row['window']['end'].timestamp())
+        source = row['source']
+        count = row['count']
+        clicked_by_source.append({
+            "start_time": start_time,
+            "end_time": end_time,
+            "source": item_type_code_value_dict.get(source, "recommend"),
+            "count": count
+        })
+
+    static_dict['click_count_by_source'] = clicked_by_source
 
 
 with SparkSession.builder.appName("Spark App - item preprocessing").getOrCreate() as spark:
@@ -183,6 +219,7 @@ with SparkSession.builder.appName("Spark App - item preprocessing").getOrCreate(
                                          "row[3] as action_type",
                                          "row[4] as action_value",
                                          )
+    df_action_input = df_action_input.withColumn("source", lit("1"))
     df_action_input.cache()
     print("df_action_input OK")
 
@@ -198,7 +235,6 @@ with SparkSession.builder.appName("Spark App - item preprocessing").getOrCreate(
     df_user_input.cache()
     item_static(df_item_input)
     action_static(df_action_input, df_item_input, df_user_input)
-
 
 print("static_dict:", static_dict)
 file_name = "dashboard.json"
