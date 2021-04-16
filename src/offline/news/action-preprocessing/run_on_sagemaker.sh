@@ -24,7 +24,7 @@ repo_name=news-action-preprocessing
 JOB_NAME=${repo_name}-${TIMESTAMP}-${RANDOM}
 
 IMAGEURI=${account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/${repo_name}:latest
-SM_ROLE=arn:aws:iam::${account_id}:role/service-role/RSSagemakerRole
+SM_ROLE=arn:aws:iam::${account_id}:role/service-role/RSSMRole
 
 echo "JOB_NAME: ${JOB_NAME}"
 
