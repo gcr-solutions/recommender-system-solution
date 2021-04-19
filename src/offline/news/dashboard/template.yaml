@@ -97,5 +97,5 @@ Resources:
           Input: !Sub |
             {
               "Bucket": "${Bucket}",
-              "S3Prefix": "${S3Prefix}"
+              "S3Prefix": "${S3Prefix}/"
             }

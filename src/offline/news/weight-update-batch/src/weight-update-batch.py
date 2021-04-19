@@ -60,6 +60,9 @@ args, _ = parser.parse_known_args()
 bucket = args.bucket
 prefix = args.prefix
 
+if prefix.endswith("/"):
+    prefix = prefix[:-1]
+
 print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))
 meta_file_prefix = "{}/model/meta_files".format(prefix)

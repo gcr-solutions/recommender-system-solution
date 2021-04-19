@@ -30,34 +30,34 @@ def s3_copy(bucket, from_key, to_key):
 
 
 parser = argparse.ArgumentParser(description="app inputs and outputs")
-parser.add_argument("--s3_bucket", type=str, help="s3 bucket")
-parser.add_argument("--s3_key_prefix", type=str,
+parser.add_argument("--bucket", type=str, help="s3 bucket")
+parser.add_argument("--prefix", type=str,
                     help="s3 input key prefix")
 
 args = parser.parse_args()
 
 print("args:", args)
 
-bucket = args.s3_bucket
-key_prefix = args.s3_key_prefix
-if key_prefix.endswith("/"):
-    input_prefix = key_prefix[:-1]
+bucket = args.bucket
+prefix = args.prefix
+if prefix.endswith("/"):
+    prefix = prefix[:-1]
 
-print(f"bucket:{bucket}, key_prefix:{key_prefix}")
+print(f"bucket:{bucket}, prefix:{prefix}")
 
 # input_prefix=recommender-system-news-open-toutiao/system/item-data/raw-input/
 # output_prefix=recommender-system-news-open-toutiao/system/item-data/emr-out/
 
-input_action_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, key_prefix)
-emr_action_output_key_prefix = "{}/system/emr/action-preprocessing/output/action".format(key_prefix)
+input_action_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, prefix)
+emr_action_output_key_prefix = "{}/system/emr/action-preprocessing/output/action".format(prefix)
 emr_action_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_action_output_key_prefix)
-output_action_file_key = "{}/system/action-data/action.csv".format(key_prefix)
+output_action_file_key = "{}/system/action-data/action.csv".format(prefix)
 
 
-input_user_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, key_prefix)
-emr_user_output_key_prefix = "{}/system/emr/action-preprocessing/output/user".format(key_prefix)
+input_user_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, prefix)
+emr_user_output_key_prefix = "{}/system/emr/action-preprocessing/output/user".format(prefix)
 emr_user_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_user_output_key_prefix)
-output_user_file_key = "{}/system/user-data/user.csv".format(key_prefix)
+output_user_file_key = "{}/system/user-data/user.csv".format(prefix)
 
 print("input_action_file:", input_action_file)
 with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreate() as spark:

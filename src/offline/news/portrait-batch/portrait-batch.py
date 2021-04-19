@@ -58,8 +58,8 @@ args, _ = parser.parse_known_args()
 bucket = args.bucket
 prefix = args.prefix
 
-print("bucket={}".format(bucket))
-print("prefix='{}'".format(prefix))
+if prefix.endswith("/"):
+    prefix = prefix[:-1]
 
 print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))

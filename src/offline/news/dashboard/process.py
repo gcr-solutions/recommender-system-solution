@@ -37,29 +37,29 @@ def s3_upload(file, bucket, s3_key):
 
 
 parser = argparse.ArgumentParser(description="app inputs and outputs")
-parser.add_argument("--s3_bucket", type=str, help="s3 bucket")
-parser.add_argument("--s3_key_prefix", type=str,
+parser.add_argument("--bucket", type=str, help="s3 bucket")
+parser.add_argument("--prefix", type=str,
                     help="s3 input key prefix")
 
 args = parser.parse_args()
 
 print("args:", args)
 
-bucket = args.s3_bucket
-key_prefix = args.s3_key_prefix
-if key_prefix.endswith("/"):
-    input_prefix = key_prefix[:-1]
+bucket = args.bucket
+prefix = args.prefix
+if prefix.endswith("/"):
+    prefix = prefix[:-1]
 
-print(f"bucket:{bucket}, key_prefix:{key_prefix}")
+print(f"bucket:{bucket}, prefix:{prefix}")
 
 # input_prefix=recommender-system-news-open-toutiao/system/item-data/raw-input/
 # output_prefix=recommender-system-news-open-toutiao/system/item-data/emr-out/
 
-item_input_file = "s3://{}/{}/system/ingest-data/item/".format(bucket, key_prefix)
-action_input_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, key_prefix)
-user_input_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, key_prefix)
+item_input_file = "s3://{}/{}/system/ingest-data/item/".format(bucket, prefix)
+action_input_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, prefix)
+user_input_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, prefix)
 
-output_file_key = "{}/system/dashboard/dashboard.json".format(key_prefix)
+output_file_key = "{}/system/dashboard/dashboard.json".format(prefix)
 
 print("item_input_file:", item_input_file)
 print("action_input_file:", action_input_file)
