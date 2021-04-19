@@ -62,6 +62,7 @@ prefix = args.prefix
 
 print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))
+meta_file_prefix = "{}/model/meta_files".format(prefix)
 
 out_s3_path = "s3://{}/{}/feature/content/inverted-list".format(bucket, prefix)
 
@@ -89,12 +90,12 @@ pd_merge_result = pd.merge(df_filter_item, df_item_stats, on="news_id", how="lef
 pd_merge_result = pd_merge_result.fillna(0)
 
 # prepare model for batch process
-os.environ['GRAPH_BUCKET'] = 'sagemaker-us-east-1-002224604296'
-os.environ['KG_DBPEDIA_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/kg_dbpedia.txt'
-os.environ['KG_ENTITY_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/entities_dbpedia.dict'
-os.environ['KG_RELATION_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/relations_dbpedia.dict'
-os.environ['KG_ENTITY_INDUSTRY_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/entity_industry.txt'
-os.environ['KG_VOCAB_KEY'] = 'recommender-system-data/model/sort/content/words/mapping/vocab.json'
+os.environ['GRAPH_BUCKET'] = bucket
+os.environ['KG_DBPEDIA_KEY'] = '{}/kg_dbpedia.txt'.format(meta_file_prefix)
+os.environ['KG_ENTITY_KEY'] = '{}/entities_dbpedia.dict'.format(meta_file_prefix)
+os.environ['KG_RELATION_KEY'] = '{}/relations_dbpedia.dict'.format(meta_file_prefix)
+os.environ['KG_ENTITY_INDUSTRY_KEY'] = '{}/entity_industry.txt'.format(meta_file_prefix)
+os.environ['KG_VOCAB_KEY'] = '{}/vocab.json'.format(meta_file_prefix)
 os.environ['DATA_INPUT_KEY'] = ''
 os.environ['TRAIN_OUTPUT_KEY'] = 'recommender-system-data/model/sort/content/kg/news/gw/'
 kg_path = os.environ['GRAPH_BUCKET']
