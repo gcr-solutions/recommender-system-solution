@@ -123,7 +123,7 @@ def s3_base_name(key):
 def success_response(message):
     return {
         "statusCode": 200,
-        "UID": str(time.time()),
+        "UID": "".join(str(time.time()).split(".")),
         "headers": {
             "Content-Type": "application/json"
         },

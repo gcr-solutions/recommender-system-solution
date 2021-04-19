@@ -28,12 +28,13 @@ SM_ROLE=arn:aws:iam::${account_id}:role/service-role/RSSMRole
 
 echo "JOB_NAME: ${JOB_NAME}"
 
+echo "JOB_NAME: ${JOB_NAME}"
+
 bucket=aws-gcr-rs-sol-workshop-${AWS_REGION}-${account_id}
-s3_key_prefix=sample-data
+prefix=sample-data
 
 aws sagemaker --profile ${AWS_PROFILE} --region  ${AWS_REGION}   create-processing-job \
 --processing-job-name ${JOB_NAME} \
 --role-arn ${SM_ROLE} \
 --processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.m5.xlarge,VolumeSizeInGB=5}' \
---app-specification "ImageUri=${IMAGEURI},ContainerArguments=--s3_bucket,${bucket},--s3_key_prefix,${s3_key_prefix}"
-
+--app-specification "ImageUri=${IMAGEURI},ContainerArguments=--bucket,${bucket},--prefix,${prefix}"
