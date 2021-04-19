@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=TRUE
 
 WORKDIR /opt/ml/processing/input/code/
 
-ADD add-item-user-batch.py ./
+ADD portrait-batch.py ./
 
 ENTRYPOINT ["python", "/opt/ml/processing/input/code/add-item-user-batch.py"]
 
