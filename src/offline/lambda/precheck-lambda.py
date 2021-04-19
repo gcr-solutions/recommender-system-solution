@@ -1,6 +1,7 @@
 import json
 import os
 import time
+
 import boto3
 
 print('Loading function')
@@ -133,7 +134,7 @@ def success_response(message):
 def error_response(message):
     return {
         "statusCode": 400,
-        "UID": str(time.time()),
+        "UID": "".join(str(time.time()).split(".")),
         "headers": {
             "Content-Type": "application/json"
         },

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#export PROFILE=rsops
-#export REGION=ap-southeast-1
+export PROFILE=rsops
+export REGION=ap-southeast-1
 
 echo "run $0 ..."
 pwd
@@ -21,9 +21,10 @@ echo "REGION: $REGION"
 AWS_ACCOUNT_ID=$(aws --profile $PROFILE sts get-caller-identity  --o text | awk '{print $1}')
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 
-BUCKET=sagemaker-${REGION}-${AWS_ACCOUNT_ID}
+BUCKET=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
+S3Prefix=sample-data
 
-PARAMETER_OVERRIDES="Bucket=$BUCKET"
+PARAMETER_OVERRIDES="Bucket=$BUCKET S3Prefix=$S3Prefix"
 STACK_NAME=rsdemo-lambda-stack
 
 echo "STACK_NAME: ${STACK_NAME}"
