@@ -49,7 +49,7 @@ Resources:
               "Resource": "arn:aws:states:::sagemaker:createProcessingJob.sync",
               "Parameters": {
                 "AppSpecification": {
-                  "ImageUri.$": "States.Format('${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/rs/{}:latest', $.ImageName)",
+                  "ImageUri.$": "States.Format('${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{}:latest', $.ImageName)",
                   "ContainerArguments.$": "$.ContainerArguments"
                 },
                 "ProcessingResources": {

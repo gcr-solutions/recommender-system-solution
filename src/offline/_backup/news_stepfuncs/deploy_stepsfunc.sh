@@ -3,6 +3,9 @@
 echo "run $0 ..."
 pwd
 
+export PROFILE=rsops
+export REGION=ap-southeast-1
+
 if [[ -z $PROFILE ]];then
    PROFILE='default'
 fi
@@ -18,16 +21,18 @@ echo "REGION: $REGION"
 AWS_ACCOUNT_ID=$(aws --profile $PROFILE sts get-caller-identity  --o text | awk '{print $1}')
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 
-BUCKET=sagemaker-${REGION}-${AWS_ACCOUNT_ID}
 
-PARAMETER_OVERRIDES="Bucket=$BUCKET"
+BUCKET=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
+S3Prefix=sample-data
+
+PARAMETER_OVERRIDES="Bucket=$BUCKET S3Prefix=$S3Prefix"
 
 cf_stacks=(
 steps
-item-new
-action-new
-knowledge-mapping
-overall
+#item-new
+#action-new
+#knowledge-mapping
+#overall
 )
 
 for stack in ${cf_stacks[@]};
