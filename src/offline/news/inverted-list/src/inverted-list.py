@@ -225,8 +225,8 @@ def gen_pickle_files(df, action_df):
     for row in df_sort.iterrows():
         item_row = row[1]
         program_id = str(item_row['news_id'])
-        current_entities = get_entities(item_row['title'])[0]
-        current_words = get_entities(item_row['title'])[1]
+        current_entities = get_entities(item_row['title'])[1]
+        current_words = get_entities(item_row['title'])[0]
         program_dict = {
             'title': get_single_item(item_row['title']),
             'type': get_single_item(item_row['type']),
