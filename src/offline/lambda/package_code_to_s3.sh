@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#export PROFILE=rsops
-#export REGION=ap-southeast-1
+export PROFILE=rsops
+export REGION=ap-southeast-1
 
 if [[ -z $PROFILE ]];then
    PROFILE='default'
@@ -16,8 +16,8 @@ echo "REGION: $REGION"
 AWS_ACCOUNT_ID=$(aws --profile $PROFILE sts get-caller-identity  --o text | awk '{print $1}')
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 
-BUCKET_BUILD=sagemaker-${REGION}-${AWS_ACCOUNT_ID}
-# sagemaker-us-east-1-002224604296
+BUCKET_BUILD=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
+PREFIX=sample-data
 
 echo "BUCKET_BUILD=${BUCKET_BUILD}"
 echo "Create S3 Bucket: ${BUCKET_BUILD} if not exist"
@@ -54,4 +54,6 @@ done
 
 rm -rf package
 
-aws --profile $PROFILE s3 sync . s3://${BUCKET_BUILD}/rsdemo/code/lambda/
+
+aws --profile $PROFILE s3 sync . s3://${BUCKET_BUILD}/${PREFIX}/code/lambda/
+
