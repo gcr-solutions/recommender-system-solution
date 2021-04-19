@@ -1,0 +1,11 @@
+system/action-data/action.csv
+feature/recommend-list/portrait/portrait.pickle
+feature/content/inverted-list/news_id_news_property_dict.pickle
+feature/content/inverted-list/news_type_news_ids_dict.pickle
+feature/content/inverted-list/news_entities_news_ids_dict.pickle
+feature/content/inverted-list/news_keywords_news_ids_dict.pickle
+feature/content/inverted-list/news_words_news_ids_dict.pickle
+feature/content/inverted-list/recall_config.pickle
+
+OUTPUT:
+feature/recommend-list/movie/recall_batch_result.pickle
