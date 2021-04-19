@@ -107,7 +107,7 @@ print("output_action_file_key:", output_action_file_key)
 
 emr_user_output_file_key = list_s3_by_prefix(
     bucket,
-    emr_user_output_bucket_key_prefix,
+    emr_user_output_key_prefix,
     lambda key: key.endswith(".csv"))[0]
 print("emr_user_output_file_key:", emr_user_output_file_key)
 s3_copy(bucket, emr_user_output_file_key, output_user_file_key)

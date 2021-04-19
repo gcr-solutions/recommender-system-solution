@@ -20,3 +20,19 @@ do
   aws s3 --profile rsops cp $file s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/system/ingest-data/user/ --acl bucket-owner-full-control
 done
 
+
+
+cd /Users/yonmzn/work/rs_demo/data/data_files
+
+data_files=(
+entity_industry.txt
+vocab.json
+entities_dbpedia.dict
+kg_dbpedia.txt
+relations_dbpedia.dict
+)
+
+for file in ${data_files[@]};
+do
+ aws s3 --profile rsops cp $file  s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/meta_files/
+done
