@@ -57,7 +57,7 @@ print(f"bucket:{bucket}, key_prefix:{key_prefix}")
 
 item_input_file = "s3://{}/{}/system/ingest-data/item/".format(bucket, key_prefix)
 action_input_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, key_prefix)
-user_input_file = "s3://{}/{}/system/user-data/".format(bucket, key_prefix)
+user_input_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, key_prefix)
 
 output_file_key = "{}/system/dashboard/dashboard.json".format(key_prefix)
 

@@ -448,3 +448,50 @@ Resources:
             }
           }
         }
+  DashboardStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-DashboardStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Pre check",
+          "States": {
+            "Pre check": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${PreCheckLabmda}",
+                "Payload": {
+                  "bucket.$": "$.Bucket",
+                  "prefix.$": "$.S3Prefix",
+                  "file_list": [
+                   "system/ingest-data/item/",
+                   "system/ingest-data/action/",
+                   "system/ingest-data/user/",
+                  ]
+                }
+              },
+              "ResultSelector": {
+                "Payload.$": "$.Payload"
+              },
+              "ResultPath": "$.Precheck",
+              "Next": "Run processing"
+            },
+            "Run processing": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "ImageName": "news-action-data-clean",
+                  "ContainerArguments.$": "States.Array('--s3_bucket', '$.Bucket', '--s3_key_prefix', '$.S3Prefix')",
+                  "InstanceType": "ml.p2.xlarge"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-SMProcessingStepFunc",
+                "Name.$": "States.Format('actclean{}', $$.Execution.Name)"
+              },
+              "End": true
+            }
+          }
+        }

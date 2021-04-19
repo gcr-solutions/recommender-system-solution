@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  (SO8010)
+
+  CloudFormation for RecSys StepFuncs
+
+
+Parameters:
+  Bucket:
+    Type: String
+
+  S3Prefix:
+    Type: String
+    Default: sample-data
+
+  StepFuncAndLambdaRoleName:
+    Type: String
+    Default: rsdemo-LambdaAndStepFuncsRole
+
+  SagemakerRoleName:
+    Type: String
+    Default: rsdemo-SMRole
+
+  S3UtilLabmda:
+    Type: String
+    Default: rsdemo-S3UtilLabmda
+
+  PreCheckLabmda:
+    Type: String
+    Default: rsdemo-PreCheckLabmda
+
+  SNSMessageLambda:
+    Type: String
+    Default: rsdemo-SNSMessageLambda
+
+Resources:
+  DashboardStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-DashboardStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Pre check",
+          "States": {
+            "Pre check": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${PreCheckLabmda}",
+                "Payload": {
+                  "bucket.$": "$.Bucket",
+                  "prefix.$": "$.S3Prefix",
+                  "file_list": [
+                   "system/ingest-data/item/",
+                   "system/ingest-data/action/",
+                   "system/ingest-data/user/"
+                  ]
+                }
+              },
+              "ResultSelector": {
+                "Payload.$": "$.Payload"
+              },
+              "ResultPath": "$.Precheck",
+              "Next": "Run processing"
+            },
+            "Run processing": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "ImageName": "news-dashboard",
+                  "ContainerArguments.$": "States.Array('--s3_bucket', '$.Bucket', '--s3_key_prefix', '$.S3Prefix')",
+                  "InstanceType": "ml.m5.xlarge"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-SMProcessingStepFunc",
+                "Name.$": "States.Format('dashborad{}', $$.Execution.Name)"
+              },
+              "End": true
+            }
+          }
+        }
+
+
+  DashboardScheduledRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: rsdemo-News-DashboardScheduledRule
+      ScheduleExpression: "cron(0/15 * ? * MON-FRI *)"
+      State: "ENABLED"
+      Targets:
+        - Arn: !Ref DashboardStepFunc
+          RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+          Id: "TargetDashboardStepFunc"
+          Input: !Sub |
+            {
+              "Bucket": "${Bucket}",
+              "S3Prefix": "${S3Prefix}"
+            }
