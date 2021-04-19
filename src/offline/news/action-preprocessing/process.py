@@ -48,20 +48,26 @@ print(f"bucket:{bucket}, key_prefix:{key_prefix}")
 # input_prefix=recommender-system-news-open-toutiao/system/item-data/raw-input/
 # output_prefix=recommender-system-news-open-toutiao/system/item-data/emr-out/
 
-input_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, key_prefix)
-emr_output_key_prefix = "{}/system/emr/action-preprocessing/output/".format(key_prefix)
-emr_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_output_key_prefix)
+input_action_file = "s3://{}/{}/system/ingest-data/action/".format(bucket, key_prefix)
+emr_action_output_key_prefix = "{}/system/emr/action-preprocessing/output/action".format(key_prefix)
+emr_action_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_action_output_key_prefix)
+output_action_file_key = "{}/system/action-data/action.csv".format(key_prefix)
 
-output_file_key = "{}/system/action-data/action.csv".format(key_prefix)
 
-print("input_file:", input_file)
+input_user_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, key_prefix)
+emr_user_output_key_prefix = "{}/system/emr/action-preprocessing/output/user".format(key_prefix)
+emr_user_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_user_output_key_prefix)
+output_user_file_key = "{}/system/user-data/user.csv".format(key_prefix)
+
+print("input_action_file:", input_action_file)
 with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreate() as spark:
-    # This is needed to save RDDs which is the only way to write nested Dataframes into CSV format
-    # spark.sparkContext._jsc.hadoopConfiguration().set("mapred.output.committer.class",
-    #                                                   "org.apache.hadoop.mapred.FileOutputCommitter")
-    Timer1 = time.time()
+
+    #
+    # process action file
+    #
+    print("start processing action file: {}".format(input_action_file))
     # 52a23654-9dc3-11eb-a364-acde48001122_!_6552302645908865543_!_1618455260_!_1_!_0
-    df_input = spark.read.text(input_file)
+    df_input = spark.read.text(input_action_file)
     df_input = df_input.selectExpr("split(value, '_!_') as row").where(
         size(col("row")) > 4).selectExpr("row[0] as user_id",
                                          "row[1] as item_id",
@@ -70,16 +76,42 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
                                          "row[4] as action_value",
                                          )
     df_input.coalesce(1).write.mode("overwrite").option(
-        "header", "false").option("sep", "_!_").csv(emr_output_bucket_key_prefix)
+        "header", "false").option("sep", "_!_").csv(emr_action_output_bucket_key_prefix)
 
-    print("It take {:.2f} minutes to finish".format(
-        (time.time() - Timer1) / 60))
+    #
+    # process user file
+    #
+    print("start processing user file: {}".format(input_user_file))
+    df_user_input = spark.read.text(input_user_file)
+    # 52a23654-9dc3-11eb-a364-acde48001122_!_M_!_47_!_1615956929_!_lyingDove7
+    df_user_input = df_user_input.selectExpr("split(value, '_!_') as row").where(
+        size(col("row")) > 4).selectExpr("row[0] as user_id",
+                                         "row[1] as sex",
+                                         "row[2] as age",
+                                         "row[3] as timestamp",
+                                         "row[4] as name",
+                                         )
+    df_user_input = df_user_input.dropDuplicates(['user_id'])
+    df_user_input.coalesce(1).write.mode("overwrite").option(
+        "header", "false").option("sep", "_!_").csv(emr_user_output_bucket_key_prefix)
 
-emr_output_file_key = list_s3_by_prefix(
+
+emr_action_output_file_key = list_s3_by_prefix(
     bucket,
-    emr_output_key_prefix,
+    emr_action_output_key_prefix,
     lambda key: key.endswith(".csv"))[0]
+print("emr_action_output_file_key:", emr_action_output_file_key)
+s3_copy(bucket, emr_action_output_file_key, output_action_file_key)
+print("output_action_file_key:", output_action_file_key)
 
-print("emr_output_file_key:", emr_output_file_key)
-s3_copy(bucket, emr_output_file_key, output_file_key)
-print("Done! output file:", output_file_key)
+
+emr_user_output_file_key = list_s3_by_prefix(
+    bucket,
+    emr_user_output_bucket_key_prefix,
+    lambda key: key.endswith(".csv"))[0]
+print("emr_user_output_file_key:", emr_user_output_file_key)
+s3_copy(bucket, emr_user_output_file_key, output_user_file_key)
+
+print("output_user_file_key:", output_user_file_key)
+
+print("All done")

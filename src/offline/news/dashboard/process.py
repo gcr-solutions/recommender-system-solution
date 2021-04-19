@@ -1,5 +1,6 @@
 import argparse
 import json
+import time
 
 import boto3
 from pyspark.sql import SparkSession
@@ -236,6 +237,7 @@ with SparkSession.builder.appName("Spark App - item preprocessing").getOrCreate(
     item_static(df_item_input)
     action_static(df_action_input, df_item_input, df_user_input)
 
+static_dict["report_time"] = int(time.time())
 print("static_dict:", static_dict)
 file_name = "dashboard.json"
 with open(file_name, 'w', encoding='utf8') as out:
