@@ -187,6 +187,8 @@ dict_user_portrait = pickle.load(file_to_load)
 print("update user portrait for batch users")
 for user_id, input_item_list in user_click_records.items():
     print("user id {} item list {}".format(user_id, input_item_list))
+    # update click history
+    dict_user_portrait[str(user_id)]['click_sets'] = input_item_list
     for ci in input_item_list:
         update_user_portrait_with_one_click(dict_user_portrait[str(user_id)], str(ci))
 
