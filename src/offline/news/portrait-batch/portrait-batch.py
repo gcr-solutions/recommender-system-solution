@@ -73,9 +73,9 @@ file_name_list = ['action.csv']
 s3_folder = '{}/system/action-data'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
 # # 用户画像数据加载
-# file_name_list = ['portrait.pickle']
-# s3_folder = '{}/feature/recommend-list/portrait'.format(prefix)
-# sync_s3(file_name_list, s3_folder, local_folder)
+file_name_list = ['portrait.pickle']
+s3_folder = '{}/feature/recommend-list/portrait'.format(prefix)
+sync_s3(file_name_list, s3_folder, local_folder)
 # 倒排列表的pickle文件
 file_name_list = ['news_id_news_property_dict.pickle']
 s3_folder = '{}/feature/content/inverted-list/'.format(prefix)

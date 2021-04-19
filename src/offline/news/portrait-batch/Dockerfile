@@ -8,5 +8,5 @@ WORKDIR /opt/ml/processing/input/code/
 
 ADD portrait-batch.py ./
 
-ENTRYPOINT ["python", "/opt/ml/processing/input/code/add-item-user-batch.py"]
+ENTRYPOINT ["python", "/opt/ml/processing/input/code/portrait-batch.py"]
 
