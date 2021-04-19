@@ -63,7 +63,7 @@ prefix = args.prefix
 print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))
 
-meta_file_prefix = "{}/model/meta_files/".format(prefix)
+meta_file_prefix = "{}/model/meta_files".format(prefix)
 
 out_s3_path = "s3://{}/{}/feature/content/inverted-list".format(bucket, prefix)
 
@@ -119,6 +119,8 @@ env = {
     'DATA_INPUT_KEY': data_input_key,
     'TRAIN_OUTPUT_KEY': train_output_key
 }
+
+print("Kg env: {}".format(env))
 graph = kg.Kg(env)  # Where we keep the model when it's loaded
 model = encoding.encoding(graph, env)
 
