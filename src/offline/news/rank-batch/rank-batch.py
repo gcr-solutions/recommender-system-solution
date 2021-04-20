@@ -100,7 +100,7 @@ recall_batch_result = pickle.load(file_to_load)
 file_to_load = open("info/portrait.pickle", "rb")
 user_portrait = pickle.load(file_to_load)
 file_to_load = open("info/news_id_news_property_dict.pickle", "rb")
-dict_id_property_pddf = pd.read_pickle(file_to_load)
+dict_id_property_pddf = pickle.load(file_to_load)
 print("length of news_id v.s. news_property {}".format(len(dict_id_property_pddf)))
 # 解压缩dkn模型
 tar = tarfile.open("info/model.tar.gz", "r")
