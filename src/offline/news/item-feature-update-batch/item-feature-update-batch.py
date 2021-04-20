@@ -172,3 +172,10 @@ with open(file_name, "wb") as f:
 write_to_s3(file_name,
             bucket,
             '{}/model/rank/content/dkn_embedding_latest/dkn_entity_embedding.npy'.format(prefix))
+
+file_name = 'info/news_id_news_feature_dict.pickle'
+out_file = open(file_name, 'wb')
+pickle.dump(news_id_news_feature_dict, out_file)
+out_file.close()
+# s3_url = S3Uploader.upload(file_name, out_s3_path)
+s3_url = write_to_s3(file_name, bucket, '{}/feature/content/inverted-list/news_id_news_feature_dict.pickle'.format(prefix))
