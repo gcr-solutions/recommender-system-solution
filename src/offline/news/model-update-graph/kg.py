@@ -215,7 +215,7 @@ class Kg:
         generate_context_name = self.kg_folder+'_'+method+'_context.npy'
         generate_relation_name = self.kg_folder+'_'+method+'_relation.npy'
         upload_entity_name = "dkn_entity_embedding.npy"
-        upload_context_name = "dkn_context_embeddings.npy"
+        upload_context_name = "dkn_context_embedding.npy"
         upload_relation_name = "dkn_relation_embedding.npy"
         kg_embedding = np.load(os.path.join(self.train_output_key, generate_entity_name))
         context_embeddings = np.zeros([kg_embedding.shape[0], hidden_dim], dtype="float32")

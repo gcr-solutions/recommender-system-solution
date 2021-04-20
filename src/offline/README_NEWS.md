@@ -80,14 +80,20 @@
         1. 输入：
             1. item.csv
             2. complete_dkn_word_embedding.npy
+            3. kg_dbpedia.txt
+            4. entities_dbpedia.dict
+            5. relations_dbpedia.dict
         2. 输出：
             1. news_id_news_feature_dict.pickle
             2. dkn_word_embedding.npy
-            3. kg_check_list.pickle
+            3. kg_dbpedia_train.txt
+            4. entities_dbpedia_train.dict
+            5. relations_dbpedia_train.dict
     4. model-update-graph: 1. 清理出训练数据；2.训练行为模型
         1. 输入：
-            1. action.csv
-            2. news_id_news_feature_dict.pickle
+            1. kg_dbpedia_train.txt
+            2. entities_dbpedia_train.dict
+            3. relations_dbpedia_train.dict
         2. 输出：
             1. dkn_entity_embedding.npy
             2. dkn_context_embedding.npy
