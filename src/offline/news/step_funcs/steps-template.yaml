@@ -106,11 +106,11 @@ Resources:
               "Type": "Task",
               "Next": "Train model"
             },
-            "Train model": {
+            "Train dkn model": {
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-content-train:latest",
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-dkn:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
