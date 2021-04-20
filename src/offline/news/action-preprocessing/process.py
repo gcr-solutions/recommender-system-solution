@@ -221,7 +221,7 @@ print("output_user_file_key:", output_user_file_key)
 
 train_action_key = list_s3_by_prefix(
     bucket,
-    emr_s3_train_output,
+    emr_train_action_key_prefix,
     lambda key: key.endswith(".csv"))[0]
 print("train_action_key:", train_action_key)
 s3_copy(bucket, train_action_key, output_action_train_key)
@@ -229,7 +229,7 @@ print("output_action_train_key:", output_action_train_key)
 
 val_action_key = list_s3_by_prefix(
     bucket,
-    emr_s3_val_output,
+    emr_val_action_key_prefix,
     lambda key: key.endswith(".csv"))[0]
 print("val_action_key:", val_action_key)
 s3_copy(bucket, val_action_key, output_action_val_key)
