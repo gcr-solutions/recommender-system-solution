@@ -1,4 +1,5 @@
 import argparse
+import os
 import pickle
 
 import boto3
@@ -31,6 +32,7 @@ def s3_copy(bucket, from_key, to_key):
     print("copied s3://{}/{} to s3://{}/{}".format(bucket, from_key, bucket, to_key))
 
 
+s3client = boto3.client('s3')
 parser = argparse.ArgumentParser(description="app inputs and outputs")
 parser.add_argument("--bucket", type=str, help="s3 bucket")
 parser.add_argument("--prefix", type=str,
@@ -54,41 +56,48 @@ emr_action_output_key_prefix = "{}/system/emr/action-preprocessing/output/action
 emr_action_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_action_output_key_prefix)
 output_action_file_key = "{}/system/action-data/action.csv".format(prefix)
 
-train_action_key_prefix = "{}/system/emr/action-preprocessing/output/train_action".format(prefix)
-s3_train_action_key_prefix = "s3://{}/{}".format(bucket, train_action_key_prefix)
+emr_train_action_key_prefix = "{}/system/emr/action-preprocessing/output/train_action".format(prefix)
+emr_s3_train_output = "s3://{}/{}".format(bucket, emr_train_action_key_prefix)
 output_action_train_key = "{}/system/action-data/action_train.csv".format(prefix)
 
-val_action_key_prefix = "{}/system/emr/action-preprocessing/output/val_action".format(prefix)
-s3_val_action_key_prefix = "s3://{}/{}".format(bucket, train_action_key_prefix)
+emr_val_action_key_prefix = "{}/system/emr/action-preprocessing/output/val_action".format(prefix)
+emr_s3_val_output = "s3://{}/{}".format(bucket, emr_val_action_key_prefix)
 output_action_val_key = "{}/system/action-data/action_val.csv".format(prefix)
 
 input_user_file = "s3://{}/{}/system/ingest-data/user/".format(bucket, prefix)
 emr_user_output_key_prefix = "{}/system/emr/action-preprocessing/output/user".format(prefix)
 emr_user_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_user_output_key_prefix)
 output_user_file_key = "{}/system/user-data/user.csv".format(prefix)
-
-feat_dict_file = "s3://{}/{}/feature/content/inverted-list/news_id_news_feature_dict.pickle".format(bucket, prefix)
-
 print("input_action_file:", input_action_file)
+
+def sync_s3(file_name_list, s3_folder, local_folder):
+    for f in file_name_list:
+        print("file preparation: download src key {} to dst key {}".format(os.path.join(
+            s3_folder, f), os.path.join(local_folder, f)))
+        s3client.download_file(bucket, os.path.join(
+            s3_folder, f), os.path.join(local_folder, f))
 
 
 def gen_train_dataset(train_dataset_join):
-    train_clicked_entities_words_arr_df = train_dataset_join.where(col("action_value") == 1).orderBy("timestamp_num") \
-        .groupby('user_id').agg(expr("collect_list(entities) as entities_arr"),
-                                expr("collect_list(entities) as words_arr"))
+    train_clicked_entities_words_arr_df = train_dataset_join.where(col("action_value") == "1") \
+        .orderBy("timestamp_num") \
+        .groupby('user_id') \
+        .agg(expr("collect_list(entities) as entities_arr"),
+             expr("collect_list(entities) as words_arr"))
+    train_entities_words_df = train_clicked_entities_words_arr_df \
+        .withColumn("clicked_entities",
+                    array_join(col('entities_arr'), "-")) \
+        .withColumn("clicked_words",
+                    array_join(col('words_arr'), "-")) \
+        .drop("entities_arr") \
+        .drop("words_arr")
 
-    train_entities_words_df = train_clicked_entities_words_arr_df.withColumn("clicked_entities",
-                                                                             array_join(col('entities_arr'), "-")) \
-        .withColumn("clicked_words", array_join(col('words_arr'), "-")).drop("entities_arr").drop("words_arr")
-
-    # "user_id”, “news_words”, “news_entities”, “isclick”,
-    # “clicked_words”, “clicked_entities”, “news_id”, ‘time_stamp’)
-
-    train_dataset_final = train_dataset_join.join(train_entities_words_df, on=["user_id"]).select(
+    train_dataset_final = train_dataset_join \
+        .join(train_entities_words_df, on=["user_id"]) \
+        .select(
         "user_id", "words", "entities",
         "action_value", "clicked_words",
         "clicked_entities", "item_id", "timestamp")
-
     return train_dataset_final
 
 
@@ -105,7 +114,14 @@ def load_feature_dict(feat_dict_file):
     return f_list
 
 
-feat_list = load_feature_dict(feat_dict_file)
+local_folder = 'info'
+if not os.path.exists(local_folder):
+    os.makedirs(local_folder)
+files_to_load = ["news_id_news_feature_dict.pickle"]
+sync_s3(files_to_load,
+        "{}/feature/content/inverted-list/".format(prefix),
+        local_folder)
+feat_list = load_feature_dict(os.path.join(local_folder, "news_id_news_feature_dict.pickle"))
 print("feat_list len:{}".format(len(feat_list)))
 
 with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreate() as spark:
@@ -120,7 +136,7 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
                                          "row[1] as item_id",
                                          "row[2] as timestamp",
                                          "row[3] as action_type",
-                                         "row[4] as action_value",
+                                         "cast(row[4] as string) as action_value",
                                          )
     df_action_input.cache()
     df_action_input.coalesce(1).write.mode("overwrite").option(
@@ -152,17 +168,22 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
     train_dataset_join = train_dataset.join(df_feat, on=['item_id'])
     train_dataset_final = gen_train_dataset(train_dataset_join)
     train_dataset_final.coalesce(1).write.mode("overwrite").option(
-        "header", "false").option("sep", "\t").csv(s3_train_action_key_prefix)
+        "header", "false").option("sep", "\t").csv(emr_s3_train_output)
 
     # gen val dataset
 
     df_action_full = df_action_rank
     df_action_full_join = df_action_full.join(df_feat, on=['item_id'])
-    val_user_df = val_dataset.select("user_id")
+    val_user_df = val_dataset.select("user_id").dropDuplicates(["user_id"])
     val_dataset_full = df_action_full_join.join(val_user_df, on=["user_id"])
-    val_dataset_final = gen_train_dataset(val_dataset_full)
+    val_dataset_clicked = gen_train_dataset(val_dataset_full).drop("action_value")
+    val_dataset_final = val_dataset.join(val_dataset_clicked, on=['item_id', 'user_id', 'timestamp']).select(
+        "user_id", "words", "entities",
+        "action_value", "clicked_words",
+        "clicked_entities", "item_id", "timestamp")
+
     val_dataset_final.coalesce(1).write.mode("overwrite").option(
-        "header", "false").option("sep", "\t").csv(s3_val_action_key_prefix)
+        "header", "false").option("sep", "\t").csv(emr_s3_val_output)
 
     #
     # process user file
@@ -198,23 +219,20 @@ s3_copy(bucket, emr_user_output_file_key, output_user_file_key)
 
 print("output_user_file_key:", output_user_file_key)
 
-
 train_action_key = list_s3_by_prefix(
     bucket,
-    train_action_key_prefix,
+    emr_s3_train_output,
     lambda key: key.endswith(".csv"))[0]
 print("train_action_key:", train_action_key)
 s3_copy(bucket, train_action_key, output_action_train_key)
 print("output_action_train_key:", output_action_train_key)
 
-
 val_action_key = list_s3_by_prefix(
     bucket,
-    val_action_key_prefix,
+    emr_s3_val_output,
     lambda key: key.endswith(".csv"))[0]
-print("train_action_key:", train_action_key)
+print("val_action_key:", val_action_key)
 s3_copy(bucket, val_action_key, output_action_val_key)
 print("output_action_val_key:", output_action_val_key)
-
 
 print("All done")
