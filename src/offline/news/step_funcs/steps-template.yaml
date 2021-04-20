@@ -76,71 +76,6 @@ Resources:
           }
         }
 
-  # model/rank/action/dkn/latest/model.tar.gz
-  TrainModelStepFunc:
-    Type: AWS::StepFunctions::StateMachine
-    Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
-      StateMachineName: rsdemo-News-TrainModelStepFunc
-      DefinitionString: !Sub |
-        {
-          "StartAt": "Pre check",
-          "States": {
-            "Pre check": {
-              "Parameters": {
-                "FunctionName": "${PreCheckLabmda}",
-                "Payload": {
-                  "bucket": "${Bucket}",
-                  "prefix": "${S3Prefix}",
-                  "file_list": [
-                    "system/action-data/action.csv",
-                    "model/meta_files/kg_dbpedia.txt",
-                    "model/meta_files/entities_dbpedia.dict",
-                    "model/meta_files/relations_dbpedia.dict",
-                    "model/meta_files/entity_industry.txt",
-                    "model/meta_files/vocab.json"
-                  ]
-                }
-              },
-              "Resource": "arn:aws:states:::lambda:invoke",
-              "Type": "Task",
-              "Next": "Train model"
-            },
-            "Train dkn model": {
-              "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
-              "Parameters": {
-                "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-dkn:latest",
-                  "TrainingInputMode": "File",
-                  "MetricDefinitions": [
-                    {
-                      "Name": "average loss",
-                      "Regex": "average loss: (.*)"
-                    }
-                  ]
-                },
-                "OutputDataConfig": {
-                  "S3OutputPath": "s3://${Bucket}/${S3Prefix}/model/rank/action/dkn/"
-                },
-                "StoppingCondition": {
-                  "MaxRuntimeInSeconds": 86400
-                },
-                "ResourceConfig": {
-                  "InstanceCount": 1,
-                  "InstanceType": "ml.p2.xlarge",
-                  "VolumeSizeInGB": 5
-                },
-                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
-                "HyperParameters": {
-                },
-                "TrainingJobName.$": "States.Format('Ntrain-{}', $$.Execution.Name)"
-              },
-              "Type": "Task",
-              "End": true
-            }
-          }
-        }
-
 
   ActionPreprocessingStepFunc:
     Type: AWS::StepFunctions::StateMachine
@@ -643,7 +578,12 @@ Resources:
             }
           }
         }
-  # news-item-feature-update-batch
+
+
+  ########################################################################################
+  # Training step funcs
+  ########################################################################################
+
   ModelUpdateGraphStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -677,21 +617,107 @@ Resources:
                 "Payload.$": "$.Payload"
               },
               "ResultPath": "$.Precheck",
-              "Next": "Run processing"
+              "Next": "Train graph model"
             },
-            "Run processing": {
-              "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+            "Train graph model": {
+              "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
-                "Input": {
-                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "ImageName": "news-model-update-graph",
-                  "ContainerArguments.$": "States.Array('--bucket', $.Bucket, '--prefix', $.S3Prefix)",
-                  "InstanceType": "ml.m5.xlarge"
+                "AlgorithmSpecification": {
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-graph:latest",
+                  "TrainingInputMode": "File",
+                  "MetricDefinitions": [
+                    {
+                      "Name": "average loss",
+                      "Regex": "average loss: (.*)"
+                    }
+                  ]
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-SMProcessingStepFunc",
-                "Name.$": "States.Format('Nmodelgraph{}', $.Precheck.Payload.UID)"
+                "OutputDataConfig": {
+                  "S3OutputPath": "s3://${Bucket}/${S3Prefix}/model/rank/content/dkn_embedding/"
+                },
+                "StoppingCondition": {
+                  "MaxRuntimeInSeconds": 86400
+                },
+                "ResourceConfig": {
+                  "InstanceCount": 1,
+                  "InstanceType": "ml.p2.xlarge",
+                  "VolumeSizeInGB": 5
+                },
+                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
+                "HyperParameters": {
+                   "bucket.$": "$.Bucket",
+                   "prefix.$": "$.S3Prefix"
+                },
+                "TrainingJobName.$": "States.Format('Nmodelgraph-{}', $$.Execution.Name)"
               },
+              "Type": "Task",
+              "End": true
+            }
+          }
+        }
+
+  # model/rank/action/dkn/latest/model.tar.gz
+  ModelUpdateDKNStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-ModelUpdateDKNStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Pre check",
+          "States": {
+            "Pre check": {
+              "Parameters": {
+                "FunctionName": "${PreCheckLabmda}",
+                "Payload": {
+                  "bucket": "${Bucket}",
+                  "prefix": "${S3Prefix}",
+                  "file_list": [
+                    "system/action-data/action.csv",
+                    "model/meta_files/kg_dbpedia.txt",
+                    "model/meta_files/entities_dbpedia.dict",
+                    "model/meta_files/relations_dbpedia.dict",
+                    "model/meta_files/entity_industry.txt",
+                    "model/meta_files/vocab.json"
+                  ]
+                }
+              },
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Type": "Task",
+              "Next": "Train dkn model"
+            },
+            "Train dkn model": {
+              "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+              "Parameters": {
+                "AlgorithmSpecification": {
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-dkn:latest",
+                  "TrainingInputMode": "File",
+                  "MetricDefinitions": [
+                    {
+                      "Name": "average loss",
+                      "Regex": "average loss: (.*)"
+                    }
+                  ]
+                },
+                "OutputDataConfig": {
+                  "S3OutputPath": "s3://${Bucket}/${S3Prefix}/model/rank/action/dkn/"
+                },
+                "StoppingCondition": {
+                  "MaxRuntimeInSeconds": 86400
+                },
+                "ResourceConfig": {
+                  "InstanceCount": 1,
+                  "InstanceType": "ml.p2.xlarge",
+                  "VolumeSizeInGB": 5
+                },
+                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
+                "HyperParameters": {
+                   "bucket.$": "$.Bucket",
+                   "prefix.$": "$.S3Prefix"
+                },
+                "TrainingJobName.$": "States.Format('Nmodeldkn-{}', $$.Execution.Name)"
+              },
+              "Type": "Task",
               "End": true
             }
           }

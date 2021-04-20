@@ -12,6 +12,7 @@ import pandas as pd
 # from tqdm import tqdm
 import time
 import argparse
+import json
 import logging
 import re
 # tqdm.pandas()
@@ -49,14 +50,25 @@ def write_str_to_s3(content, bucket, key):
     print("write s3://{}/{}, content={}".format(bucket, key, content))
     s3client.put_object(Body=str(content).encode("utf8"), Bucket=bucket, Key=key, ACL='bucket-owner-full-control')
 
-default_bucket = 'aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887'
-default_prefix = 'sample-data'
-parser = argparse.ArgumentParser()
-parser.add_argument('--bucket', type=str, default=default_bucket)
-parser.add_argument('--prefix', type=str, default=default_prefix)
-args, _ = parser.parse_known_args()
-bucket = args.bucket
-prefix = args.prefix
+
+
+
+
+
+# default_bucket = 'aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887'
+# default_prefix = 'sample-data'
+# parser = argparse.ArgumentParser()
+# parser.add_argument('--bucket', type=str, default=default_bucket)
+# parser.add_argument('--prefix', type=str, default=default_prefix)
+# args, _ = parser.parse_known_args()
+# bucket = args.bucket
+# prefix = args.prefix
+
+param_path = os.path.join('/opt/ml/', 'input/config/hyperparameters.json')
+with open(param_path) as f:
+    hp = json.load(f)
+    bucket = hp['bucket']
+    prefix = hp['prefix']
 
 print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))
