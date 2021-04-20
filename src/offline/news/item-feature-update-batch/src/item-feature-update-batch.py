@@ -69,7 +69,7 @@ local_folder = 'info'
 if not os.path.exists(local_folder):
     os.makedirs(local_folder)
 
-file_name_list = ['complete_dkn_entity_embedding.npy','complete_dkn_word_embedding.npy']
+file_name_list = ['complete_dkn_word_embedding.npy']
 s3_folder = '{}/model/rank/content/dkn_embedding_latest/'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
         
@@ -79,7 +79,6 @@ sync_s3(file_name_list, s3_folder, local_folder)
 
 df_filter_item = pd.read_csv('info/item.csv',sep='_!_',names=['news_id','type_code','type','title','keywords','popularity','new'])
 
-complete_dkn_entity_embed = np.load("info/complete_dkn_entity_embedding.npy")
 complete_dkn_word_embed = np.load("info/complete_dkn_word_embedding.npy")
 
 # prepare model for batch process
