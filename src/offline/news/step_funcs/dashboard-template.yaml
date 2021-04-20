@@ -76,7 +76,7 @@ Resources:
                   "InstanceType": "ml.m5.xlarge"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-SMProcessingStepFunc",
-                "Name.$": "States.Format('dashborad{}', $.Precheck.Payload.UID)"
+                "Name.$": "States.Format('Ndashborad{}', $.Precheck.Payload.UID)"
               },
               "End": true
             }
