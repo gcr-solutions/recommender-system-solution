@@ -30,6 +30,8 @@ echo PARAMETER_OVERRIDES:$PARAMETER_OVERRIDES
 all_stepfuncs=(
 steps
 dashboard
+action-new
+item-new
 )
 
 for name in ${all_stepfuncs[@]};

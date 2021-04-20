@@ -7,13 +7,6 @@ Description: >
 
 
 Parameters:
-  Bucket:
-    Type: String
-
-  S3Prefix:
-    Type: String
-    Default: sample-data
-
   StepFuncAndLambdaRoleName:
     Type: String
     Default: rsdemo-LambdaAndStepFuncsRole
@@ -82,6 +75,72 @@ Resources:
             }
           }
         }
+
+  # model/rank/action/dkn/latest/model.tar.gz
+  TrainModelStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-TrainModelStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Pre check",
+          "States": {
+            "Pre check": {
+              "Parameters": {
+                "FunctionName": "${PreCheckLabmda}",
+                "Payload": {
+                  "bucket": "${Bucket}",
+                  "prefix": "${S3Prefix}",
+                  "file_list": [
+                    "system/action-data/action.csv",
+                    "model/meta_files/kg_dbpedia.txt",
+                    "model/meta_files/entities_dbpedia.dict",
+                    "model/meta_files/relations_dbpedia.dict",
+                    "model/meta_files/entity_industry.txt",
+                    "model/meta_files/vocab.json"
+                  ]
+                }
+              },
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Type": "Task",
+              "Next": "Train model"
+            },
+            "Train model": {
+              "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+              "Parameters": {
+                "AlgorithmSpecification": {
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-content-train:latest",
+                  "TrainingInputMode": "File",
+                  "MetricDefinitions": [
+                    {
+                      "Name": "average loss",
+                      "Regex": "average loss: (.*)"
+                    }
+                  ]
+                },
+                "OutputDataConfig": {
+                  "S3OutputPath": "s3://${Bucket}/${S3Prefix}/model/rank/action/dkn/"
+                },
+                "StoppingCondition": {
+                  "MaxRuntimeInSeconds": 86400
+                },
+                "ResourceConfig": {
+                  "InstanceCount": 1,
+                  "InstanceType": "ml.p2.xlarge",
+                  "VolumeSizeInGB": 5
+                },
+                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
+                "HyperParameters": {
+                },
+                "TrainingJobName.$": "States.Format('Ntrain-{}', $$.Execution.Name)"
+              },
+              "Type": "Task",
+              "End": true
+            }
+          }
+        }
+
 
   ActionPreprocessingStepFunc:
     Type: AWS::StepFunctions::StateMachine

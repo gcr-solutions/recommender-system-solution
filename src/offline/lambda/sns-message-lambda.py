@@ -72,10 +72,11 @@ def do_handler(event, context):
     print("sns_topic_arn='{}'".format(sns_topic_arn))
     print("online_loader_url='{}'".format(online_loader_url))
 
-    bucket = event['bucket']
+    bucket = event['Bucket']
+    s3_key_prefix = event('S3Prefix')
+
     message_type = event['message_type']
     file_types = event['file_type'].split(",")
-    s3_key_prefix = event('s3_key_prefix')
 
     if s3_key_prefix.endswith('/'):
         s3_key_prefix = s3_key_prefix[:-1]
