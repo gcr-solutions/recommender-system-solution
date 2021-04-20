@@ -3,8 +3,10 @@
     1. action-preprocessing: 清理用户数据
         1. 输入：
             1. s3上的用户数据
+            2. news_id_news_feature.pickle
         2. 输出：
             1. action.csv
+            2. train/val for dkn model
     2. inverted-list: 生成倒排索引（包含热度分析）
         1. 输入：
             1. item.csv
@@ -89,7 +91,7 @@
             3. kg_dbpedia_train.txt
             4. entities_dbpedia_train.dict
             5. relations_dbpedia_train.dict
-    4. model-update-graph: 1. 清理出训练数据；2.训练行为模型
+    4. model-update-graph: 1. 新的物品上线；针对新的实体训练embedding
         1. 输入：
             1. kg_dbpedia_train.txt
             2. entities_dbpedia_train.dict
@@ -97,9 +99,9 @@
         2. 输出：
             1. dkn_entity_embedding.npy
             2. dkn_context_embedding.npy
-    5. model-update-dkn: 1. 清理出训练数据；2.训练行为模型
+    5. model-update-dkn: 1.训练行为模型
         1. 输入：
-            1. action.csv
+            1. train/val for dkn model
             2. news_id_news_feature_dict.pickle
             3. dkn_entity_embedding.npy
             4. dkn_word_embedding.npy
@@ -112,11 +114,13 @@
     1. action-preprocessing: 清理用户数据
         1. 输入：
             1. s3上的用户数据
+            2. news_id_news_feature.pickle
         2. 输出：
             1. action.csv
-    2. model-update-dkn: 1. 清理出训练数据；2.训练行为模型
+            2. train/val for dkn model
+    2. model-update-dkn: 1.训练行为模型
         1. 输入：
-            1. action.csv
+            1. train/val for dkn model
             2. news_id_news_feature_dict.pickle
             3. dkn_entity_embedding.npy
             4. dkn_word_embedding.npy
