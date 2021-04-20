@@ -101,7 +101,10 @@
         1. 输入：
             1. action.csv
             2. news_id_news_feature_dict.pickle
-            3. user_portrait.pickle
+            3. dkn_entity_embedding.npy
+            4. dkn_word_embedding.npy
+            5. dkn_context_embedding.npy
+            6. user_portrait.pickle
         2. 输出：
             1. model.tar.gz
 
@@ -118,6 +121,7 @@
             3. dkn_entity_embedding.npy
             4. dkn_word_embedding.npy
             5. dkn_context_embedding.npy
+            6. user_portrait.pickle
         2. 输出：
             1. model.tar.gz
 
