@@ -289,7 +289,9 @@ def parse_from_key(from_key, default_bucket, prefix):
             print("parse_from_key return: bucket: {}, from_key: {}".format(input_bucket, input_from_key))
             return input_bucket, input_from_key
     else:
-        return default_bucket, prefix + from_key
+        if prefix.endswith("/"):
+            prefix = prefix[:-1]
+        return default_bucket, "{}/{}".format(prefix, from_key)
 
 
 def s3_base_name(key):
