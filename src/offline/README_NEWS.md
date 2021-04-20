@@ -79,14 +79,19 @@
     3. item-feature-update-batch: 物品feature更新(1.check current kg；2.update feature)
         1. 输入：
             1. item.csv
-            2. ub_item_embeddings.npy
-            3. raw_embed_user_mapping.pickle
-            4. raw_embed_item_mapping.pickle
-            5. kg_check_list.pickle
+            2. complete_dkn_word_embedding.npy
         2. 输出：
             1. news_id_news_feature_dict.pickle
-            2. kg_check_list.pickle
-    4. model-update-dkn: 更新action模型的权重（因为item的feature发生变化）
+            2. dkn_word_embedding.npy
+            3. kg_check_list.pickle
+    4. model-update-graph: 1. 清理出训练数据；2.训练行为模型
+        1. 输入：
+            1. action.csv
+            2. news_id_news_feature_dict.pickle
+        2. 输出：
+            1. dkn_entity_embedding.npy
+            2. dkn_context_embedding.npy
+    5. model-update-dkn: 1. 清理出训练数据；2.训练行为模型
         1. 输入：
             1. action.csv
             2. news_id_news_feature_dict.pickle
@@ -100,13 +105,13 @@
             1. s3上的用户数据
         2. 输出：
             1. action.csv
-    2. model-update-dkn: 更新DKN模型
+    2. model-update-dkn: 1. 清理出训练数据；2.训练行为模型
         1. 输入：
             1. action.csv
             2. news_id_news_feature_dict.pickle
-            3. raw_embed_user_mapping.pickle
-            4. raw_embed_item_mapping.pickle
-            5. user_embeddings.h5
+            3. dkn_entity_embedding.npy
+            4. dkn_word_embedding.npy
+            5. dkn_context_embedding.npy
         2. 输出：
             1. model.tar.gz
 
