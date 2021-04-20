@@ -28,8 +28,6 @@ SM_ROLE=arn:aws:iam::${account_id}:role/service-role/RSSMRole
 
 echo "JOB_NAME: ${JOB_NAME}"
 
-echo "JOB_NAME: ${JOB_NAME}"
-
 bucket=aws-gcr-rs-sol-workshop-${AWS_REGION}-${account_id}
 prefix=sample-data
 

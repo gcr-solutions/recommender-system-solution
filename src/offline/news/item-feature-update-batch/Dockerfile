@@ -1,12 +1,16 @@
-FROM python:3.6-slim-buster
+ARG REGISTRY_URI
+FROM ${REGISTRY_URI}/tensorflow-training:1.15.3-cpu-py37-ubuntu18.04
 
-RUN pip3 install pandas==1.1.5 scikit-learn numpy boto3 s3fs tqdm
 ENV PYTHONUNBUFFERED=TRUE
 
+RUN apt-get update && apt-get install -y && pip3 install --upgrade pip
+
+COPY requirements.txt .
+RUN pip3 install --user -r requirements.txt
 
 WORKDIR /opt/ml/processing/input/code/
 
-ADD item-feature-update-batch.py ./
+ADD src/*.py ./
 
 ENTRYPOINT ["python", "/opt/ml/processing/input/code/item-feature-update-batch.py"]
 

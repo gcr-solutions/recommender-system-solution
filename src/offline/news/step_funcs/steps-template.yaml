@@ -530,3 +530,57 @@ Resources:
             }
           }
         }
+
+  # news-item-feature-update-batch
+  ItemFeatureUpdateBatchStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      StateMachineName: rsdemo-News-ItemFeatureUpdateBatchStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "Pre check",
+          "States": {
+            "Pre check": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${PreCheckLabmda}",
+                "Payload": {
+                  "bucket.$": "$.Bucket",
+                  "prefix.$": "$.S3Prefix",
+                  "file_list": [
+                     "model/rank/content/dkn_embedding_latest/complete_dkn_entity_embedding.npy",
+                     "model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy",
+                     "system/item-data/item.csv",
+                     "model/meta_files/kg_dbpedia.txt",
+                     "model/meta_files/entities_dbpedia.dict",
+                     "model/meta_files/relations_dbpedia.dict",
+                     "model/meta_files/entity_industry.txt",
+                     "model/meta_files/vocab.json"
+                  ]
+                }
+              },
+              "ResultSelector": {
+                "Payload.$": "$.Payload"
+              },
+              "ResultPath": "$.Precheck",
+              "Next": "Run processing"
+            },
+            "Run processing": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "ImageName": "news-item-feature-update-batch",
+                  "ContainerArguments.$": "States.Array('--bucket', $.Bucket, '--prefix', $.S3Prefix)",
+                  "InstanceType": "ml.m5.xlarge"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-SMProcessingStepFunc",
+                "Name.$": "States.Format('itemfeat{}', $.Precheck.Payload.UID)"
+              },
+              "End": true
+            }
+          }
+        }
