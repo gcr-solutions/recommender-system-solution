@@ -88,10 +88,13 @@ def s3_key_exists(bucket, key):
 def do_handler(event, context):
     bucket = event['bucket']
     prefix = event.get("prefix", "")
+    if prefix.endswith("/"):
+        prefix = prefix[:-1]
+
     file_list = event['file_list']
     for file_path in file_list:
         if prefix:
-            key = prefix + file_path
+            key = "{}/{}".format(prefix, file_path)
         else:
             key = file_path
 
