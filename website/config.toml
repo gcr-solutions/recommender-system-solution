@@ -8,10 +8,11 @@ defaultContentLanguage = "en"
 
 [languages]
   [languages.en]
+    languageName = "English"
     weight = 1
   [languages.cn]
-    title = "Mon blogue"
-    weight = 2
+    languageName = "中文"
+    weight = 2   
 
 [params]
   disableLandingPageButton = true

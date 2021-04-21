@@ -1,6 +1,9 @@
 ---
-title: Setup GCR Recommender System 
-weight: 30
+title: Setup GCR Recommender System and Customer System
+weight: 10
 ---
 
-GCR Recommender System
+In this module, we will setup **GCR Recommender System** and **Customer Simulation System**
+
+## API Overview
+TODO
