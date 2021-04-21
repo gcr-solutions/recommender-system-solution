@@ -9,11 +9,15 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets y
 
 1. Go to [AWS Cloud9 Console](https://us-east-2.console.aws.amazon.com/cloud9)
 2. Click "Create environment" button to create an cloud9 environment
+
+![Create Cloud9 Environment](/images/cloudf9-create-env.png)
+
 3. Name it **rs-workshop**, click Next
 4. Take all default values and click **Create environment**
 
 When it comes up, the cloud9 console environment should looks like below:
-<picture>
+
+![Create Cloud9 Environment](/images/cloud9-terminal.png)
 
 ## NAWS patch install[Optional]
 1. Install boto3
