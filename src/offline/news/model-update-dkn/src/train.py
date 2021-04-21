@@ -77,16 +77,17 @@ if os.path.exists(param_path):
     print("load param from {}".format(param_path))
     with open(param_path) as f:
         hp = json.load(f)
+        print("hyperparameters:", hp)
         bucket = hp['bucket']
         prefix = hp['prefix']
     # parser.add_argument('--bucket', type=str)
     # parser.add_argument('--prefix', type=str)
     parser.add_argument('--model_dir', type=str,
-                        default=os.environ.get('SM_MODEL_DIR', ''))
+                        default=os.environ.get('SM_MODEL_DIR', '/opt/ml/model'))
     parser.add_argument('--training_dir', type=str,
-                        default=os.environ.get('SM_CHANNEL_TRAINING', ''))
+                        default=os.environ.get('SM_CHANNEL_TRAINING', '/opt/ml/input/data/training'))
     parser.add_argument('--validation_dir', type=str,
-                        default=os.environ.get('SM_CHANNEL_VALIDATION', ''))
+                        default=os.environ.get('SM_CHANNEL_VALIDATION', '/opt/ml/input/data/validation'))
     args, _ = parser.parse_known_args()
     # bucket = args.bucket
     # prefix = args.prefix
