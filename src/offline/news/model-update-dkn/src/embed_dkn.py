@@ -626,9 +626,9 @@ def input_fn(filenames='', channel='training', batch_size=32, num_epochs=1, perf
     batch_features_index, batch_labels = iterator.get_next()
     
     word_embs = np.load(os.path.join(raw_dir,'word_embeddings_' + str(FLAGS.word_dim) + '.npy'))
-    entity_embs = np.load(os.path.join(raw_dir,raw_dir,'entity_embeddings_' +
+    entity_embs = np.load(os.path.join(raw_dir,'entity_embeddings_' +
                                       FLAGS.KGE + '_' + str(FLAGS.entity_dim) + '.npy'))
-    context_embs = np.load(os.path.join(raw_dir,raw_dir,'context_embeddings_' +
+    context_embs = np.load(os.path.join(raw_dir,'context_embeddings_' +
                                       FLAGS.KGE + '_' + str(FLAGS.entity_dim) + '.npy'))
 
     word_embeddings = tf.Variable(word_embs, trainable=False, dtype=np.float32, name='word')

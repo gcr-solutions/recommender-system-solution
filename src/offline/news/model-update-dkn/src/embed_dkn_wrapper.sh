@@ -20,12 +20,20 @@ python embed_dkn.py \
 --checkpointPath ./model-update-dkn/temp/  \
 --servable_model_dir ./model-update-dkn/model_complete/
 
+if [[ $? -ne 0 ]]; then
+  echo "error!!!"
+  exit 1
+fi
+
 # ./model-update-dkn/model_complete/temp-1618990972/saved_model.pb
 model_file=$(ls ./model-update-dkn/model_complete/*/saved_model.pb)
 mkdir -p ./model-update-dkn/model_latest
 mv $model_file ./model-update-dkn/model_latest
 cd ./model-update-dkn/model_latest
 tar -cvf model.tar saved_model.pb
+if [[ $? -ne 0 ]]; then
+  echo "error!!!"
+  exit 1
+fi
 gzip model.tar
-
 echo "Done ==== python embed_dkn.py ===="
