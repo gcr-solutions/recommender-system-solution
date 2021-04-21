@@ -70,6 +70,7 @@ emr_user_output_bucket_key_prefix = "s3://{}/{}".format(bucket, emr_user_output_
 output_user_file_key = "{}/system/user-data/user.csv".format(prefix)
 print("input_action_file:", input_action_file)
 
+
 def sync_s3(file_name_list, s3_folder, local_folder):
     for f in file_name_list:
         print("file preparation: download src key {} to dst key {}".format(os.path.join(
@@ -114,6 +115,18 @@ def load_feature_dict(feat_dict_file):
     return f_list
 
 
+def load_user_dict(user_id_map_file):
+    print("load_user_dict: {}".format(user_id_map_file))
+    with open(user_id_map_file, 'rb') as input:
+        feat_dict = pickle.load(input)
+    u_list = []
+    for k, v in feat_dict.items():
+        user_id = str(k)
+        user_id_for_ml = str(v)
+        u_list.append([user_id, user_id_for_ml])
+    return u_list
+
+
 local_folder = 'info'
 if not os.path.exists(local_folder):
     os.makedirs(local_folder)
@@ -123,6 +136,13 @@ sync_s3(files_to_load,
         local_folder)
 feat_list = load_feature_dict(os.path.join(local_folder, "news_id_news_feature_dict.pickle"))
 print("feat_list len:{}".format(len(feat_list)))
+
+# s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/feature/action/raw_embed_user_mapping.pickle
+files_to_load = ["raw_embed_user_mapping.pickle"]
+sync_s3(files_to_load,
+        "{}/feature/action/".format(prefix),
+        local_folder)
+user_list = load_user_dict(os.path.join(local_folder, "raw_embed_user_mapping.pickle"))
 
 with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreate() as spark:
     #
@@ -151,7 +171,13 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
         StructField('entities', StringType(), False),
         StructField('words', StringType(), False)
     ])
+    user_map_schema = StructType([
+        StructField('user_id', StringType(), False),
+        StructField('ml_user_id', StringType(), False),
+    ])
+
     df_feat = spark.createDataFrame(feat_list, schema)
+    df_user_id_map = spark.createDataFrame(user_list, user_map_schema)
 
     window_spec = Window.orderBy('timestamp')
     timestamp_num = row_number().over(window_spec)
@@ -167,6 +193,11 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
     #
     train_dataset_join = train_dataset.join(df_feat, on=['item_id'])
     train_dataset_final = gen_train_dataset(train_dataset_join)
+    train_dataset_final = train_dataset_final.join(df_user_id_map, on=["user_id"]).select(
+        "ml_user_id", "words", "entities",
+        "action_value", "clicked_words",
+        "clicked_entities", "item_id", "timestamp"
+    )
     train_dataset_final.coalesce(1).write.mode("overwrite").option(
         "header", "false").option("sep", "\t").csv(emr_s3_train_output)
 
@@ -181,6 +212,12 @@ with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreat
         "user_id", "words", "entities",
         "action_value", "clicked_words",
         "clicked_entities", "item_id", "timestamp")
+
+    val_dataset_final = val_dataset_final.join(df_user_id_map, on=["user_id"]).select(
+        "ml_user_id", "words", "entities",
+        "action_value", "clicked_words",
+        "clicked_entities", "item_id", "timestamp"
+    )
 
     val_dataset_final.coalesce(1).write.mode("overwrite").option(
         "header", "false").option("sep", "\t").csv(emr_s3_val_output)
