@@ -98,8 +98,8 @@ if os.path.exists(param_path):
     print("training_dir: {}".format(training_dir))
     print("validation_dir: {}".format(validation_dir))
 
-    print(f"files in {training_dir}:", glob.glob(training_dir))
-    print(f"files in {validation_dir}:", glob.glob(validation_dir))
+    print(f"files in {training_dir}:", glob.glob(os.path.join(training_dir, '*')))
+    print(f"files in {validation_dir}:", glob.glob(os.path.join(validation_dir, '*')))
 
 else:
     # running processing job
