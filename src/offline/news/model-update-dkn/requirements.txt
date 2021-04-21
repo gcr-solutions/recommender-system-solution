@@ -7,8 +7,8 @@ glob2
 numpy
 faiss-cpu
 tqdm
-#dgl
-#dglke
+# dgl
+# dglke
 pandarallel
 gunicorn
 # fastHan
