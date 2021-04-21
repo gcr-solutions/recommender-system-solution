@@ -14,6 +14,7 @@ import argparse
 import json
 import logging
 import re
+import dglke
 # tqdm.pandas()
 # pandarallel.initialize(progress_bar=True)
 # bucket = os.environ.get("BUCKET_NAME", " ")
@@ -22,6 +23,7 @@ import re
 # logger.setLevel(logging.INFO)
 # tqdm_notebook().pandas()
 s3client = boto3.client('s3')
+print("dglke version:", dglke.__version__)
 
 ########################################
 # 从s3同步数据
