@@ -34,5 +34,5 @@ prefix=sample-data
 aws sagemaker --profile ${AWS_PROFILE} --region  ${AWS_REGION}   create-processing-job \
 --processing-job-name ${JOB_NAME} \
 --role-arn ${SM_ROLE} \
---processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.m5.xlarge,VolumeSizeInGB=5}' \
+--processing-resources 'ClusterConfig={InstanceCount=1,InstanceType=ml.p2.xlarge,VolumeSizeInGB=5}' \
 --app-specification "ImageUri=${IMAGEURI},ContainerArguments=--bucket,${bucket},--prefix,${prefix}"

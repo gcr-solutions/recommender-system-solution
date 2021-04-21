@@ -5,11 +5,11 @@ ENV PYTHONUNBUFFERED=TRUE
 
 RUN apt-get update && apt-get install -y && pip3 install --upgrade pip
 
-COPY requirements.txt .
-RUN pip3 install --user -r requirements.txt
-RUN pip3 install --no-cache-dir dgl==0.4.3.post2
-RUN pip3 install -e git+http://git@github.com/xiaotinghe/fastHan.git'#egg=fastHan'
-RUN pip3 install -e git+http://git@github.com/xiaotinghe/dgl-ke.git'#egg=dglke&subdirectory=python'
+#COPY requirements.txt .
+#RUN pip3 install --user -r requirements.txt
+#RUN pip3 install --no-cache-dir dgl==0.4.3.post2
+#RUN pip3 install -e git+http://git@github.com/xiaotinghe/fastHan.git'#egg=fastHan'
+#RUN pip3 install -e git+http://git@github.com/xiaotinghe/dgl-ke.git'#egg=dglke&subdirectory=python'
 
 WORKDIR /opt/ml/code/
 
