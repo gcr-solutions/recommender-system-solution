@@ -113,6 +113,9 @@ print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))
 
 model_s3_key = "{}/model/rank/action/dkn/latest/model.tar.gz".format(prefix)
+print("curdir:",  os.curdir)
+os.chdir("/opt/ml/code/")
+print("curdir:",  os.curdir)
 
 local_folder = 'info'
 if not os.path.exists(local_folder):
@@ -137,11 +140,11 @@ file_name_list = ['action_val.csv']
 s3_folder = '{}/system/action-data/'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
 
-shutil.copy("info/dkn_entity_embedding.npy", "train/entity_embeddings_TransE_128.npy")
-shutil.copy("info/dkn_context_embedding.npy", "train/context_embeddings_TransE_128.npy")
-shutil.copy("info/dkn_word_embedding.npy", "train/word_embeddings_300.npy")
+shutil.copy("info/dkn_entity_embedding.npy", "model-update-dkn/train/entity_embeddings_TransE_128.npy")
+shutil.copy("info/dkn_context_embedding.npy", "model-update-dkn/train/context_embeddings_TransE_128.npy")
+shutil.copy("info/dkn_word_embedding.npy", "model-update-dkn/train/word_embeddings_300.npy")
 
-run_script("embed_dkn_wrapper.sh")
+run_script("./embed_dkn_wrapper.sh")
 model_file = "./model-update-dkn/model_latest/model.tar.gz"
 
 if not os.path.exists(model_file):

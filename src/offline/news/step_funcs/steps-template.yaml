@@ -686,6 +686,7 @@ Resources:
               },
               "Resource": "arn:aws:states:::lambda:invoke",
               "Type": "Task",
+              "ResultPath": "$.Precheck",
               "Next": "Train action model"
             },
             "Train action model": {
@@ -710,7 +711,7 @@ Resources:
                         "S3DataDistributionType": "FullyReplicated"
                       }
                     },
-                    "ChannelName": "train"
+                    "ChannelName": "training"
                   },
                   {
                     "DataSource": {
@@ -720,7 +721,7 @@ Resources:
                         "S3DataDistributionType": "FullyReplicated"
                       }
                     },
-                    "ChannelName": "eval"
+                    "ChannelName": "validation"
                   }
                 ],
                 "OutputDataConfig": {
