@@ -70,7 +70,7 @@ sync_s3(file_name_list, s3_folder, local_folder)
 
 df_filter_item = pd.read_csv('info/item.csv',sep='_!_',names=['news_id','type_code','type','title','keywords','popularity','new'])
 
-df_filter_user = pd.read_csv('info/user.csv',sep='_!_',names=['user_id','gender','age','timestamp'])
+df_filter_user = pd.read_csv('info/user.csv',sep='_!_',names=['user_id','gender','age','timestamp','user_name'])
 
 # generate lable encoding/ sparse feature
 lbe = LabelEncoder()
