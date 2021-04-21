@@ -4,6 +4,14 @@ title = "Recommender System Solution"
 theme = "hugo-theme-learn"
 contentDir = "../docs"
 canonifyURLs = true
+defaultContentLanguage = "en"
+
+[languages]
+  [languages.en]
+    weight = 1
+  [languages.cn]
+    title = "Mon blogue"
+    weight = 2
 
 [params]
   disableLandingPageButton = true
