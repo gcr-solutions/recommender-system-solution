@@ -175,17 +175,19 @@ relations_dbpedia_slim = {}
 entities_dbpedia_train = {}
 relations_dbpedia_train = {}
 
+entities_dbpedia_train[0] = '0'
+relations_dbpedia_train[0] = '0'
+
 new_list_kg = []
 
 def analyze_map_hrt(idx, map_dict, raw_content, train_dict):
-    if idx not in map_dict.keys():
-        map_dict[idx] = len(map_dict)
-        filter_content = raw_content[raw_content.e == idx]
-        train_dict[len(map_dict)-1] = filter_content['e_name'].values[0]
-    return map_dict[idx]
-
-n = 0
-limit = 1000
+    # 原始实体从0开始，所以需要归位进行寻找
+    idx_test = idx - 1
+    if idx_test not in map_dict.keys():
+        map_dict[idx_test] = len(map_dict)+1
+        filter_content = raw_content[raw_content.e == idx_test]
+        train_dict[len(map_dict)] = filter_content['e_name'].values[0]
+    return map_dict[idx_test]
 
 for raw_entity, new_idx in map_entities.items():
     entity_id = raw_entity
@@ -204,13 +206,10 @@ for raw_entity, new_idx in map_entities.items():
         kg_row['r'] = map_relation_id
         kg_row['t'] = map_tail_id        
         new_list_kg.append(kg_row)
-    if n > limit:
-        break
-    n = n + 1
 
 kg_dbpedia_slim = pd.DataFrame(new_list_kg)
-
 kg_dbpedia_slim.to_csv(kg_dbpedia_train_path, sep='\t', header=False, index=False)
+
 import csv
 
 with open(entities_dbpedia_train_path, 'w') as f:
