@@ -122,7 +122,7 @@ Resources:
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateGraphStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "ResultPath": "$.ModelUpdateUb",
+              "ResultPath": "$.ModelUpdateGraph",
               "Next": "Item feature update batch"
             },
             "Item feature update batch": {
@@ -137,10 +137,10 @@ Resources:
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemFeatureUpdateBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "Next": "Model update graph Todo",
+              "Next": "Model update dkn",
               "ResultPath": "$.ItemFeatureUpdateBatch"
             },
-            "Model update graph Todo": {
+            "Model update dkn": {
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
               "Parameters": {
@@ -149,11 +149,11 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateGraphStepFunc",
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateDKNStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "Next": "Send notification",
-              "ResultPath": "$.ModelUpdateDeepfm"
+              "ResultPath": "$.ModelUpdateDKN"
             },
             "Send notification": {
               "Type": "Task",

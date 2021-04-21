@@ -633,7 +633,7 @@ Resources:
                   ]
                 },
                 "OutputDataConfig": {
-                  "S3OutputPath": "s3://${Bucket}/${S3Prefix}/model/rank/content/dkn_embedding/"
+                  "S3OutputPath.$": "States.Format('s3://{}/{}/model/rank/content/dkn_embedding/', $.Bucket,  $.S3Prefix)"
                 },
                 "StoppingCondition": {
                   "MaxRuntimeInSeconds": 86400
@@ -670,15 +670,17 @@ Resources:
               "Parameters": {
                 "FunctionName": "${PreCheckLabmda}",
                 "Payload": {
-                  "bucket": "${Bucket}",
-                  "prefix": "${S3Prefix}",
+                  "bucket.$": "$.Bucket",
+                  "prefix.$": "$.S3Prefix",
                   "file_list": [
                     "system/action-data/action.csv",
                     "model/meta_files/kg_dbpedia.txt",
                     "model/meta_files/entities_dbpedia.dict",
                     "model/meta_files/relations_dbpedia.dict",
                     "model/meta_files/entity_industry.txt",
-                    "model/meta_files/vocab.json"
+                    "model/meta_files/vocab.json",
+                    "system/action-data/action_train.csv",
+                    "system/action-data/action_val.csv"
                   ]
                 }
               },
@@ -699,8 +701,30 @@ Resources:
                     }
                   ]
                 },
+                "InputDataConfig": [
+                  {
+                    "DataSource": {
+                      "S3DataSource": {
+                        "S3DataType": "S3Prefix",
+                        "S3Uri.$": "States.Format('s3://{}/{}/system/action-data/action_train.csv', $.Bucket,  $.S3Prefix)",
+                        "S3DataDistributionType": "FullyReplicated"
+                      }
+                    },
+                    "ChannelName": "train"
+                  },
+                  {
+                    "DataSource": {
+                      "S3DataSource": {
+                        "S3DataType": "S3Prefix",
+                        "S3Uri.$": "States.Format('s3://{}/{}/system/action-data/action_val.csv', $.Bucket,  $.S3Prefix)",
+                        "S3DataDistributionType": "FullyReplicated"
+                      }
+                    },
+                    "ChannelName": "eval"
+                  }
+                ],
                 "OutputDataConfig": {
-                  "S3OutputPath": "s3://${Bucket}/${S3Prefix}/model/rank/action/dkn/"
+                  "S3OutputPath.$": "States.Format('s3://{}/{}/model/rank/action/dkn/', $.Bucket,  $.S3Prefix)"
                 },
                 "StoppingCondition": {
                   "MaxRuntimeInSeconds": 86400
@@ -712,8 +736,8 @@ Resources:
                 },
                 "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
                 "HyperParameters": {
-                   "bucket.$": "$.Bucket",
-                   "prefix.$": "$.S3Prefix"
+                  "bucket.$": "$.Bucket",
+                  "prefix.$": "$.S3Prefix"
                 },
                 "TrainingJobName.$": "States.Format('Nmodeldkn-{}', $$.Execution.Name)"
               },
