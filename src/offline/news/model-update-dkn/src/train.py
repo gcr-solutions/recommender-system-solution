@@ -74,14 +74,13 @@ default_prefix = 'sample-data'
 if os.path.exists(param_path):
     # running training job
 
-    # print("load param from {}".format(param_path))
-    # with open(param_path) as f:
-    #     hp = json.load(f)
-    #     bucket = hp['bucket']
-    #     prefix = hp['prefix']
-
-    parser.add_argument('--bucket', type=str)
-    parser.add_argument('--prefix', type=str)
+    print("load param from {}".format(param_path))
+    with open(param_path) as f:
+        hp = json.load(f)
+        bucket = hp['bucket']
+        prefix = hp['prefix']
+    # parser.add_argument('--bucket', type=str)
+    # parser.add_argument('--prefix', type=str)
     parser.add_argument('--model_dir', type=str,
                         default=os.environ.get('SM_MODEL_DIR', ''))
     parser.add_argument('--training_dir', type=str,
@@ -89,8 +88,8 @@ if os.path.exists(param_path):
     parser.add_argument('--validation_dir', type=str,
                         default=os.environ.get('SM_CHANNEL_VALIDATION', ''))
     args, _ = parser.parse_known_args()
-    bucket = args.bucket
-    prefix = args.prefix
+    # bucket = args.bucket
+    # prefix = args.prefix
     model_dir = args.model_dir
     training_dir = args.training_dir
     validation_dir = args.validation_dir

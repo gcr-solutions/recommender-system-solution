@@ -25,8 +25,11 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+echo "python embed_dkn.py successfully"
+
 # ./model-update-dkn/model_complete/temp-1618990972/saved_model.pb
 model_file=$(ls ./model-update-dkn/model_complete/*/saved_model.pb)
+echo $model_file
 mkdir -p ./model-update-dkn/model_latest
 mv $model_file ./model-update-dkn/model_latest
 cd ./model-update-dkn/model_latest
