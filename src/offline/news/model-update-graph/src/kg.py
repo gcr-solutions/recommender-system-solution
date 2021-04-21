@@ -171,7 +171,7 @@ class Kg:
             for k in self.p:
                 f.write(k)
 #     def train(self, output_dir = 'kg_embedding', hidden_dim=128, max_step=320000):
-    def train(self, output_dir = '/opt/ml/model', hidden_dim=128, max_step=320000, method='RotatE', upload_context=True):
+    def train(self, output_dir = '/opt/ml/model', hidden_dim=128, max_step=200, method='RotatE', upload_context=True):
         self.check_parent_dir('.',self.train_output_key)
         dglke_train.main(['--dataset',self.kg_folder,
                   '--model_name', method,

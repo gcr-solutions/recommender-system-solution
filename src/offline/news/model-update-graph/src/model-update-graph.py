@@ -7,7 +7,6 @@ import boto3
 import os
 import numpy as np
 import kg
-import encoding
 import pandas as pd
 # from tqdm import tqdm
 import time
@@ -121,6 +120,6 @@ env = {
 
 print("Kg env: {}".format(env))
 graph = kg.Kg(env)  # Where we keep the model when it's loaded
-model = encoding.encoding(graph, env)
-
-graph.train(max_step=2000)
+# model = encoding.encoding(graph, env)
+graph.train()
+# graph.train(max_step=2000)
