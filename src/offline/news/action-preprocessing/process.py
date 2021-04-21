@@ -122,8 +122,8 @@ def load_user_dict(user_id_map_file):
     u_list = []
     for k, v in feat_dict.items():
         user_id = str(k)
-        user_id_for_ml = str(v)
-        u_list.append([user_id, user_id_for_ml])
+        ml_user_id = str(v)
+        u_list.append([user_id, ml_user_id])
     return u_list
 
 
@@ -143,6 +143,7 @@ sync_s3(files_to_load,
         "{}/feature/action/".format(prefix),
         local_folder)
 user_list = load_user_dict(os.path.join(local_folder, "raw_embed_user_mapping.pickle"))
+print("user_list len:{}".format(len(user_list)))
 
 with SparkSession.builder.appName("Spark App - action preprocessing").getOrCreate() as spark:
     #
