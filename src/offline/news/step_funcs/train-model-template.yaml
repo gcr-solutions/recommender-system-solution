@@ -53,7 +53,7 @@ Resources:
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.ActionProcessing",
-              "Next": "Model update graph"
+              "Next": "Model update (embedding)"
             },
             "Model update (embedding)": {
               "Type": "Task",
@@ -68,7 +68,7 @@ Resources:
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.ModelUpdateEmbedding",
-              "Next": "Model update dkn"
+              "Next": "Model update (action)"
             },
             "Model update (action)": {
               "Type": "Task",

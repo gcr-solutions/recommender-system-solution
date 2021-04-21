@@ -15,7 +15,7 @@ echo "REGION: $REGION"
 AWS_REGION=$REGION
 AWS_PROFILE=$PROFILE
 
-repoName=news-model-update-graph
+repoName=news-model-update-embedding
 tag="latest"
 
 account_id=$(aws --profile ${AWS_PROFILE} sts get-caller-identity --query Account --output text)

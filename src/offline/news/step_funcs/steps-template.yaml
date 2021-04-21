@@ -617,13 +617,13 @@ Resources:
                 "Payload.$": "$.Payload"
               },
               "ResultPath": "$.Precheck",
-              "Next": "Train graph model"
+              "Next": "Train embedding model"
             },
-            "Train graph model": {
+            "Train embedding model": {
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-graph:latest",
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-embedding:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
@@ -686,13 +686,13 @@ Resources:
               },
               "Resource": "arn:aws:states:::lambda:invoke",
               "Type": "Task",
-              "Next": "Train dkn model"
+              "Next": "Train action model"
             },
-            "Train dkn model": {
+            "Train action model": {
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-dkn:latest",
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-action:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
