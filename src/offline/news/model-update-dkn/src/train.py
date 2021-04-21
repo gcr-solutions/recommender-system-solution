@@ -113,9 +113,7 @@ print("bucket={}".format(bucket))
 print("prefix='{}'".format(prefix))
 
 model_s3_key = "{}/model/rank/action/dkn/latest/model.tar.gz".format(prefix)
-print("curdir:",  os.curdir)
 os.chdir("/opt/ml/code/")
-print("curdir:",  os.curdir)
 
 local_folder = 'info'
 if not os.path.exists(local_folder):
