@@ -648,7 +648,7 @@ Resources:
                    "bucket.$": "$.Bucket",
                    "prefix.$": "$.S3Prefix"
                 },
-                "TrainingJobName.$": "States.Format('Ntrainembedding-{}', $$.Execution.Name)"
+                "TrainingJobName.$": "States.Format('Ntrainembedding-{}', $.Precheck.Payload.UID)"
               },
               "Type": "Task",
               "End": true
@@ -739,7 +739,7 @@ Resources:
                   "bucket.$": "$.Bucket",
                   "prefix.$": "$.S3Prefix"
                 },
-                "TrainingJobName.$": "States.Format('Ntrainaction-{}', $$.Execution.Name)"
+                "TrainingJobName.$": "States.Format('Ntrainaction-{}', $.Precheck.Payload.UID)"
               },
               "Type": "Task",
               "End": true
