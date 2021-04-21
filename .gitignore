@@ -150,3 +150,4 @@ python_post.py
 **/.vscode
 
 hack//istio-1*
+t.json

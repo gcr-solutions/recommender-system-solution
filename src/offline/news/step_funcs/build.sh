@@ -32,6 +32,8 @@ steps
 dashboard
 action-new
 item-new
+train-model
+overall
 )
 
 for name in ${all_stepfuncs[@]};

@@ -108,9 +108,9 @@ Resources:
                 }
               ],
               "ResultPath": null,
-              "Next": "Model update graph"
+              "Next": "Model update (embedding)"
             },
-            "Model update graph": {
+            "Model update (embedding)": {
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
               "Parameters": {
@@ -119,10 +119,10 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateGraphStepFunc",
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateEmbeddingStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "ResultPath": "$.ModelUpdateGraph",
+              "ResultPath": "$.ModelUpdateEmbedding",
               "Next": "Item feature update batch"
             },
             "Item feature update batch": {
@@ -137,10 +137,10 @@ Resources:
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemFeatureUpdateBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "Next": "Model update dkn",
+              "Next": "Model update (action)",
               "ResultPath": "$.ItemFeatureUpdateBatch"
             },
-            "Model update dkn": {
+            "Model update (action)": {
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
               "Parameters": {
@@ -149,11 +149,11 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateDKNStepFunc",
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateActionStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "Next": "Send notification",
-              "ResultPath": "$.ModelUpdateDKN"
+              "ResultPath": "$.ModelUpdateAction"
             },
             "Send notification": {
               "Type": "Task",

@@ -584,11 +584,11 @@ Resources:
   # Training step funcs
   ########################################################################################
 
-  ModelUpdateGraphStepFunc:
+  ModelUpdateEmbeddingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
       RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
-      StateMachineName: rsdemo-News-ModelUpdateGraphStepFunc
+      StateMachineName: rsdemo-News-ModelUpdateEmbeddingStepFunc
       DefinitionString: !Sub |
         {
           "StartAt": "Pre check",
@@ -657,11 +657,11 @@ Resources:
         }
 
   # model/rank/action/dkn/latest/model.tar.gz
-  ModelUpdateDKNStepFunc:
+  ModelUpdateActionStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
       RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
-      StateMachineName: rsdemo-News-ModelUpdateDKNStepFunc
+      StateMachineName: rsdemo-News-ModelUpdateActionStepFunc
       DefinitionString: !Sub |
         {
           "StartAt": "Pre check",
