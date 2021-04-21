@@ -18,15 +18,20 @@ When it comes up, the cloud9 console environment should looks like below:
 ## NAWS patch install[Optional]
 1. Install boto3
 
-    sudo pip3 install boto3
+```bash
+sudo pip3 install boto3
+```
 
 2. Download install_chronicled.py script
 
-    sudo wget https://cc-s3-files.s3-ap-southeast-1.amazonaws.com/install_chronicled.py
+```bash
+sudo wget https://cc-s3-files.s3-ap-southeast-1.amazonaws.com/install_chronicled.py
+```
 
 3. install chronicled
 
-    sudo python install_chronicled.py
-
+```bash
+sudo python install_chronicled.py
+```
 
 
