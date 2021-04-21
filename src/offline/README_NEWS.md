@@ -4,6 +4,7 @@
         1. 输入：
             1. s3上的用户数据
             2. news_id_news_feature.pickle
+            3. raw_embed_user_mapping.pickle
         2. 输出：
             1. action.csv
             2. train/val for dkn model
@@ -115,6 +116,7 @@
         1. 输入：
             1. s3上的用户数据
             2. news_id_news_feature.pickle
+            3. raw_embed_user_mapping.pickle
         2. 输出：
             1. action.csv
             2. train/val for dkn model
