@@ -11,9 +11,9 @@ RUN pip3 install --no-cache-dir dgl==0.4.3.post2
 RUN pip3 install -e git+http://git@github.com/xiaotinghe/fastHan.git'#egg=fastHan'
 RUN pip3 install -e git+http://git@github.com/xiaotinghe/dgl-ke.git'#egg=dglke&subdirectory=python'
 
-WORKDIR /opt/ml/processing/input/code/
+WORKDIR /opt/ml/code/
 
-ADD src/*.py ./
+ADD src/* ./
 
-ENTRYPOINT ["python", "/opt/ml/processing/input/code/model-update-graph.py"]
+ENTRYPOINT ["python", "/opt/ml/code/train.py"]
 
