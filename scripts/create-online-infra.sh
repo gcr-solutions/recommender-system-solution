@@ -67,9 +67,9 @@ do
 done
 
 # 3.7 Apply & create PV/StorageClass
-EFS_ID='abcds'
 cd ../manifests/efs
-sed -i .bak 's/FILE_SYSTEM_ID/'"$EFS_ID"'/' csi-env.yaml
+cp csi-env.yaml csi-env.yaml.bak
+sed -i 's/FILE_SYSTEM_ID/'"$EFS_ID"'/g' csi-env.yaml
 cat csi-env.yaml
 kustomize build . |kubectl apply -f - 
 mv csi-env.yaml.bak csi-env.yaml
