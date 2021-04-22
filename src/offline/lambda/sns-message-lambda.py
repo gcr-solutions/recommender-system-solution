@@ -124,6 +124,10 @@ def do_handler(event, context):
                 message['file_path'], src_name))
             file_names.append(src_name)
 
+        if len(file_names) == 0:
+            print("ignore {}".format(file_type))
+            continue
+
         sns_client.publish(
             TopicArn=sns_topic_arn,
             Message=json.dumps(message),
