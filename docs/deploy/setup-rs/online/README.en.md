@@ -8,6 +8,8 @@ In this step, you will setup Recommender System Online part, including creating 
 ## Create infrastructure
 
 
+
+
 ## Deploy recommender system online services
 
 
