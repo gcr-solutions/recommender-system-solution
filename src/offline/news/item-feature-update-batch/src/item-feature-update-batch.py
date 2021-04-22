@@ -1,19 +1,17 @@
 from __future__ import print_function
-import os
-import sys
-import math
-import pickle
-import boto3
-import os
-import numpy as np
-import kg
-import encoding
-import pandas as pd
+
 # from tqdm import tqdm
-import time
 import argparse
-import logging
-import re
+import os
+import pickle
+
+import boto3
+import numpy as np
+import pandas as pd
+
+import encoding
+import kg
+
 # tqdm.pandas()
 # pandarallel.initialize(progress_bar=True)
 # bucket = os.environ.get("BUCKET_NAME", " ")
@@ -22,6 +20,7 @@ import re
 # logger.setLevel(logging.INFO)
 # tqdm_notebook().pandas()
 s3client = boto3.client('s3')
+
 
 ########################################
 # 从s3同步数据
@@ -47,9 +46,11 @@ def write_to_s3(filename, bucket, key):
             Body=f
         )
 
+
 def write_str_to_s3(content, bucket, key):
     print("write s3://{}/{}, content={}".format(bucket, key, content))
     s3client.put_object(Body=str(content).encode("utf8"), Bucket=bucket, Key=key, ACL='bucket-owner-full-control')
+
 
 default_bucket = 'aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887'
 default_prefix = 'sample-data'
@@ -72,12 +73,23 @@ if not os.path.exists(local_folder):
 file_name_list = ['complete_dkn_word_embedding.npy']
 s3_folder = '{}/model/rank/content/dkn_embedding_latest/'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
-        
+
 file_name_list = ['item.csv']
 s3_folder = '{}/system/item-data'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
 
-df_filter_item = pd.read_csv('info/item.csv',sep='_!_',names=['news_id','type_code','type','title','keywords','popularity','new'])
+
+file_name_list = ['entities_dbpedia.dict', 'relations_dbpedia.dict',
+              'kg_dbpedia.txt', 'entities_dbpedia_train.dict',
+              'relations_dbpedia_train.dict', 'kg_dbpedia_train.dict',
+              ]
+s3_folder = '{}/model/meta_files/'.format(prefix)
+for file in file_name_list:
+    sync_s3(file, s3_folder, local_folder)
+
+
+df_filter_item = pd.read_csv('info/item.csv', sep='_!_',
+                             names=['news_id', 'type_code', 'type', 'title', 'keywords', 'popularity', 'new'])
 
 complete_dkn_word_embed = np.load("info/complete_dkn_word_embedding.npy")
 
@@ -129,14 +141,16 @@ news_id_news_feature_dict = {}
 map_words = {}
 map_entities = {}
 
+
 def analyze_map(raw_idx, map_dict, filter_idx):
     for idx in raw_idx:
         if idx == 0:
             filter_idx.append(0)
         else:
             if idx not in map_dict.keys():
-                map_dict[idx] = len(map_dict)+1
+                map_dict[idx] = len(map_dict) + 1
             filter_idx.append(map_dict[idx])
+
 
 for row in df_filter_item.iterrows():
     item_row = row[1]
@@ -156,16 +170,17 @@ for row in df_filter_item.iterrows():
     news_id_news_feature_dict[program_id] = program_dict
 
 # clean data for graph train
-path = '/home/ec2-user/workplace/recommender-system-solution/src/offline/news/item-feature-update-batch/aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/meta_files'
-entities_dbpedia = os.path.join(path,'entities_dbpedia.dict')
-relations_dbpedia = os.path.join(path,'relations_dbpedia.dict')
+# path = '/home/ec2-user/workplace/recommender-system-solution/src/offline/news/item-feature-update-batch/aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/meta_files'
+path = "info"
+entities_dbpedia = os.path.join(path, 'entities_dbpedia.dict')
+relations_dbpedia = os.path.join(path, 'relations_dbpedia.dict')
 kg_dbpedia = os.path.join(path, 'kg_dbpedia.txt')
-entities_dbpedia_train_path = os.path.join(path,'entities_dbpedia_train.dict')
-relations_dbpedia_train_path = os.path.join(path,'relations_dbpedia_train.dict')
+entities_dbpedia_train_path = os.path.join(path, 'entities_dbpedia_train.dict')
+relations_dbpedia_train_path = os.path.join(path, 'relations_dbpedia_train.dict')
 kg_dbpedia_train_path = os.path.join(path, 'kg_dbpedia_train.txt')
-entities_dbpedia_f = pd.read_csv(entities_dbpedia, header=None, names=['e','e_name'])
-relations_dbpedia_f = pd.read_csv(relations_dbpedia, header=None, names=['e','e_name']) 
-kg_dbpedia_f = pd.read_csv(kg_dbpedia, delimiter='\t', header=None, names=['h','r','t'])
+entities_dbpedia_f = pd.read_csv(entities_dbpedia, header=None, names=['e', 'e_name'])
+relations_dbpedia_f = pd.read_csv(relations_dbpedia, header=None, names=['e', 'e_name'])
+kg_dbpedia_f = pd.read_csv(kg_dbpedia, delimiter='\t', header=None, names=['h', 'r', 't'])
 
 # map_entities -> train_entites
 # constrcut from entites:
@@ -180,50 +195,51 @@ relations_dbpedia_train[0] = '0'
 
 new_list_kg = []
 
+
 def analyze_map_hrt(idx, map_dict, raw_content, train_dict):
     # 原始实体从0开始，所以需要归位进行寻找
     idx_test = idx - 1
     if idx_test not in map_dict.keys():
-        map_dict[idx_test] = len(map_dict)+1
+        map_dict[idx_test] = len(map_dict) + 1
         filter_content = raw_content[raw_content.e == idx_test]
         train_dict[len(map_dict)] = filter_content['e_name'].values[0]
     return map_dict[idx_test]
 
+
 for raw_entity, new_idx in map_entities.items():
     entity_id = raw_entity
     map_head_id = analyze_map_hrt(entity_id, entities_dbpedia_slim, entities_dbpedia_f, entities_dbpedia_train)
-    
+
     kg_found_pd = kg_dbpedia_f[kg_dbpedia_f.h == entity_id]
-#     print(kg_found_pd)
+    #     print(kg_found_pd)
     for found_row in kg_found_pd.iterrows():
         relation_id = found_row[1]['r']
         tail_id = found_row[1]['t']
-        map_relation_id = analyze_map_hrt(relation_id, relations_dbpedia_slim, relations_dbpedia_f, relations_dbpedia_train)
+        map_relation_id = analyze_map_hrt(relation_id, relations_dbpedia_slim, relations_dbpedia_f,
+                                          relations_dbpedia_train)
         map_tail_id = analyze_map_hrt(tail_id, entities_dbpedia_slim, entities_dbpedia_f, entities_dbpedia_train)
         # create new kg : h-r-t
         kg_row = {}
         kg_row['h'] = map_head_id
         kg_row['r'] = map_relation_id
-        kg_row['t'] = map_tail_id        
+        kg_row['t'] = map_tail_id
         new_list_kg.append(kg_row)
 
 kg_dbpedia_slim = pd.DataFrame(new_list_kg)
 kg_dbpedia_slim.to_csv(kg_dbpedia_train_path, sep='\t', header=False, index=False)
 
-import csv
-
 with open(entities_dbpedia_train_path, 'w') as f:
     for key in entities_dbpedia_train.keys():
-        f.write("%s,%s\n"%(key,entities_dbpedia_train[key]))
-        
+        f.write("%s,%s\n" % (key, entities_dbpedia_train[key]))
+
 with open(relations_dbpedia_train_path, 'w') as f:
     for key in relations_dbpedia_train.keys():
-        f.write("%s,%s\n"%(key,relations_dbpedia_train[key]))
+        f.write("%s,%s\n" % (key, relations_dbpedia_train[key]))
 
 # slim version
 list_word_embedding = []
-list_word_embedding.append([0]*300)
-for raw_key, map_v in map_words.items(): 
+list_word_embedding.append([0] * 300)
+for raw_key, map_v in map_words.items():
     list_word_embedding.append(complete_dkn_word_embed[raw_key])
 
 file_name = 'info/dkn_word_embedding.npy'
@@ -251,4 +267,5 @@ out_file = open(file_name, 'wb')
 pickle.dump(news_id_news_feature_dict, out_file)
 out_file.close()
 # s3_url = S3Uploader.upload(file_name, out_s3_path)
-s3_url = write_to_s3(file_name, bucket, '{}/feature/content/inverted-list/news_id_news_feature_dict.pickle'.format(prefix))
+s3_url = write_to_s3(file_name, bucket,
+                     '{}/feature/content/inverted-list/news_id_news_feature_dict.pickle'.format(prefix))
