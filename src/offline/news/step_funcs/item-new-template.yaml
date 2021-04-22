@@ -161,7 +161,7 @@ Resources:
               "Parameters": {
                 "FunctionName": "${SNSMessageLambda}",
                 "Payload": {
-                  "file_type": "action-new",
+                  "file_type": "item-new",
                   "message_type": "news",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
