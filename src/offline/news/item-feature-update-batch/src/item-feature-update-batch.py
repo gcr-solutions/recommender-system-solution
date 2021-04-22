@@ -84,8 +84,7 @@ file_name_list = ['entities_dbpedia.dict', 'relations_dbpedia.dict',
               'relations_dbpedia_train.dict', 'kg_dbpedia_train.dict',
               ]
 s3_folder = '{}/model/meta_files/'.format(prefix)
-for file in file_name_list:
-    sync_s3(file, s3_folder, local_folder)
+sync_s3(file_name_list, s3_folder, local_folder)
 
 
 df_filter_item = pd.read_csv('info/item.csv', sep='_!_',
