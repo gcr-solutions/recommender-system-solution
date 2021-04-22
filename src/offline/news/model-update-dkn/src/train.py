@@ -129,9 +129,10 @@ for local_folder in [train_local_folder, val_local_folder, 'info']:
 
 
 # dkn模型文件下载
+local_folder = "info"
 file_name_list = ['dkn_entity_embedding.npy', 'dkn_context_embedding.npy', 'dkn_word_embedding.npy']
 s3_folder = '{}/model/rank/content/dkn_embedding_latest/'.format(prefix)
-sync_s3(file_name_list, 'info', local_folder)
+sync_s3(file_name_list, s3_folder, local_folder)
 shutil.move("info/dkn_entity_embedding.npy", "model-update-dkn/train/entity_embeddings_TransE_128.npy")
 shutil.move("info/dkn_context_embedding.npy", "model-update-dkn/train/context_embeddings_TransE_128.npy")
 shutil.move("info/dkn_word_embedding.npy", "model-update-dkn/train/word_embeddings_300.npy")
