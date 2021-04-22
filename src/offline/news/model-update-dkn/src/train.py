@@ -1,22 +1,15 @@
 from __future__ import print_function
 
-import glob
-import os
-import sys
-import math
-import pickle
-import boto3
-import os
-import numpy as np
-import pandas as pd
 # from tqdm import tqdm
-import time
 import argparse
-import logging
-import re
+import glob
+import json
+import os
 import shutil
 import subprocess
-import json
+
+import boto3
+
 # tqdm.pandas()
 # pandarallel.initialize(progress_bar=True)
 # bucket = os.environ.get("BUCKET_NAME", " ")
@@ -27,6 +20,7 @@ import json
 
 
 s3client = boto3.client('s3')
+
 
 ########################################
 # 从s3同步数据
@@ -52,9 +46,11 @@ def write_to_s3(filename, bucket, key):
             Body=f
         )
 
+
 def write_str_to_s3(content, bucket, key):
     print("write s3://{}/{}, content={}".format(bucket, key, content))
     s3client.put_object(Body=str(content).encode("utf8"), Bucket=bucket, Key=key, ACL='bucket-owner-full-control')
+
 
 def run_script(script):
     print("run_script: '{}'".format(script))
@@ -65,9 +61,13 @@ def run_script(script):
     if re_code != 0:
         raise Exception(out_msg)
 
+
 param_path = os.path.join('/opt/ml/', 'input/config/hyperparameters.json')
 parser = argparse.ArgumentParser()
-model_dir = ''
+model_dir = None
+training_dir = None
+validation_dir = None
+
 default_bucket = 'aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887'
 default_prefix = 'sample-data'
 
@@ -122,24 +122,25 @@ local_folder = 'info'
 if not os.path.exists(local_folder):
     os.makedirs(local_folder)
 # dkn模型文件下载
-file_name_list = ['dkn_entity_embedding.npy','dkn_context_embedding.npy','dkn_word_embedding.npy']
+file_name_list = ['dkn_entity_embedding.npy', 'dkn_context_embedding.npy', 'dkn_word_embedding.npy']
 s3_folder = '{}/model/rank/content/dkn_embedding_latest/'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
 
-local_folder = 'model-update-dkn/train'
-if not os.path.exists(local_folder):
-    os.makedirs(local_folder)
-file_name_list = ['action_train.csv']
-# s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/system/action-data/action_train.csv
-s3_folder = '{}/system/action-data/'.format(prefix)
-sync_s3(file_name_list, s3_folder, local_folder)
+for local_folder in ['model-update-dkn/train', 'model-update-dkn/val']:
+    if not os.path.exists(local_folder):
+        os.makedirs(local_folder)
 
-local_folder = 'model-update-dkn/val'
-if not os.path.exists(local_folder):
-    os.makedirs(local_folder)
-file_name_list = ['action_val.csv']
-s3_folder = '{}/system/action-data/'.format(prefix)
-sync_s3(file_name_list, s3_folder, local_folder)
+if training_dir and validation_dir:
+    print("copy training/val files to ./model-update-dkn/")
+    shutil.copy(os.path.join(training_dir, 'action_train.csv'), "model-update-dkn/train/")
+    shutil.copy(os.path.join(validation_dir, 'action_val.csv'), "model-update-dkn/val/")
+else:
+    file_name_list = ['action_train.csv']
+    s3_folder = '{}/system/action-data/'.format(prefix)
+    sync_s3(file_name_list, s3_folder, 'model-update-dkn/train')
+    file_name_list = ['action_val.csv']
+    s3_folder = '{}/system/action-data/'.format(prefix)
+    sync_s3(file_name_list, s3_folder, 'model-update-dkn/val')
 
 shutil.copy("info/dkn_entity_embedding.npy", "model-update-dkn/train/entity_embeddings_TransE_128.npy")
 shutil.copy("info/dkn_context_embedding.npy", "model-update-dkn/train/context_embeddings_TransE_128.npy")
@@ -156,12 +157,3 @@ write_to_s3(model_file, bucket, model_s3_key)
 if model_dir:
     print("copy file {} to {}".format(model_file, model_dir))
     shutil.copyfile(model_file, os.path.join(model_dir, "model.tar.gz"))
-
-#
-# !python embed_dkn.py --learning_rate 0.0001 --loss_weight 1.0 --max_click_history 16 --num_epochs 1 --use_entity True --use_context 0 --max_title_length 16 --entity_dim 128 --word_dim 300 --batch_size 128 --perform_shuffle 1 --data_dir /home/ec2-user/workplace/recommender-system-solution/src/offline/news/model-update-dkn --checkpointPath /home/ec2-user/workplace/recommender-system-solution/src/offline/news/model-update-dkn/temp/ --servable_model_dir /home/ec2-user/workplace/recommender-system-solution/src/offline/news/model-update-dkn/model_complete/
-
-# !aws s3 cp s3://gcr-rs-ops-ap-southeast-1-522244679887/news-open/model/rank/content/dkn_embedding_latest/dkn_context_embedding.npy s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/rank/content/dkn_embedding_latest/dkn_context_embedding.npy --acl bucket-owner-full-control
-# !aws s3 cp s3://gcr-rs-ops-ap-southeast-1-522244679887/news-open/model/rank/content/dkn_embedding_latest/dkn_entity_embedding.npy s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/rank/content/dkn_embedding_latest/dkn_entity_embedding.npy --acl bucket-owner-full-control
-# !aws s3 cp s3://gcr-rs-ops-ap-southeast-1-522244679887/news-open/model/rank/content/dkn_embedding_latest/dkn_word_embedding.npy s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/rank/content/dkn_embedding_latest/dkn_word_embedding.npy --acl bucket-owner-full-control
-# !aws s3 cp s3://gcr-rs-ops-ap-southeast-1-522244679887/news-open/model/rank/action/dkn/latest/model.tar.gz s3://aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887/sample-data/model/rank/action/dkn/latest/model.tar.gz --acl bucket-owner-full-control
-
