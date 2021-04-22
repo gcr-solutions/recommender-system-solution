@@ -118,31 +118,29 @@ print("prefix='{}'".format(prefix))
 model_s3_key = "{}/model/rank/action/dkn/latest/model.tar.gz".format(prefix)
 os.chdir("/opt/ml/code/")
 
-local_folder = 'info'
-if not os.path.exists(local_folder):
-    os.makedirs(local_folder)
-# dkn模型文件下载
-file_name_list = ['dkn_entity_embedding.npy', 'dkn_context_embedding.npy', 'dkn_word_embedding.npy']
-s3_folder = '{}/model/rank/content/dkn_embedding_latest/'.format(prefix)
-sync_s3(file_name_list, s3_folder, local_folder)
-
-shutil.copy("info/dkn_entity_embedding.npy", "model-update-dkn/train/entity_embeddings_TransE_128.npy")
-shutil.copy("info/dkn_context_embedding.npy", "model-update-dkn/train/context_embeddings_TransE_128.npy")
-shutil.copy("info/dkn_word_embedding.npy", "model-update-dkn/train/word_embeddings_300.npy")
-
 train_file_name = 'action_train.csv'
 val_file_name = 'action_val.csv'
 train_local_folder = 'model-update-dkn/train/'
 val_local_folder = 'model-update-dkn/val/'
 
-for local_folder in [train_local_folder, val_local_folder]:
+for local_folder in [train_local_folder, val_local_folder, 'info']:
     if not os.path.exists(local_folder):
         os.makedirs(local_folder)
 
+
+# dkn模型文件下载
+file_name_list = ['dkn_entity_embedding.npy', 'dkn_context_embedding.npy', 'dkn_word_embedding.npy']
+s3_folder = '{}/model/rank/content/dkn_embedding_latest/'.format(prefix)
+sync_s3(file_name_list, 'info', local_folder)
+shutil.move("info/dkn_entity_embedding.npy", "model-update-dkn/train/entity_embeddings_TransE_128.npy")
+shutil.move("info/dkn_context_embedding.npy", "model-update-dkn/train/context_embeddings_TransE_128.npy")
+shutil.move("info/dkn_word_embedding.npy", "model-update-dkn/train/word_embeddings_300.npy")
+
+
 if training_dir and validation_dir:
     print("copy training/val files to ./model-update-dkn/")
-    shutil.copy(os.path.join(training_dir, train_file_name), train_local_folder)
-    shutil.copy(os.path.join(validation_dir, val_file_name), val_local_folder)
+    shutil.move(os.path.join(training_dir, train_file_name), train_local_folder)
+    shutil.move(os.path.join(validation_dir, val_file_name), val_local_folder)
 else:
     file_name_list = [train_file_name]
     s3_folder = '{}/system/action-data/'.format(prefix)
