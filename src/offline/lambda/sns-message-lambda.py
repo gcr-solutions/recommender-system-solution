@@ -85,7 +85,7 @@ def do_handler(event, context):
         bucket, s3_key_prefix)
     print("bucket_and_prefix={}".format(bucket_and_prefix))
 
-    msg_dict = get_message_dict(message_type)
+    msg_dict = get_message_dict(bucket_and_prefix, message_type)
 
     msg_file_types = []
 
