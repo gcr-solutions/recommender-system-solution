@@ -25,18 +25,30 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-echo "python embed_dkn.py successfully"
+echo "run 'python embed_dkn.py' successfully"
+
+ls ./model-update-dkn/model_complete/*/*
 
 # ./model-update-dkn/model_complete/temp-1618990972/saved_model.pb
 model_file=$(ls ./model-update-dkn/model_complete/*/saved_model.pb)
 echo $model_file
+model_dir_name=$(dirname ${model_file})
 mkdir -p ./model-update-dkn/model_latest
-mv $model_file ./model-update-dkn/model_latest
+mv ${model_dir_name}/* ./model-update-dkn/model_latest/
 cd ./model-update-dkn/model_latest
-tar -cvf model.tar saved_model.pb
+echo "files in ./model-update-dkn/model_latest/"
+ls -l
+tar -cvf ../model.tar *
 if [[ $? -ne 0 ]]; then
   echo "error!!!"
   exit 1
 fi
+mv ../model.tar .
 gzip model.tar
+
+if [[ $? -ne 0 ]]; then
+  echo "error!!!"
+  exit 1
+fi
+
 echo "Done ==== python embed_dkn.py ===="
