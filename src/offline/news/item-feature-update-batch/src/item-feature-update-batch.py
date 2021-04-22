@@ -78,14 +78,12 @@ file_name_list = ['item.csv']
 s3_folder = '{}/system/item-data'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
 
-
 file_name_list = ['entities_dbpedia.dict', 'relations_dbpedia.dict',
               'kg_dbpedia.txt', 'entities_dbpedia_train.dict',
-              'relations_dbpedia_train.dict', 'kg_dbpedia_train.dict',
+              'relations_dbpedia_train.dict', 'kg_dbpedia_train.txt',
               ]
 s3_folder = '{}/model/meta_files/'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
-
 
 df_filter_item = pd.read_csv('info/item.csv', sep='_!_',
                              names=['news_id', 'type_code', 'type', 'title', 'keywords', 'popularity', 'new'])
