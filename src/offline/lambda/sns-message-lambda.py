@@ -73,7 +73,7 @@ def do_handler(event, context):
     print("online_loader_url='{}'".format(online_loader_url))
 
     bucket = event['Bucket']
-    s3_key_prefix = event('S3Prefix')
+    s3_key_prefix = event['S3Prefix']
 
     message_type = event['message_type']
     file_types = event['file_type'].split(",")
@@ -88,30 +88,19 @@ def do_handler(event, context):
     msg_dict = get_message_dict(message_type)
 
     msg_file_types = []
-    if message_type == 'movie':
-        for file_type in file_types:
-            if file_type == "action-new":
-                msg_file_types.extend(["inverted-list"])
-            elif file_type == "train-model":
-                msg_file_types.extend(
-                    ["action-model", "embeddings", "vector-index"])
-            elif file_type == "item-new":
-                msg_file_types.extend(
-                    ["inverted-list", "embeddings", "vector-index", "action-model"])
-            else:
-                msg_file_types.append(file_type)
-    elif message_type == 'news':
-        for file_type in file_types:
-            if file_type == "action-new":
-                msg_file_types.extend(["action-model"])
-            elif file_type == "knowledge-mapping":
-                msg_file_types.extend(
-                    ["action-model", "embeddings", "vector-index", "action-model"])
-            elif file_type == "item-new":
-                msg_file_types.extend(
-                    ["inverted-list", "embeddings", "vector-index"])
-            else:
-                msg_file_types.append(file_type)
+
+    for file_type in file_types:
+        if file_type == "action-new":
+            msg_file_types.extend(["inverted-list"])
+        elif file_type == "train-model":
+            msg_file_types.extend(
+                ["action-model", "embeddings", "vector-index"])
+        elif file_type == "item-new":
+            msg_file_types.extend(
+                ["inverted-list", "embeddings", "vector-index", "action-model"])
+        else:
+            msg_file_types.append(file_type)
+
 
     print("msg_file_types: {}".format(msg_file_types))
 
@@ -129,7 +118,7 @@ def do_handler(event, context):
             "file_name": file_names
         }
 
-        for s3_file in message_type[file_type]:
+        for s3_file in msg_dict[file_type]:
             src_key = "/".join(s3_file.split("/")[3:])
             src_name = src_key.split("/")[-1]
             s3_copy(bucket, bucket, src_key, "{}{}".format(
@@ -238,29 +227,58 @@ def get_message_dict(bucket_and_prefix, message_type):
 
     news_msg_dict = {
         "inverted-list": [
-            "{}/feature/content/inverted-list/news_id_news_title_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/news_id_news_type_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/news_type_news_ids_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/news_id_keywords_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/keywords_news_ids_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/news_id_word_ids_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/news_id_entity_ids_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/word_id_news_ids_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/entity_id_news_ids_dict.pickle".format(bucket_and_prefix),
-            "{}/feature/content/inverted-list/news_id_keywords_tfidf_dict.pickle".format(bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_entities_news_ids_dict.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_news_feature_dict.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_id_news_property_dict.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_keywords_news_ids_dict.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_type_news_ids_dict.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/content/inverted-list/news_words_news_ids_dict.pickle".format(
+                bucket_and_prefix),
+
+            # "{}/feature/content/inverted-list/recall_config.pickle".format(
+            #     bucket_and_prefix),
+
+            "{}/feature/action/embed_raw_item_mapping.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/action/embed_raw_user_mapping.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/action/raw_embed_item_mapping.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/action/raw_embed_user_mapping.pickle".format(
+                bucket_and_prefix),
+
+            "{}/model/recall/recall_config.pickle".format(bucket_and_prefix),
+            "{}/model/filter/filter_config.pickle".format(bucket_and_prefix),
+
+            "{}/feature/recommend-list/portrait/portrait.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/recommend-list/news/recall_batch_result.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/recommend-list/news/rank_batch_result.pickle".format(
+                bucket_and_prefix),
+            "{}/feature/recommend-list/news/filter_batch_result.pickle".format(
+                bucket_and_prefix),
         ],
         "vector-index": [
-            "{}/model/recall/vector/news-entity-vector.index".format(bucket_and_prefix),
-            "{}/model/recall/vector/news-word-vector.index".format(bucket_and_prefix),
         ],
         "action-model": [
-            "{}/model/sort/action/dkn/output/news-dkn-train-20210413T180008-10288/output/model.tar.gz".format(
+            "{}/model/rank/action/dkn/latest/model.tar.gz".format(
+                bucket_and_prefix),
+            "{}/model/rank/content/dkn_embedding_latest/dkn_context_embedding.npy".format(
+                bucket_and_prefix),
+            "model/rank/content/dkn_embedding_latest/dkn_entity_embedding.npy".format(
+                bucket_and_prefix),
+            "model/rank/content/dkn_embedding_latest/dkn_relation_embedding.npy".format(
                 bucket_and_prefix),
         ],
         "embeddings": [
-            "{}/model/sort/content/kg/news/gw/dkn_context_embedding.npy".format(bucket_and_prefix),
-            "{}/model/sort/content/kg/news/gw/dkn_entity_embedding.npy".format(bucket_and_prefix),
-            "{}/model/sort/content/kg/news/gw/dkn_relation_embedding.npy".format(bucket_and_prefix),
+            "model/rank/content/dkn_embedding_latest/dkn_word_embedding.npy".format(
+                bucket_and_prefix),
         ],
     }
 
