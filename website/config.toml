@@ -11,7 +11,7 @@ defaultContentLanguage = "en"
     languageName = "English"
     weight = 1
   [languages.cn]
-    languageName = "中文"
+    languageName = "Chinese"
     weight = 2   
 
 [params]
