@@ -267,16 +267,16 @@ def get_message_dict(bucket_and_prefix, message_type):
         ],
         "action-model": [
             "{}/model/rank/action/dkn/latest/model.tar.gz".format(
-                bucket_and_prefix)
-        ],
-        "embeddings": [
-            # "{}/model/rank/content/dkn_embedding_latest/dkn_word_embedding.npy".format(
-            #     bucket_and_prefix),
+                bucket_and_prefix),
             "{}/model/rank/content/dkn_embedding_latest/dkn_context_embedding.npy".format(
                 bucket_and_prefix),
             "{}/model/rank/content/dkn_embedding_latest/dkn_entity_embedding.npy".format(
                 bucket_and_prefix),
             "{}/model/rank/content/dkn_embedding_latest/dkn_relation_embedding.npy".format(
+                bucket_and_prefix),
+        ],
+        "embeddings": [
+            "{}/model/rank/content/dkn_embedding_latest/dkn_word_embedding.npy".format(
                 bucket_and_prefix),
         ],
     }

@@ -1,15 +1,19 @@
 INPUT:
 
-model/rank/content/dkn_embedding_latest/complete_dkn_entity_embedding.npy,
-model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy,
-system/item-data/item.csv,
-model/meta_files/kg_dbpedia.txt,
-model/meta_files/entities_dbpedia.dict,
-model/meta_files/relations_dbpedia.dict,
-model/meta_files/entity_industry.txt,
-model/meta_files/vocab.json
+model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy 
+system/item-data/item.csv
+model/meta_files/entities_dbpedia.dict
+model/meta_files/relations_dbpedia.dict
+model/meta_files/kg_dbpedia.txt
+model/meta_files/entities_dbpedia_train.dict
+model/meta_files/relations_dbpedia_train.dict
+model/meta_files/kg_dbpedia_train.txt
+model/meta_files/entity_industry.txt
+
 
 OUTPUT:
 model/rank/content/dkn_embedding_latest/dkn_word_embedding.npy
-model/rank/content/dkn_embedding_latest/dkn_entity_embedding.npy
+model/meta_files/kg_dbpedia_train.txt
+model/meta_files/entities_dbpedia_train.dict
+model/meta_files/relations_dbpedia_train.dict
 feature/content/inverted-list/news_id_news_feature_dict.pickle

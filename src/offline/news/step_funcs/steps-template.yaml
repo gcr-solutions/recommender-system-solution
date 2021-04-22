@@ -544,14 +544,15 @@ Resources:
                   "bucket.$": "$.Bucket",
                   "prefix.$": "$.S3Prefix",
                   "file_list": [
-                     "model/rank/content/dkn_embedding_latest/complete_dkn_entity_embedding.npy",
-                     "model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy",
-                     "system/item-data/item.csv",
-                     "model/meta_files/kg_dbpedia.txt",
-                     "model/meta_files/entities_dbpedia.dict",
-                     "model/meta_files/relations_dbpedia.dict",
-                     "model/meta_files/entity_industry.txt",
-                     "model/meta_files/vocab.json"
+                    "model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy",
+                    "system/item-data/item.csv",
+                    "model/meta_files/entities_dbpedia.dict",
+                    "model/meta_files/relations_dbpedia.dict",
+                    "model/meta_files/kg_dbpedia.txt",
+                    "model/meta_files/entities_dbpedia_train.dict",
+                    "model/meta_files/relations_dbpedia_train.dict",
+                    "model/meta_files/kg_dbpedia_train.txt",
+                    "model/meta_files/entity_industry.txt"
                   ]
                 }
               },
