@@ -1,6 +1,6 @@
 ---
 title: Create an IAM role for your workspace
-weight: 2
+weight: 12
 ---
 
 {{% notice info %}}

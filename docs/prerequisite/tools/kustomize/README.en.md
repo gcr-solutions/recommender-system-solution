@@ -1,6 +1,6 @@
 ---
 title: Install kubectl
-weight: 3
+weight: 23
 ---
 
 ## Install Kustomize

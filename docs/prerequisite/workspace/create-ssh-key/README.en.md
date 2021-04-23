@@ -1,6 +1,6 @@
 ---
 title: Create an SSH key
-weight: 5
+weight: 15
 ---
 
 Please run this command to generate SSH Key in Cloud9. This key will be used on the worker node instances to allow ssh access if necessary.
