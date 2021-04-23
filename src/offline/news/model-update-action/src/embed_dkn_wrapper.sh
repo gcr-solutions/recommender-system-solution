@@ -7,7 +7,7 @@ echo "Start running ==== python embed_dkn.py ===="
 python embed_dkn.py \
 --learning_rate 0.0001 \
 --loss_weight 1.0 \
---max_click_history 16 \
+--max_click_history 8 \
 --num_epochs 1 \
 --use_entity True \
 --use_context 0 \

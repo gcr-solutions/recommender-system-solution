@@ -114,11 +114,11 @@ class DKN(object):
         self.news_words = feature["news_words"]
         self.news_entities = feature["news_entities"]
         self.labels = labels
-#         print("!!!!!!!!!!verify input shape")
-#         print("!!!!!!!!!!clicked words {}".format(self.clicked_words))
-#         print("!!!!!!!!!!clicked entities {}".format(self.clicked_entities))
-#         print("!!!!!!!!!!news words {}".format(self.news_words))
-#         print("!!!!!!!!!!news entities {}".format(self.news_entities))
+        print("!!!!!!!!!!verify input shape")
+        print("!!!!!!!!!!clicked words {}".format(self.clicked_words))
+        print("!!!!!!!!!!clicked entities {}".format(self.clicked_entities))
+        print("!!!!!!!!!!news words {}".format(self.news_words))
+        print("!!!!!!!!!!news entities {}".format(self.news_entities))
     
     def _build_ms_model(self, params):
         with tf.name_scope('embedding'):
