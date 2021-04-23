@@ -1,6 +1,6 @@
 ---
-title: Deploy a Lambda@Edge function to authenticate with Cognito
-weight: 20
+title: Setup Customer System
+weight: 30
 ---
 
 In this step, you will find and deploy one serverless application that have been published to the AWS Serverless Application Repository. The application enables authentication with Amazon Cognito for your website.

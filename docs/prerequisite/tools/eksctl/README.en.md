@@ -1,6 +1,6 @@
 ---
 title: Install eksctl
-weight: 1
+weight: 21
 ---
 
 For this workshop you will use a [eksctl](https://eksctl.io/introduction/#installation). Once you install eksctl, you will be ready to get started.
