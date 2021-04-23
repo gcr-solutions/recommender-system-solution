@@ -95,19 +95,55 @@ pd_merge_result = pd.merge(df_filter_item, df_item_stats, on="news_id", how="lef
 pd_merge_result = pd_merge_result.fillna(0)
 
 # prepare model for batch process
+# os.environ['GRAPH_BUCKET'] = bucket
+# os.environ['KG_DBPEDIA_KEY'] = '{}/kg_dbpedia.txt'.format(meta_file_prefix)
+# os.environ['KG_ENTITY_KEY'] = '{}/entities_dbpedia.dict'.format(meta_file_prefix)
+# os.environ['KG_RELATION_KEY'] = '{}/relations_dbpedia.dict'.format(meta_file_prefix)
+# os.environ['KG_ENTITY_INDUSTRY_KEY'] = '{}/entity_industry.txt'.format(meta_file_prefix)
+# os.environ['KG_VOCAB_KEY'] = '{}/vocab.json'.format(meta_file_prefix)
+# os.environ['DATA_INPUT_KEY'] = ''
+# os.environ['TRAIN_OUTPUT_KEY'] = '{}/model/sort/content/kg/news/gw/'.format(prefix)
+#
+# kg_path = os.environ['GRAPH_BUCKET']
+# dbpedia_key = os.environ['KG_DBPEDIA_KEY']
+# entity_key = os.environ['KG_ENTITY_KEY']
+# relation_key = os.environ['KG_RELATION_KEY']
+# entity_industry_key = os.environ['KG_ENTITY_INDUSTRY_KEY']
+# vocab_key = os.environ['KG_VOCAB_KEY']
+# data_input_key = os.environ['DATA_INPUT_KEY']
+# train_output_key = os.environ['TRAIN_OUTPUT_KEY']
+#
+# env = {
+#     'GRAPH_BUCKET': kg_path,
+#     'KG_DBPEDIA_KEY': dbpedia_key,
+#     'KG_ENTITY_KEY': entity_key,
+#     'KG_RELATION_KEY': relation_key,
+#     'KG_ENTITY_INDUSTRY_KEY': entity_industry_key,
+#     'KG_VOCAB_KEY': vocab_key,
+#     'DATA_INPUT_KEY': data_input_key,
+#     'TRAIN_OUTPUT_KEY': train_output_key
+# }
+
+meta_file_prefix = "{}/model/meta_files".format(prefix)
 os.environ['GRAPH_BUCKET'] = bucket
 os.environ['KG_DBPEDIA_KEY'] = '{}/kg_dbpedia.txt'.format(meta_file_prefix)
 os.environ['KG_ENTITY_KEY'] = '{}/entities_dbpedia.dict'.format(meta_file_prefix)
 os.environ['KG_RELATION_KEY'] = '{}/relations_dbpedia.dict'.format(meta_file_prefix)
+os.environ['KG_DBPEDIA_TRAIN_KEY'] = '{}/kg_dbpedia_train.txt'.format(meta_file_prefix)
+os.environ['KG_ENTITY_TRAIN_KEY'] = '{}/entities_dbpedia_train.dict'.format(meta_file_prefix)
+os.environ['KG_RELATION_TRAIN_KEY'] = '{}/relations_dbpedia_train.dict'.format(meta_file_prefix)
 os.environ['KG_ENTITY_INDUSTRY_KEY'] = '{}/entity_industry.txt'.format(meta_file_prefix)
 os.environ['KG_VOCAB_KEY'] = '{}/vocab.json'.format(meta_file_prefix)
 os.environ['DATA_INPUT_KEY'] = ''
-os.environ['TRAIN_OUTPUT_KEY'] = '{}/model/sort/content/kg/news/gw/'.format(prefix)
+os.environ['TRAIN_OUTPUT_KEY'] = '{}/'.format(meta_file_prefix)
 
 kg_path = os.environ['GRAPH_BUCKET']
 dbpedia_key = os.environ['KG_DBPEDIA_KEY']
 entity_key = os.environ['KG_ENTITY_KEY']
 relation_key = os.environ['KG_RELATION_KEY']
+dbpedia_train_key = os.environ['KG_DBPEDIA_TRAIN_KEY']
+entity_train_key = os.environ['KG_ENTITY_TRAIN_KEY']
+relation_train_key = os.environ['KG_RELATION_TRAIN_KEY']
 entity_industry_key = os.environ['KG_ENTITY_INDUSTRY_KEY']
 vocab_key = os.environ['KG_VOCAB_KEY']
 data_input_key = os.environ['DATA_INPUT_KEY']
@@ -118,6 +154,9 @@ env = {
     'KG_DBPEDIA_KEY': dbpedia_key,
     'KG_ENTITY_KEY': entity_key,
     'KG_RELATION_KEY': relation_key,
+    'KG_DBPEDIA_TRAIN_KEY': dbpedia_train_key,
+    'KG_ENTITY_TRAIN_KEY': entity_train_key,
+    'KG_RELATION_TRAIN_KEY': relation_train_key,
     'KG_ENTITY_INDUSTRY_KEY': entity_industry_key,
     'KG_VOCAB_KEY': vocab_key,
     'DATA_INPUT_KEY': data_input_key,

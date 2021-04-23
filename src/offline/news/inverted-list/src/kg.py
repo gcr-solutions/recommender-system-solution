@@ -24,6 +24,9 @@ class Kg:
         self.kg_dbpedia_key = env['KG_DBPEDIA_KEY'] 
         self.kg_entity_key = env['KG_ENTITY_KEY']
         self.kg_relation_key = env['KG_RELATION_KEY']
+        self.kg_dbpedia_train_key = env['KG_DBPEDIA_TRAIN_KEY'] 
+        self.kg_entity_train_key = env['KG_ENTITY_TRAIN_KEY']
+        self.kg_relation_train_key = env['KG_RELATION_TRAIN_KEY']
         self.kg_entity_industry_key = env['KG_ENTITY_INDUSTRY_KEY']
         self.data_input_key = env['DATA_INPUT_KEY']
         self.train_output_key = env['TRAIN_OUTPUT_KEY']
@@ -42,6 +45,10 @@ class Kg:
         # 加载实体列表
         if not os.path.exists(self.kg_folder):
             os.makedirs(self.kg_folder)
+        if not os.path.exists(self.kg_dbpedia_train_key):
+            self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_dbpedia_train_key))
+            print("load file: {}".format(os.path.join(self.kg_folder ,self.kg_dbpedia_train_key)))
+            s3client.download_file(self.kg_folder, self.kg_dbpedia_train_key, os.path.join(self.kg_folder ,self.kg_dbpedia_train_key))
         if not os.path.exists(self.kg_dbpedia_key):
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_dbpedia_key))
             print("load file: {}".format(os.path.join(self.kg_folder ,self.kg_dbpedia_key)))
@@ -51,6 +58,10 @@ class Kg:
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_entity_key))
             print("load file: {}".format(os.path.join(self.kg_folder, self.kg_entity_key)))
             s3client.download_file(self.kg_folder, self.kg_entity_key, os.path.join(self.kg_folder ,self.kg_entity_key))
+        if not os.path.exists(self.kg_entity_train_key):
+            self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_entity_train_key))
+            print("load file: {}".format(os.path.join(self.kg_folder, self.kg_entity_train_key)))
+            s3client.download_file(self.kg_folder, self.kg_entity_train_key, os.path.join(self.kg_folder ,self.kg_entity_train_key))
         entities = pd.read_csv(os.path.join(self.kg_folder, self.kg_entity_key), header=None)
         for r in zip(entities[0], entities[1]):
             self.entity_to_idx[str(r[1]).strip()] = r[0]
@@ -61,6 +72,11 @@ class Kg:
             self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_relation_key))
             print("load file: {}".format(os.path.join(self.kg_folder, self.kg_relation_key)))
             s3client.download_file(self.kg_folder, self.kg_relation_key, os.path.join(self.kg_folder ,self.kg_relation_key))
+        if not os.path.exists(self.kg_relation_train_key):
+            # self.check_parent_dir(self.kg_folder, self.kg_relation_key)
+            self.check_parent_dir('.', os.path.join(self.kg_folder, self.kg_relation_train_key))
+            print("load file: {}".format(os.path.join(self.kg_folder, self.kg_relation_train_key)))
+            s3client.download_file(self.kg_folder, self.kg_relation_train_key, os.path.join(self.kg_folder ,self.kg_relation_train_key)) 
         relations = pd.read_csv(os.path.join(self.kg_folder, self.kg_relation_key), header=None)
         for r in zip(relations[0], relations[1]):
             self.relation_to_idx[str(r[1]).strip()] = r[0]
@@ -155,7 +171,7 @@ class Kg:
             for k in self.p:
                 f.write(k)
 #     def train(self, output_dir = 'kg_embedding', hidden_dim=128, max_step=320000):
-    def train(self, output_dir = '/opt/ml/model', hidden_dim=128, max_step=320000, method='RotatE', upload_context=False):
+    def train(self, output_dir = '/opt/ml/model', hidden_dim=128, max_step=320000, method='RotatE', upload_context=True):
         self.check_parent_dir('.',self.train_output_key)
         dglke_train.main(['--dataset',self.kg_folder,
                   '--model_name', method,
@@ -173,7 +189,7 @@ class Kg:
                   '--save_path',self.train_output_key,
                   '--data_path',self.kg_folder,
                   '--format','udd_hrt',
-                  '--data_files',self.kg_entity_key,self.kg_relation_key,self.kg_dbpedia_key,
+                  '--data_files',self.kg_entity_train_key,self.kg_relation_train_key,self.kg_dbpedia_train_key,
                   '--neg_sample_size_eval','10000'])
         # dglke_train.main(['--dataset','kg',
         #           #'--model_name','RotatE'
@@ -204,7 +220,7 @@ class Kg:
         kg_embedding = np.load(os.path.join(self.train_output_key, generate_entity_name))
         context_embeddings = np.zeros([kg_embedding.shape[0], hidden_dim], dtype="float32")
         entity2neighbor_map = dict()
-        with open(os.path.join(self.kg_folder ,self.kg_dbpedia_key)) as f: # 修改‘kg/kg_dbpedia.txt’文件路径
+        with open(os.path.join(self.kg_folder ,self.kg_dbpedia_train_key)) as f: # 修改‘kg/kg_dbpedia.txt’文件路径
             for line in f:
                 line = line.strip().split("\t")
                 head, _, tail = line
