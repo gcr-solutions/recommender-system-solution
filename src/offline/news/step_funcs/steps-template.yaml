@@ -623,7 +623,7 @@ Resources:
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-embedding:latest",
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-embedding-gpu:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
@@ -690,7 +690,7 @@ Resources:
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-action:latest",
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/news-model-update-action-gpu:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
