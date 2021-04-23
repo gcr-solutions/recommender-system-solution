@@ -19,7 +19,8 @@ AWS_PROFILE=$PROFILE
 TIMESTAMP=$(date '+%Y%m%dT%H%M%S')
 account_id=$(aws --profile ${AWS_PROFILE} sts get-caller-identity --query Account --output text)
 
-repo_name=news-model-update-embedding
+repo_name=news-model-update-embedding-gpu
+#repo_name=news-model-update-embedding
 
 JOB_NAME=${repo_name}-${TIMESTAMP}-${RANDOM}
 

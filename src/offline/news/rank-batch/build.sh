@@ -15,6 +15,7 @@ echo "REGION: $REGION"
 AWS_REGION=$REGION
 AWS_PROFILE=$PROFILE
 
+#repoName=news-rank-batch-gpu
 repoName=news-rank-batch
 tag="latest"
 

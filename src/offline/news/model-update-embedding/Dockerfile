@@ -1,5 +1,6 @@
 ARG REGISTRY_URI
-FROM ${REGISTRY_URI}/tensorflow-training:1.15.3-cpu-py37-ubuntu18.04
+# FROM ${REGISTRY_URI}/tensorflow-training:1.15.3-cpu-py37-ubuntu18.04
+FROM ${REGISTRY_URI}/tensorflow-training:1.15.5-gpu-py37-cu100-ubuntu18.04
 
 ENV PYTHONUNBUFFERED=TRUE
 

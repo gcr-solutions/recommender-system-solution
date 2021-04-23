@@ -86,6 +86,11 @@ sync_s3(file_name_list, s3_folder, local_folder)
 file_name_list = ['news_id_news_property_dict.pickle']
 s3_folder = '{}/feature/content/inverted-list/'.format(prefix)
 sync_s3(file_name_list, s3_folder, local_folder)
+
+file_name_list = ['news_id_news_feature_dict.pickle']
+s3_folder = '{}/feature/content/inverted-list/'.format(prefix)
+sync_s3(file_name_list, s3_folder, local_folder)
+
 # dkn模型文件下载
 file_name_list = ['model.tar.gz']
 s3_folder = '{}/model/rank/action/dkn/latest/'.format(prefix)
@@ -99,7 +104,9 @@ file_to_load = open("info/recall_batch_result.pickle", "rb")
 recall_batch_result = pickle.load(file_to_load)
 file_to_load = open("info/portrait.pickle", "rb")
 user_portrait = pickle.load(file_to_load)
-file_to_load = open("info/news_id_news_property_dict.pickle", "rb")
+
+# file_to_load = open("info/news_id_news_property_dict.pickle", "rb")
+file_to_load = open("info/news_id_news_feature_dict.pickle", "rb")
 dict_id_property_pddf = pickle.load(file_to_load)
 print("length of news_id v.s. news_property {}".format(len(dict_id_property_pddf)))
 # 解压缩dkn模型
