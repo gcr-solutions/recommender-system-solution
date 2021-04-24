@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rs-beta-config
+data:
+  redis_port: "6379"
+  redis_host: "REDIS_HOST"
+  messge_broker_redis_port: "6379"
+  messge_broker_redis_host: "redis-cart"
+  aws_region: "ap-southeast-1"
+  offline_stepfuncs_arn: "arn:aws:states:ap-southeast-1:522244679887:stateMachine:RS-OverallStepFunc"

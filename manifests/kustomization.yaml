@@ -1,0 +1,107 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# namespace to deploy all resources to
+namespace: rs-beta
+
+
+resources:
+- ./efs/pv-claim.yaml
+- config.yaml
+- gateway.yaml
+- loader
+- filter
+- portrait
+- rank
+- recall
+- redis
+- event
+- retrieve
+- demo
+
+
+
+# all with following *kustomization*
+images:
+- name: rs/demo
+  newName: public.ecr.aws/t8u1z3c8/rs/demo
+  newTag: latest
+- name: rs/event
+  newName: public.ecr.aws/t8u1z3c8/rs/event
+  newTag: latest
+- name: rs/filter
+  newName: public.ecr.aws/t8u1z3c8/rs/filter
+  newTag: latest
+- name: rs/filter-plugin
+  newName: public.ecr.aws/t8u1z3c8/rs/filter-plugin
+  newTag: latest
+- name: rs/loader
+  newName: public.ecr.aws/t8u1z3c8/rs/loader
+  newTag: latest
+- name: rs/portrait
+  newName: public.ecr.aws/t8u1z3c8/rs/portrait
+  newTag: latest
+- name: rs/portrait-plugin
+  newName: public.ecr.aws/t8u1z3c8/rs/portrait-plugin
+  newTag: latest
+- name: rs/rank
+  newName: public.ecr.aws/t8u1z3c8/rs/rank
+  newTag: latest
+- name: rs/rank-plugin
+  newName: public.ecr.aws/t8u1z3c8/rs/rank-plugin
+  newTag: latest
+- name: rs/recall
+  newName: public.ecr.aws/t8u1z3c8/rs/recall
+  newTag: latest
+- name: rs/recall-plugin
+  newName: public.ecr.aws/t8u1z3c8/rs/recall-plugin
+  newTag: latest
+- name: rs/retrieve
+  newName: public.ecr.aws/t8u1z3c8/rs/retrieve
+  newTag: latest
+
+
+
+vars:
+- fieldref:
+    fieldPath: data.redis_host
+  name: REDIS_HOST
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config
+- fieldref:
+    fieldPath: data.redis_port
+  name: REDIS_PORT
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config
+- fieldref:
+    fieldPath: data.messge_broker_redis_host
+  name: MESSGE_BROKER_REDIS_HOST
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config
+- fieldref:
+    fieldPath: data.messge_broker_redis_port
+  name: MESSGE_BROKER_REDIS_PORT
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config
+- fieldref:
+    fieldPath: data.aws_region
+  name: AWS_REGION
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config
+- fieldref:
+    fieldPath: data.offline_stepfuncs_arn
+  name: OFFLINE_STEPFUNCS_ARN
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config

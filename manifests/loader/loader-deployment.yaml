@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: loader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loader 
+  template:
+    metadata:
+      labels: 
+        app: loader 
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: rs-loader
+        image:  rs/loader:latest
+        ports:
+          - name: http
+            containerPort: 5000
+        resources:
+          requests: 
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 2000m
+            memory: 2048Mi
+        env:
+          - name: S3_BUCKET_DATA
+            value: aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887
+          - name: PICKLE_PATH
+            value: sample-data/notification/inverted-list/
+          - name: RECORDS_PATH
+            value: sample-data/system/item-data/
+          - name: VECTOR_INDEX_PATH
+            value: sample-data/notification/vector-index/
+          - name: ACTION_MODEL_PATH
+            value: sample-data/notification/action-model/
+          - name: EMBEDDING_NPY_PATH
+            value: sample-data/notification/embeddings/
+          - name: REDIS_HOST
+            value: $(MESSGE_BROKER_REDIS_HOST)
+          - name: REDIS_PORT
+            value: $(MESSGE_BROKER_REDIS_PORT)
+          - name: LOADER_PORT
+            value: "5000"
+          - name: LOCAL_DATA_FOLDER
+            value: /rs-data/
+        volumeMounts:
+          - name: persistent-storage
+            mountPath: /rs-data
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: efs-claim
