@@ -3,28 +3,28 @@ set -e
 
 export EKS_CLUSTER=rs-beta
 
-# 1. Create EKS Cluster
-# # 1.1 Provision EKS cluster 
-eksctl create cluster -f ./eks/nodes-config.yaml
+# # 1. Create EKS Cluster
+# # # 1.1 Provision EKS cluster 
+# eksctl create cluster -f ./eks/nodes-config.yaml
 
-# # 1.2 Create EKS cluster namespace
-kubectl apply -f ../manifests/rs-ns.yaml
+# # # 1.2 Create EKS cluster namespace
+# kubectl apply -f ../manifests/rs-ns.yaml
 
-# 2. Install Istio with default profile
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.9.1 TARGET_ARCH=x86_64 sh -
-cd istio-1.9.1/bin
-./istioctl operator init
-kubectl create ns istio-system
-kubectl apply -f - <<EOF
-apiVersion: install.istio.io/v1alpha1
-kind: IstioOperator
-metadata:
-  namespace: istio-system
-  name: default-istiocontrolplane
-spec:
-  profile: default
-EOF
-cd ../../
+# # 2. Install Istio with default profile
+# curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.9.1 TARGET_ARCH=x86_64 sh -
+# cd istio-1.9.1/bin
+# ./istioctl operator init
+# kubectl create ns istio-system
+# kubectl apply -f - <<EOF
+# apiVersion: install.istio.io/v1alpha1
+# kind: IstioOperator
+# metadata:
+#   namespace: istio-system
+#   name: default-istiocontrolplane
+# spec:
+#   profile: default
+# EOF
+# cd ../../
 
 # 3. Create EFS
 # 3.1 Find vpc id, vpc cidr, subnet ids
@@ -48,17 +48,22 @@ EFS_ID=$(aws efs create-file-system \
   --tags Key=Name,Value=RS-EFS-FileSystem \
   --encrypted |jq '.FileSystemId' -r)
 
+echo EFS_ID: $EFS_ID
 
 # 3.4 Create NFS Security Group
 NFS_SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name efs-nfs-sg \
   --description "Allow NFS traffic for EFS" \
   --vpc-id $EKS_VPC_ID |jq '.GroupId' -r)
 
+echo NFS_SECURITY_GROUP_ID: $NFS_SECURITY_GROUP_ID
+
 # 3.5 add ingress rule for NFS_SECURITY_GROUP_ID before next steps
 aws ec2 authorize-security-group-ingress --group-id $NFS_SECURITY_GROUP_ID \
   --protocol tcp \
   --port 2049 \
   --cidr $EKS_VPC_CIDR
+
+sleep 2m  
 
 # 3.6 Create EFS mount targets
 for subnet_id in `echo $SUBNET_IDS`
