@@ -17,5 +17,7 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 ./update-services-config.sh 
 ```
 
-Wait for about 1 minute, then we can go to argo cd portal to check application, all services should be deployed successfully.
+Wait for about ～3 minute, then we can go to argo cd portal to check application, all services should be deployed successfully.
+
+![Argocd application succeed](/images/argocd-app-success.png)
 
