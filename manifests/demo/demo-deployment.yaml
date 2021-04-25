@@ -21,10 +21,10 @@ spec:
             containerPort: 5900
         resources:
           requests: 
-            cpu: 500m
+            cpu: 300m
             memory: 512Mi
           limits:
-            cpu: 2000m
+            cpu: 1000m
             memory: 2048Mi
         env:
           - name: DEMO_PORT

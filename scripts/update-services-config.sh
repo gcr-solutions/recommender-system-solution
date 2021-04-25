@@ -4,6 +4,7 @@ REDIS_ENDPOINT=$(aws elasticache describe-cache-clusters --cache-cluster-id rs-r
 --query "CacheClusters[].CacheNodes[].Endpoint.Address" --output text)
 cd ../manifests
 sed -i 's/REDIS_HOST_PLACEHOLDER/'"$REDIS_ENDPOINT"'/g' config.yaml
+cat config.yaml
 sleep 10
 
 # sync the local config to argocd
