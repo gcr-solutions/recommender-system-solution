@@ -8,7 +8,7 @@ In this step, you will setup Recommender System Online part, including creating 
 ## Create infrastructure
 1. Go to /home/ec2-user/environment/rs-workshop/scripts directory
 
-```bash
+```sh
 cd /home/ec2-user/environment/rs-workshop/scripts
 ```
 
@@ -18,7 +18,7 @@ cd /home/ec2-user/environment/rs-workshop/scripts
 - efs
 - elastic cache(redis)
 
-```bash
+```sh
 ./create-online-infra.sh
 ```
 
@@ -28,7 +28,7 @@ This will take about ~20 minutes to provision
 
 3. Verify the infrastructre already created successfully:
 
-```bash
+```sh
 kubectl get node
 ```
 

@@ -5,7 +5,7 @@ weight: 5
 
 Please run this command to generate SSH Key in Cloud9. This key will be used on the worker node instances to allow ssh access if necessary.
 
-```bash
+```sh
 ssh-keygen
 ```
 
@@ -15,5 +15,5 @@ Press `enter` 3 times to take the default choices
 
 Upload the public key to your EC2 region:
 
-```bash
+```sh
 aws ec2 import-key-pair --key-name "gcrrsworkshop" --public-key-material file://~/.ssh/id_rsa.pub

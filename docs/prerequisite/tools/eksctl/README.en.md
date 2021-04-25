@@ -1,9 +1,10 @@
 ---
 title: Install eksctl
-weight: 21
+weight: 1
 ---
 
-For this workshop you will use a [eksctl](https://eksctl.io/introduction/#installation). Once you install eksctl, you will be ready to get started.
+
+eksctl is a command line tool for working with EKS clusters that automates many individual tasks. For this workshop you will use a [eksctl](https://eksctl.io/introduction/#installation). Once you install eksctl, you will be ready to get started.
 
 At the terminal command prompt, enter the following two commands:
 
@@ -27,4 +28,4 @@ You should get a "No clusters found" message.
 eksctl version
 ```
 
-For the current workshops, we will be using `eksctl` **0.19-rc.1** or newer. Please verify the version, as some features are only available in the **0.19** version of `eksctl`
+You should get a "0.46.0" version or newer.
