@@ -3,28 +3,28 @@ set -e
 
 export EKS_CLUSTER=rs-beta
 
-# # 1. Create EKS Cluster
-# # # 1.1 Provision EKS cluster 
-# eksctl create cluster -f ./eks/nodes-config.yaml
+# 1. Create EKS Cluster
+# # 1.1 Provision EKS cluster 
+eksctl create cluster -f ./eks/nodes-config.yaml
 
-# # # 1.2 Create EKS cluster namespace
-# kubectl apply -f ../manifests/rs-ns.yaml
+# # 1.2 Create EKS cluster namespace
+kubectl apply -f ../manifests/rs-ns.yaml
 
-# # 2. Install Istio with default profile
-# curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.9.1 TARGET_ARCH=x86_64 sh -
-# cd istio-1.9.1/bin
-# ./istioctl operator init
-# kubectl create ns istio-system
-# kubectl apply -f - <<EOF
-# apiVersion: install.istio.io/v1alpha1
-# kind: IstioOperator
-# metadata:
-#   namespace: istio-system
-#   name: default-istiocontrolplane
-# spec:
-#   profile: default
-# EOF
-# cd ../../
+# 2. Install Istio with default profile
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.9.1 TARGET_ARCH=x86_64 sh -
+cd istio-1.9.1/bin
+./istioctl operator init
+kubectl create ns istio-system
+kubectl apply -f - <<EOF
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: istio-system
+  name: default-istiocontrolplane
+spec:
+  profile: default
+EOF
+cd ../../
 
 # 3. Create EFS
 # 3.1 Find vpc id, vpc cidr, subnet ids

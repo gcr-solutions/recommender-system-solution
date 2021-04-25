@@ -28,14 +28,22 @@ This will take about ~20 minutes to provision
 
 3. Verify the infrastructre already created successfully:
 
+Verify eks nodes created successfully, there should be two nodes and status should be **Ready**
 ```sh
 kubectl get node
 ```
+![Verify EKS nodes](/images/check-eks-nodes.png)
 
-The console looks like below:
+Check EFS created successfully, the console output should like below:
 
-TODO picture
+![Verify EKS nodes](/images/check-efs.png)
+
+Check elastic cache(redis) created successfully, the console output should like below:
+
+![Verify EKS nodes](/images/check-redis.png)
 
 ## Deploy recommender system online services
+
+
 
 
