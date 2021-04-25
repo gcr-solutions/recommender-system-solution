@@ -99,7 +99,6 @@ aws ec2 authorize-security-group-ingress --group-id $REDIS_SECURITY_GROUP_ID \
   --port 6379 \
   --cidr $EKS_VPC_CIDR 
 
-
 # 4.4 create elastic cache redis
 aws elasticache create-cache-cluster \
   --cache-cluster-id rs-redis-cluster \

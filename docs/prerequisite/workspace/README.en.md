@@ -1,6 +1,6 @@
 ---
 title: WORKSHOP SETUP
-weight: 1
+weight: 10
 ---
 
 This section includes following steps:
