@@ -14,5 +14,10 @@ sudo curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/rele
 
 sudo chmod +x /usr/local/bin/argocd
 
+sleep 30
+
 # 3 get admin password
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+echo user name: admin
+echo password: $ARGOCD_PASSWORD
+
