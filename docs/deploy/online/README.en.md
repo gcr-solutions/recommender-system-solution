@@ -1,9 +1,9 @@
 ---
 title: Deploy The Online Part
-weight: 20
+weight: 3
 ---
 
-In this step, you will setup Recommender System Online part, including creating infrastructure and deploying services.
+In this step, you will deploy Recommender System Online part, including creating infrastructure and deploying services.
 
 ## Create infrastructure
 1. Go to /home/ec2-user/environment/rs-workshop/scripts directory

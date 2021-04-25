@@ -1,6 +1,6 @@
 ---
 title: Deploy The Offline Logic
-weight: 10
+weight: 2
 ---
 
 In this step, you will find and deploy one serverless application that have been published to the AWS Serverless Application Repository. The application enables authentication with Amazon Cognito for your website.
