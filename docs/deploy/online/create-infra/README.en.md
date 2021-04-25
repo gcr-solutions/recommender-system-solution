@@ -1,11 +1,10 @@
 ---
-title: Deploy The Online Part
-weight: 3
+title: Create Infrastructure
+weight: 1
 ---
 
-In this step, you will deploy Recommender System Online part, including **creating infrastructure** and **deploying services**.
+In this step, you will create Recommender System Online part infrastructure
 
-## Create infrastructure
 1. Go to /home/ec2-user/environment/recommender-system-solution/scripts directory
 
 ```sh
@@ -41,8 +40,6 @@ Check EFS created successfully, the console output should like below:
 Check elastic cache(redis) created successfully, the console output should like below:
 
 ![Verify EKS nodes](/images/check-redis.png)
-
-## Deploy recommender system online services
 
 
 
