@@ -10,6 +10,6 @@ You’ll need the following steps:
 
 - [Prepare deploy scripts](./deploy-prepare/readme)
 - [Deploy Recommender System Offline(Liuyong TODO)](./offline/readme)
-- [Deploy Recommender System Online](./Online/readme)
+- [Deploy Recommender System Online](./online/readme)
 
 ## API Overview (Aoyu TODO)

@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 export EKS_CLUSTER=rs-beta
 
 # 1. Create EKS Cluster
