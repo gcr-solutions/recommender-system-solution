@@ -142,7 +142,6 @@ python/
 python_post.py
 
 # compressed files
-*.zip
 
 *.index
 *.pickle
