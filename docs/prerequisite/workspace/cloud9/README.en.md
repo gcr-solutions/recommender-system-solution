@@ -7,7 +7,7 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets y
 
 ## Create new Cloud9 IDE environment
 
-1. If you don’t already have an AWS account with Administrator access: [create one now by clicking here]https://aws.amazon.com/getting-started/
+1. If you don’t already have an AWS account with Administrator access: [create one now by clicking here](https://aws.amazon.com/getting-started/)
 2. Go to [AWS Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9)
 2. Use the region drop list to select **Asia Pacific (Tokyo)ap-northeast-1**
 3. Click **Create environment** button to create an cloud9 environment
