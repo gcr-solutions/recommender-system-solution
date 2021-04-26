@@ -17,7 +17,7 @@ fi
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 echo "REGION: ${REGION}"
 
-cd ${build_dir}/lambda
+cd ${build_dir}/step_funcs
 echo "1. >> Prepare offline docker images ..."
 ./prepare_images.sh
 if [[ $? -ne 0 ]]; then
