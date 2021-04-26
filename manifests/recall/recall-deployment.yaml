@@ -21,10 +21,10 @@ spec:
             containerPort: 5500
         resources:
           requests: 
-            cpu: 500m
+            cpu: 300m
             memory: 512Mi
           limits:
-            cpu: 2000m
+            cpu: 1000m
             memory: 2048Mi
         env:
           - name: REDIS_HOST
@@ -40,11 +40,11 @@ spec:
             containerPort: 50051
         resources:
           requests: 
-            cpu: 4000m
-            memory: 20480Mi
+            cpu: 400m
+            memory: 2048Mi
           limits:
-            cpu: 8000m
-            memory: 40960Mi
+            cpu: 800m
+            memory: 4096Mi
         env:
           - name: LOCAL_DATA_FOLDER
             value: /rs-data/

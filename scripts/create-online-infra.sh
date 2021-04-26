@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 export EKS_CLUSTER=rs-beta
 
 # 1. Create EKS Cluster
@@ -45,17 +48,22 @@ EFS_ID=$(aws efs create-file-system \
   --tags Key=Name,Value=RS-EFS-FileSystem \
   --encrypted |jq '.FileSystemId' -r)
 
+echo EFS_ID: $EFS_ID
 
 # 3.4 Create NFS Security Group
 NFS_SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name efs-nfs-sg \
   --description "Allow NFS traffic for EFS" \
   --vpc-id $EKS_VPC_ID |jq '.GroupId' -r)
 
+echo NFS_SECURITY_GROUP_ID: $NFS_SECURITY_GROUP_ID
+
 # 3.5 add ingress rule for NFS_SECURITY_GROUP_ID before next steps
 aws ec2 authorize-security-group-ingress --group-id $NFS_SECURITY_GROUP_ID \
   --protocol tcp \
   --port 2049 \
   --cidr $EKS_VPC_CIDR
+
+sleep 2m  
 
 # 3.6 Create EFS mount targets
 for subnet_id in `echo $SUBNET_IDS`
@@ -98,7 +106,6 @@ aws ec2 authorize-security-group-ingress --group-id $REDIS_SECURITY_GROUP_ID \
   --protocol tcp \
   --port 6379 \
   --cidr $EKS_VPC_CIDR 
-
 
 # 4.4 create elastic cache redis
 aws elasticache create-cache-cluster \

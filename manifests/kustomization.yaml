@@ -18,6 +18,7 @@ resources:
 - event
 - retrieve
 - demo
+- ui
 
 
 
@@ -59,7 +60,9 @@ images:
 - name: rs/retrieve
   newName: public.ecr.aws/t8u1z3c8/rs/retrieve
   newTag: latest
-
+- name: rs/ui
+  newName: public.ecr.aws/t8u1z3c8/rs/ui
+  newTag: latest  
 
 
 vars:

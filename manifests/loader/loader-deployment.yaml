@@ -21,10 +21,10 @@ spec:
             containerPort: 5000
         resources:
           requests: 
-            cpu: 500m
+            cpu: 200m
             memory: 512Mi
           limits:
-            cpu: 2000m
+            cpu: 1000m
             memory: 2048Mi
         env:
           - name: S3_BUCKET_DATA
