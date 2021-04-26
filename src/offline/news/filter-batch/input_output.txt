@@ -1,9 +1,0 @@
-INPUT:
-
-feature/recommend-list/news/recall_batch_result.pickle
-feature/recommend-list/news/rank_batch_result.pickle
-feature/content/inverted-list/news_id_news_property_dict.pickle
-feature/content/inverted-list/news_type_news_ids_dict.pickle
-
-OUTPUT:
-feature/recommend-list/news/filter_batch_result.pickle

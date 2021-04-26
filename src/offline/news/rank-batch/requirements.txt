@@ -1,6 +1,0 @@
-# Requirements without Version Specifiers
-pandas
-numpy
-s3fs
-boto3
-tqdm

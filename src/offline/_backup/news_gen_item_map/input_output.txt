@@ -1,7 +1,0 @@
-Input:
-{}/system/item-data/raw-input/
-
-
-Output:
-{}/system/item-data/emr-out/item_map.csv
-

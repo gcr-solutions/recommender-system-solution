@@ -1,18 +1,10 @@
 
-export PROFILE=rsops
-export REGION=ap-southeast-1
-
-if [[ -z $PROFILE ]];then
-   PROFILE='default'
-fi
-
 if [[ -z $REGION ]];then
-    REGION='us-east-1'
+    REGION='ap-northeast-1'
 fi
 
-echo "PROFILE: $PROFILE"
 echo "REGION: $REGION"
-AWS_ACCOUNT_ID=$(aws --profile $PROFILE sts get-caller-identity  --o text | awk '{print $1}')
+AWS_ACCOUNT_ID=$(aws  sts get-caller-identity  --o text | awk '{print $1}')
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 
 BUCKET_BUILD=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
@@ -40,7 +32,7 @@ for lambda_func_name in ${lambda_funcs_name[@]}; do
   echo $lambda_func_name
   code_file=${PREFIX}/code/lambda/${lambda_funcs_code[$i]}
   echo $code_file
-  aws --profile $PROFILE lambda  update-function-code --function-name ${lambda_func_name} \
+  aws  lambda  update-function-code --function-name ${lambda_func_name} \
   --s3-bucket ${BUCKET_BUILD} \
   --s3-key $code_file >/dev/null
   i=$(( $i+1 ))
