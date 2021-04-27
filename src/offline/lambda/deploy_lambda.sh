@@ -18,6 +18,8 @@ S3Prefix=sample-data
 
 PARAMETER_OVERRIDES="Bucket=$BUCKET S3Prefix=$S3Prefix"
 
+aws iam get get-role --role-name rsdemo-LambdaAndStepFuncsRole
+
 STACK_NAME=rsdemo-role
 echo "STACK_NAME: ${STACK_NAME}"
 aws  cloudformation deploy --region ${REGION} \

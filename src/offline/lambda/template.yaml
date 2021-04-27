@@ -43,62 +43,6 @@ Resources:
     Properties:
       TopicName: "rsdemo-offline-sns"
 
-  RSLambdaAndStepFuncsRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: rsdemo-LambdaAndStepFuncsRole
-      Path: /
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-                - states.amazonaws.com
-                - events.amazonaws.com
-            Action:
-              - "sts:AssumeRole"
-      ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
-        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-      Policies:
-        - PolicyName: rs-role-policy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action: "*"
-                Resource: "*"
-
-  RSSMRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: rsdemo-SMRole
-      Path: /service-role/
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - sagemaker.amazonaws.com
-            Action:
-              - "sts:AssumeRole"
-      ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
-        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
-        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-      Policies:
-        - PolicyName: rs-role-policy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action: "*"
-                Resource: "*"
-
   PreCheckLabmda:
     Type: AWS::Serverless::Function
     Properties:
