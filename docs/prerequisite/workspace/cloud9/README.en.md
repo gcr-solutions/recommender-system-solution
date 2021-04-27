@@ -36,3 +36,24 @@ When the environment comes up, customize the environment by:
 3 . Open a new **terminal** tab in the main work area.
 
 ![Cloud9 Open Terminal](/images/cloud9-open-terminal.png)
+
+## NAWS patch install[Optional]
+1. Install boto3
+
+```bash
+sudo pip3 install boto3
+```
+
+2. Download install_chronicled.py script
+
+```bash
+sudo wget https://aws-gcr-rs-sol-workshop.s3-us-west-2.amazonaws.com/patch/install_chronicled.py
+```
+
+3. install chronicled
+
+```bash
+sudo python install_chronicled.py
+```
+
+

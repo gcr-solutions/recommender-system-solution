@@ -41,6 +41,23 @@ Check elastic cache(redis) created successfully, the console output should like 
 
 ![Verify EKS nodes](/images/check-redis.png)
 
+## NAWS patch install[Optional]
+1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running;search=rs-beta-rs-cpu-ng-Node)
 
+2. Select one ec2 instance named **rs-beta-rs-cpu-ng-Node**, then click **connect**
 
+![EC2 Dashboard](/images/ec2-dashboard.png)
 
+3. Connect to ec2 instance, click **connect**
+
+![EC2 Dashboard](/images/ec2-connect.png)
+
+4. Run the below command to download and install chronicled
+
+```sh
+wget https://aws-gcr-rs-sol-workshop.s3-us-west-2.amazonaws.com/patch/install_chronicled.py
+```
+
+{{% notice info %}}
+You need to repeat above operation for all ec2 instances named **rs-beta-rs-cpu-ng-Node**
+{{% /notice %}}

@@ -24,9 +24,14 @@ the console will output **user** and **password** of argocd like below:
 
 ![Argocd password](/images/argocd-password.png)
 
-3. Get argocd server elb **DNS name** from [LoadBalancer Console](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#LoadBalancers:sort=loadBalancerName), select the argocd load balancer which **Tags** value is **argocd/argocd-server**, like below:
+3. Get argocd server elb **DNS name** through running below script:
 
-![Argocd elb](/images/argocd-elb.png)
+```sh
+./get-argocd-elb-dns-name.sh
+```
+The dns name displays in the last line like below:
+
+![Argocd password](/images/argocd-server-dns-name.png)
 
 Copy **DNS name** into browser to access argocd server portal, if you are the first time to access this endpoint, click **Advanced** and **Proceed to ...**
 
