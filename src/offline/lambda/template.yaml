@@ -36,6 +36,10 @@ Parameters:
   OnlineLoaderURL:
     Type: String
     Default: ""
+  
+  StepFuncAndLambdaRoleName:
+    Type: String
+    Default: rsdemo-LambdaAndStepFuncsRole
 
 Resources:
   RSOfflineSNS:
@@ -48,7 +52,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-PreCheckLabmda
       Handler: precheck-lambda.lambda_handler
-      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/precheck-lambda.zip"
@@ -58,7 +62,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-S3UtilLabmda
       Handler: s3-util-lambda.lambda_handler
-      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/s3-util-lambda.zip"
@@ -69,7 +73,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-QueryTrainingResultLambda
       Handler: query-training-result-lambda.lambda_handler
-      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/query-training-result-lambda.zip"
@@ -80,7 +84,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-SNSMessageLambda
       Handler: sns-message-lambda.lambda_handler
-      Role: !GetAtt RSLambdaAndStepFuncsRole.Arn
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/sns-message-lambda.zip"
