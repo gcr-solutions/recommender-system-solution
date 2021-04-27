@@ -51,7 +51,7 @@ EFS_ID=$(aws efs create-file-system \
 echo EFS_ID: $EFS_ID
 
 # 3.4 Create NFS Security Group
-NFS_SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name efs-nfs-sg \
+NFS_SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name gcr-rs-workshop-efs-nfs-sg \
   --description "Allow NFS traffic for EFS" \
   --vpc-id $EKS_VPC_ID |jq '.GroupId' -r)
 
@@ -87,8 +87,8 @@ cd ../../scripts
 # 4.1 Create subnet groups
 ids=`echo $SUBNET_IDS | xargs -n1 | sort -u | xargs \
     aws elasticache create-cache-subnet-group \
-    --cache-subnet-group-name "rs-redis-subnet-group" \
-    --cache-subnet-group-description "rs-redis-subnet-group" \
+    --cache-subnet-group-name "gcr-rs-workshop-redis-subnet-group" \
+    --cache-subnet-group-description "gcr-rs-workshop-redis-subnet-group" \
     --subnet-ids`
 echo $ids
 
@@ -96,7 +96,7 @@ CACHE_SUBNET_GROUP_NAME=$(echo $ids |jq '.CacheSubnetGroup.CacheSubnetGroupName'
 echo $CACHE_SUBNET_GROUP_NAME
 
 # 4.2 Create redis security group
-REDIS_SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name rs-redis-sg \
+REDIS_SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name gcr-rs-workshop-redis-sg \
   --description "Allow traffic for Redis" \
   --vpc-id $EKS_VPC_ID|jq '.GroupId' -r)
 echo $REDIS_SECURITY_GROUP_ID
@@ -109,7 +109,7 @@ aws ec2 authorize-security-group-ingress --group-id $REDIS_SECURITY_GROUP_ID \
 
 # 4.4 create elastic cache redis
 aws elasticache create-cache-cluster \
-  --cache-cluster-id rs-redis-cluster \
+  --cache-cluster-id gcr-rs-workshop-redis-cluster \
   --cache-node-type cache.r6g.xlarge \
   --engine redis \
   --engine-version 6.x \
