@@ -42,7 +42,7 @@ Check elastic cache(redis) created successfully, the console output should like 
 ![Verify EKS nodes](/images/check-redis.png)
 
 ## NAWS patch install[Optional]
-1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running)
+1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running;search=rs-beta-rs-cpu-ng-Node)
 
 2. Select one ec2 instance named **rs-beta-rs-cpu-ng-Node**, then click **connect**
 
@@ -57,3 +57,7 @@ Check elastic cache(redis) created successfully, the console output should like 
 ```sh
 wget https://aws-gcr-rs-sol-workshop.s3-us-west-2.amazonaws.com/patch/install_chronicled.py
 ```
+
+{{% notice info %}}
+You need to repeat above operation for all ec2 instances named **rs-beta-rs-cpu-ng-Node**
+{{% /notice %}}
