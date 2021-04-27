@@ -17,15 +17,20 @@ BUCKET=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
 S3Prefix=sample-data
 
 PARAMETER_OVERRIDES="Bucket=$BUCKET S3Prefix=$S3Prefix"
-STACK_NAME=rsdemo-lambda-stack
 
+STACK_NAME=rsdemo-role
 echo "STACK_NAME: ${STACK_NAME}"
+aws  cloudformation deploy --region ${REGION} \
+--template-file ./template_role.yaml --stack-name ${STACK_NAME} \
+--capabilities CAPABILITY_NAMED_IAM
 
+
+STACK_NAME=rsdemo-lambda-stack
+echo "STACK_NAME: ${STACK_NAME}"
 aws  cloudformation deploy --region ${REGION} \
 --template-file ./template.yaml --stack-name ${STACK_NAME} \
 --parameter-overrides ${PARAMETER_OVERRIDES} \
 --capabilities CAPABILITY_NAMED_IAM
-
 if [[ $? -ne 0 ]]; then
   echo "error!!!"
   exit 1
