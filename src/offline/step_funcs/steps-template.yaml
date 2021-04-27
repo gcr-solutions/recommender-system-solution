@@ -29,7 +29,8 @@ Parameters:
     
   ECRPrefix:
     Type: String
-    Default: public.ecr.aws/t8u1z3c8
+    #Default: public.ecr.aws/t8u1z3c8
+    Default: 522244679887.dkr.ecr.ap-northeast-1.amazonaws.com
 
 Resources:
   SMProcessingStepFunc:
@@ -46,7 +47,7 @@ Resources:
               "Resource": "arn:aws:states:::sagemaker:createProcessingJob.sync",
               "Parameters": {
                 "AppSpecification": {
-                  "ImageUri.$": "States.Format('${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/{}:latest', $.ImageName)",
+                  "ImageUri.$": "States.Format('${ECRPrefix}/{}:latest', $.ImageName)",
                   "ContainerArguments.$": "$.ContainerArguments"
                 },
                 "ProcessingResources": {
@@ -627,7 +628,7 @@ Resources:
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/rs/news-model-update-embedding-gpu:latest",
+                  "TrainingImage": "${ECRPrefix}/rs/news-model-update-embedding-gpu:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
@@ -694,7 +695,7 @@ Resources:
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/rs/news-model-update-action-gpu:latest",
+                  "TrainingImage": "${ECRPrefix}/rs/news-model-update-action-gpu:latest",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {

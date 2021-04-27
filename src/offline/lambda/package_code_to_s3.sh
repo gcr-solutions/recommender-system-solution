@@ -16,4 +16,8 @@ echo "BUCKET_BUILD=${BUCKET_BUILD}"
 echo "Create S3 Bucket: ${BUCKET_BUILD} if not exist"
 aws  s3 mb s3://${BUCKET_BUILD}  >/dev/null 2>&1
 aws  s3 sync lambda_code/ s3://${BUCKET_BUILD}/${PREFIX}/code/lambda/
+if [[ $? -ne 0 ]]; then
+      echo "error!!! aws  s3 sync lambda_code/ s3://${BUCKET_BUILD}/${PREFIX}/code/lambda/"
+      exit 1
+fi
 

@@ -17,16 +17,8 @@ fi
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 echo "REGION: ${REGION}"
 
-cd ${build_dir}/step_funcs
-echo "1. >> Prepare offline docker images ..."
-./prepare_images.sh
-if [[ $? -ne 0 ]]; then
-      echo "error!!! Prepare offline docker images"
-      exit 1
-fi
-
 cd ${build_dir}/lambda
-echo "2. >> Deploy lambda ..."
+echo "1. >> Deploy lambda ..."
 ./build.sh
 if [[ $? -ne 0 ]]; then
       echo "error!!! Deploy lambda"
@@ -34,7 +26,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 cd ${build_dir}/step_funcs
-echo "3. >> Deploy step funcs ..."
+echo "2. >> Deploy step funcs ..."
 ./build.sh
 if [[ $? -ne 0 ]]; then
       echo "error!!! Deploy step funcs"
