@@ -18,7 +18,7 @@ S3Prefix=sample-data
 
 PARAMETER_OVERRIDES="Bucket=$BUCKET S3Prefix=$S3Prefix"
 
-aws iam get-role --role-name rsdemo-LambdaAndStepFuncsRole
+aws iam get-role --role-name rsdemo-LambdaAndStepFuncsRole > /dev/null 2>&1
 
 if [[ $? -ne 0 ]];
 then
