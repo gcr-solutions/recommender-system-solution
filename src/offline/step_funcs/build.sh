@@ -45,7 +45,7 @@ do
 
     egrep '(Successfully)|(No changes)' tmp.result
 
-    if [[ $? -ne 0 ]]; then
+    if [[ $? -eq 0 ]]; then
       echo ""
       cat tmp.result
       rm tmp.result

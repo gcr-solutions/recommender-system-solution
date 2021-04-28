@@ -35,5 +35,5 @@ do
     aws --profile $PROFILE cloudformation delete-stack --region ${REGION} --stack-name ${STACK_NAME}
 done
 
-aws --profile $PROFILE s3 rm s3://${BUCKET_BUILD}/${PREFIX}/code/lambda/
+aws --profile $PROFILE s3 rm s3://${BUCKET}/${S3Prefix}/code/lambda/
 
