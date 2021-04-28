@@ -27,6 +27,17 @@ then
     aws  cloudformation deploy --region ${REGION} \
     --template-file ./template_role.yaml --stack-name ${STACK_NAME} \
     --capabilities CAPABILITY_NAMED_IAM
+
+    egrep '(Successfully)|(No changes)' tmp.result
+    if [[ $? -ne 0 ]]; then
+      echo ""
+      cat tmp.result
+      rm tmp.result
+    else
+      echo "error!!!"
+      cat tmp.result
+      exit 1
+    fi
 fi
 
 
