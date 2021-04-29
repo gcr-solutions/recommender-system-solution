@@ -52,7 +52,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-PreCheckLabmda
       Handler: precheck-lambda.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/precheck-lambda.zip"
@@ -62,7 +62,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-S3UtilLabmda
       Handler: s3-util-lambda.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/s3-util-lambda.zip"
@@ -73,7 +73,7 @@ Resources:
     Properties:
       FunctionName: rsdemo-SNSMessageLambda
       Handler: sns-message-lambda.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       CodeUri:
         Bucket: !Ref Bucket
         Key: !Sub "${S3Prefix}/code/lambda/sns-message-lambda.zip"

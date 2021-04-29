@@ -23,7 +23,7 @@ Resources:
   RSLambdaAndStepFuncsRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: rsdemo-LambdaAndStepFuncsRole
+      RoleName: !Sub rsdemo-LambdaAndStepFuncsRole-${AWS::Region}
       Path: /
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -52,7 +52,7 @@ Resources:
   RSSMRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: rsdemo-SMRole
+      RoleName: !Sub rsdemo-SMRole-${AWS::Region}
       Path: /service-role/
       AssumeRolePolicyDocument:
         Version: 2012-10-17

@@ -36,7 +36,7 @@ Resources:
   SMProcessingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-SMProcessingStepFunc
       DefinitionString: !Sub |
         {
@@ -57,7 +57,7 @@ Resources:
                     "VolumeSizeInGB": 5
                   }
                 },
-                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
+                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}-${AWS::Region}",
                 "ProcessingJobName.$": "States.Format('{}', $$.Execution.Name)"
               },
               "Retry": [
@@ -85,7 +85,7 @@ Resources:
   ActionPreprocessingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-ActionPreprocessingStepFunc
       DefinitionString: !Sub |
         {
@@ -133,7 +133,7 @@ Resources:
   AddItemUserBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-AddItemUserBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -181,7 +181,7 @@ Resources:
   InvertedListStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-InvertedListStepFunc
       DefinitionString: !Sub |
         {
@@ -231,7 +231,7 @@ Resources:
   ItemPreprocessingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-ItemPreprocessingStepFunc
       DefinitionString: !Sub |
         {
@@ -278,7 +278,7 @@ Resources:
   PortraitBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-PortraitBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -327,7 +327,7 @@ Resources:
   RecallBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-RecallBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -381,7 +381,7 @@ Resources:
   WeightUpdateBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-WeightUpdateBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -431,7 +431,7 @@ Resources:
   FilterBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-FilterBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -481,7 +481,7 @@ Resources:
   RankBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-RankBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -534,7 +534,7 @@ Resources:
   ItemFeatureUpdateBatchStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-ItemFeatureUpdateBatchStepFunc
       DefinitionString: !Sub |
         {
@@ -593,7 +593,7 @@ Resources:
   ModelUpdateEmbeddingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-ModelUpdateEmbeddingStepFunc
       DefinitionString: !Sub |
         {
@@ -648,7 +648,7 @@ Resources:
                   "InstanceType": "ml.p2.xlarge",
                   "VolumeSizeInGB": 5
                 },
-                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
+                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}-${AWS::Region}",
                 "HyperParameters": {
                    "bucket.$": "$.Bucket",
                    "prefix.$": "$.S3Prefix"
@@ -665,7 +665,7 @@ Resources:
   ModelUpdateActionStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-ModelUpdateActionStepFunc
       DefinitionString: !Sub |
         {
@@ -737,7 +737,7 @@ Resources:
                   "InstanceType": "ml.p2.xlarge",
                   "VolumeSizeInGB": 5
                 },
-                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}",
+                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${SagemakerRoleName}-${AWS::Region}",
                 "HyperParameters": {
                   "bucket.$": "$.Bucket",
                   "prefix.$": "$.S3Prefix"

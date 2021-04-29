@@ -38,7 +38,7 @@ Resources:
   DashboardStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-DashboardStepFunc
       DefinitionString: !Sub |
         {
@@ -92,7 +92,7 @@ Resources:
       State: "ENABLED"
       Targets:
         - Arn: !Ref DashboardStepFunc
-          RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+          RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
           Id: "TargetDashboardStepFunc"
           Input: !Sub |
             {

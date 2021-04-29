@@ -31,7 +31,7 @@ Resources:
   ItemNewStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: rsdemo-News-ItemNewStepFunc
       DefinitionString: !Sub |
         {

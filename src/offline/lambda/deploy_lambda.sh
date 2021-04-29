@@ -18,21 +18,16 @@ S3Prefix=sample-data
 
 PARAMETER_OVERRIDES="Bucket=$BUCKET S3Prefix=$S3Prefix"
 
-aws iam get-role --role-name rsdemo-LambdaAndStepFuncsRole > /dev/null 2>&1
+ STACK_NAME=rsdemo-role
+ echo "STACK_NAME: ${STACK_NAME}"
+ aws  cloudformation deploy --region ${REGION} \
+ --template-file ./template_role.yaml --stack-name ${STACK_NAME} \
+ --capabilities CAPABILITY_NAMED_IAM
 
-if [[ $? -ne 0 ]];
-then
-    STACK_NAME=rsdemo-role
-    echo "STACK_NAME: ${STACK_NAME}"
-    aws  cloudformation deploy --region ${REGION} \
-    --template-file ./template_role.yaml --stack-name ${STACK_NAME} \
-    --capabilities CAPABILITY_NAMED_IAM
-
-    aws  cloudformation  describe-stacks --stack-name ${STACK_NAME} > /dev/null
-    if [[ $? -ne 0 ]]; then
-      echo "error!!!"
-      exit 1
-   fi
+ aws  cloudformation  describe-stacks --stack-name ${STACK_NAME} > /dev/null
+ if [[ $? -ne 0 ]]; then
+   echo "error!!!"
+   exit 1
 fi
 
 
