@@ -3,5 +3,5 @@
 ```
 cd scripts
 
-./deploy-offline.sh
+./create-offline.sh
 ```
