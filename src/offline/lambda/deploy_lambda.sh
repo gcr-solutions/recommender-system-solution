@@ -27,17 +27,6 @@ then
     aws  cloudformation deploy --region ${REGION} \
     --template-file ./template_role.yaml --stack-name ${STACK_NAME} \
     --capabilities CAPABILITY_NAMED_IAM
-
-    egrep '(Successfully)|(No changes)' tmp.result
-    if [[ $? -ne 0 ]]; then
-      echo ""
-      cat tmp.result
-      rm tmp.result
-    else
-      echo "error!!!"
-      cat tmp.result
-      exit 1
-    fi
 fi
 
 
@@ -46,16 +35,7 @@ echo "STACK_NAME: ${STACK_NAME}"
 aws  cloudformation deploy --region ${REGION} \
 --template-file ./template.yaml --stack-name ${STACK_NAME} \
 --parameter-overrides ${PARAMETER_OVERRIDES} \
---capabilities CAPABILITY_NAMED_IAM > tmp.result
+--capabilities CAPABILITY_NAMED_IAM
 
-egrep '(Successfully)|(No changes)' tmp.result
-if [[ $? -eq 0 ]]; then
-  echo ""
-  cat tmp.result
-  rm tmp.result
-else
-  echo "error!!!"
-  cat tmp.result
-  exit 1
 fi
 
