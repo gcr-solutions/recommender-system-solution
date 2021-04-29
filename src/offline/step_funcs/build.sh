@@ -45,7 +45,7 @@ do
     --parameter-overrides ${PARAMETER_OVERRIDES} \
     --capabilities CAPABILITY_NAMED_IAM
 
-    aws  cloudformation  describe-stacks --region ${REGION} --stack-name ${STACK_NAME} --output table
+    aws  cloudformation  describe-stacks --region ${REGION} --stack-name ${STACK_NAME} --output table | grep StackStatus |  grep CREATE_COMPLETE
     if [[ $? -ne 0 ]]; then
       echo "error!!!"
       exit 1
