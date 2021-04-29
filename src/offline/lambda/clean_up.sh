@@ -30,5 +30,5 @@ do
     aws  cloudformation delete-stack --region ${REGION} --stack-name ${STACK_NAME}
 done
 
-aws  s3 rm s3://${BUCKET}/${S3Prefix}/code/lambda/
+aws  s3 rm s3://${BUCKET}/${S3Prefix}/code/lambda/  --recursive
 
