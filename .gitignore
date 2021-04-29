@@ -28,7 +28,6 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-*.pickle
 */cdk.out/*
 *.npy*
 *.dict
@@ -144,7 +143,6 @@ python_post.py
 # compressed files
 
 *.index
-*.pickle
 **/*.DS_Store
 **/.vscode
 
