@@ -42,5 +42,11 @@ do
     --template-file ${template_file} --stack-name ${STACK_NAME} \
     --parameter-overrides ${PARAMETER_OVERRIDES} \
     --capabilities CAPABILITY_NAMED_IAM
+
+    aws  cloudformation  describe-stacks --region ${REGION} --stack-name ${STACK_NAME} > /dev/null
+    if [[ $? -ne 0 ]]; then
+      echo "error!!!"
+      exit 1
+   fi
 done
 

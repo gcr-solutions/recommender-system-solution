@@ -27,6 +27,12 @@ then
     aws  cloudformation deploy --region ${REGION} \
     --template-file ./template_role.yaml --stack-name ${STACK_NAME} \
     --capabilities CAPABILITY_NAMED_IAM
+
+    aws  cloudformation  describe-stacks --stack-name ${STACK_NAME} > /dev/null
+    if [[ $? -ne 0 ]]; then
+      echo "error!!!"
+      exit 1
+   fi
 fi
 
 
@@ -37,3 +43,10 @@ aws  cloudformation deploy --region ${REGION} \
 --parameter-overrides ${PARAMETER_OVERRIDES} \
 --capabilities CAPABILITY_NAMED_IAM
 
+aws  cloudformation  describe-stacks --region ${REGION} --stack-name ${STACK_NAME} > /dev/null
+if [[ $? -ne 0 ]]; then
+      echo "error!!!"
+      exit 1
+fi
+
+exit 0
