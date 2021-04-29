@@ -1,0 +1,226 @@
+{
+ "total_item_count": 2660,
+ "recommender_click_cover_ratio": 0.3,
+ "item_click_ratio": 0.92,
+ "total_click_count": 6524,
+ "top_users": [
+  {
+   "user_id": "52a26c46-9dc3-11eb-a364-acde48001122",
+   "name": "aloofStork7"
+  },
+  {
+   "user_id": "52a369e8-9dc3-11eb-a364-acde48001122",
+   "name": "innocentSeafowl4"
+  },
+  {
+   "user_id": "52a3e12a-9dc3-11eb-a364-acde48001122",
+   "name": "sincereRuffs7"
+  },
+  {
+   "user_id": "52a2eedc-9dc3-11eb-a364-acde48001122",
+   "name": "somberGarlic6"
+  },
+  {
+   "user_id": "52a28bb8-9dc3-11eb-a364-acde48001122",
+   "name": "empathicSmelt3"
+  },
+  {
+   "user_id": "52a32bae-9dc3-11eb-a364-acde48001122",
+   "name": "eagerDinosaur2"
+  },
+  {
+   "user_id": "52a29072-9dc3-11eb-a364-acde48001122",
+   "name": "sincereJerky0"
+  },
+  {
+   "user_id": "52a2ebe4-9dc3-11eb-a364-acde48001122",
+   "name": "dopeyOwl3"
+  },
+  {
+   "user_id": "52a38996-9dc3-11eb-a364-acde48001122",
+   "name": "amazedDunbird9"
+  },
+  {
+   "user_id": "52a37d0c-9dc3-11eb-a364-acde48001122",
+   "name": "unhappySnipe0"
+  }
+ ],
+ "top_items": [
+  {
+   "id": "6552293280657179149",
+   "title": "加拿大班夫国家公园怎么玩？旅行达人给你推荐班夫旅行实用攻略"
+  },
+  {
+   "id": "6552298904304484878",
+   "title": "沃兴华和石开王镛大师英雄就在眼前？网友：你当我们都眼瞎啊！"
+  },
+  {
+   "id": "6553622433398522382",
+   "title": "SE 公布 E3 发布会时间，英国麦当劳推出马里奥玩具｜Jump简报"
+  },
+  {
+   "id": "6552666691753476612",
+   "title": "87版红楼梦剧组再聚首，“板儿”风华正茂，“黛玉”芳龄永继"
+  },
+  {
+   "id": "6552314579228033543",
+   "title": "不想惹麻烦？英媒称印要驻中印边境部队“避免冲突”"
+  },
+  {
+   "id": "6552321422855766542",
+   "title": "中国领事馆提醒远离夏威夷火山和地震危险区域"
+  },
+  {
+   "id": "6552333094777520643",
+   "title": "专为中国市场打造的韩国“轿跑”来袭，剑指思域、凌渡"
+  },
+  {
+   "id": "6552380335139586563",
+   "title": "冯提莫出任重庆共青团宣传大使 直言希望能给青少年带去正能量"
+  },
+  {
+   "id": "6552453767525040647",
+   "title": "美议员麦凯恩自称不知能活多久，家人不希望特朗普参加其葬礼"
+  },
+  {
+   "id": "6552658872832623112",
+   "title": "为炫酷而来 一汽丰田奕泽亮相华南鉴面会"
+  }
+ ],
+ "click_count_by_source": [
+  {
+   "source": "news_agriculture",
+   "source_code": "115",
+   "count": 244
+  },
+  {
+   "source": "news_house",
+   "source_code": "106",
+   "count": 258
+  },
+  {
+   "source": "news_world",
+   "source_code": "113",
+   "count": 286
+  },
+  {
+   "source": "news_finance",
+   "source_code": "104",
+   "count": 249
+  },
+  {
+   "source": "news_edu",
+   "source_code": "108",
+   "count": 253
+  },
+  {
+   "source": "news_game",
+   "source_code": "116",
+   "count": 257
+  },
+  {
+   "source": "news_travel",
+   "source_code": "112",
+   "count": 267
+  },
+  {
+   "source": "news_military",
+   "source_code": "110",
+   "count": 277
+  },
+  {
+   "source": "news_sports",
+   "source_code": "103",
+   "count": 289
+  },
+  {
+   "source": "stock",
+   "source_code": "114",
+   "count": 7
+  },
+  {
+   "source": "recommend",
+   "source_code": "1",
+   "count": 3046
+  },
+  {
+   "source": "news_tech",
+   "source_code": "109",
+   "count": 255
+  },
+  {
+   "source": "news_culture",
+   "source_code": "101",
+   "count": 273
+  },
+  {
+   "source": "news_car",
+   "source_code": "107",
+   "count": 267
+  },
+  {
+   "source": "news_story",
+   "source_code": "100",
+   "count": 55
+  },
+  {
+   "source": "news_entertainment",
+   "source_code": "102",
+   "count": 241
+  }
+ ],
+ "click_count_recommender_time_window": [
+  {
+   "start_time": 1618466400,
+   "end_time": 1618470000,
+   "is_recommender": true,
+   "count": 505
+  },
+  {
+   "start_time": 1618466400,
+   "end_time": 1618470000,
+   "is_recommender": false,
+   "count": 595
+  },
+  {
+   "start_time": 1618470000,
+   "end_time": 1618473600,
+   "is_recommender": false,
+   "count": 600
+  },
+  {
+   "start_time": 1618470000,
+   "end_time": 1618473600,
+   "is_recommender": true,
+   "count": 490
+  },
+  {
+   "start_time": 1618473600,
+   "end_time": 1618477200,
+   "is_recommender": false,
+   "count": 460
+  },
+  {
+   "start_time": 1618473600,
+   "end_time": 1618477200,
+   "is_recommender": true,
+   "count": 436
+  },
+  {
+   "start_time": 1618477200,
+   "end_time": 1618480800,
+   "is_recommender": true,
+   "count": 178
+  },
+  {
+   "start_time": 1618477200,
+   "end_time": 1618480800,
+   "is_recommender": false,
+   "count": 181
+  }
+ ],
+ "total_user_count": 1000,
+ "register_user_count": 1000,
+ "anonymous_user_count": 0,
+ "report_time": 1619660095
+}
