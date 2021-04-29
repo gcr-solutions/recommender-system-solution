@@ -4,7 +4,7 @@ echo "run $0 ..."
 pwd
 
 if [[ -z $REGION ]];then
-    REGION='ap-southeast-1'
+   export REGION='ap-northeast-1'
 fi
 
 echo "REGION: $REGION"
