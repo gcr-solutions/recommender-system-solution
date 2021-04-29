@@ -31,7 +31,6 @@ share/python-wheels/
 *.pickle
 */cdk.out/*
 *.npy*
-*.dict
 preprocess/*/*.txt
 MANIFEST
 
