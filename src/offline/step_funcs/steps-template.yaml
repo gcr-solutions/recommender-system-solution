@@ -217,7 +217,7 @@ Resources:
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "ImageName": "rs/news-inverted-list",
                   "ContainerArguments.$": "States.Array('--bucket', $.Bucket, '--prefix', $.S3Prefix)",
-                  "InstanceType": "ml.m5.xlarge"
+                  "InstanceType": "ml.c5.4xlarge"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-SMProcessingStepFunc",
                 "Name.$": "States.Format('Ninverted{}', $.Precheck.Payload.UID)"
