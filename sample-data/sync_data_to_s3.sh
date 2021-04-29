@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+echo "################"
 echo "run $0 ..."
 pwd
 
@@ -17,7 +19,11 @@ PREFIX=sample-data
 echo "BUCKET_BUILD=${BUCKET_BUILD}"
 echo "Create S3 Bucket: ${BUCKET_BUILD} if not exist"
 aws  s3 mb s3://${BUCKET_BUILD}  >/dev/null 2>&1
-echo "s3 sync lambda_code/ s3://${BUCKET_BUILD}/${PREFIX}/code/lambda/"
+
+echo "########################################################"
+echo "aws  s3 sync . s3://${BUCKET_BUILD}/${PREFIX}/"
+echo "########################################################"
+
 aws  s3 sync . s3://${BUCKET_BUILD}/${PREFIX}/
 if [[ $? -ne 0 ]]; then
       echo "error!!! aws  s3 sync . s3://${BUCKET_BUILD}/${PREFIX}/"

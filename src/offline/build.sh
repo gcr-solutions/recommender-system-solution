@@ -1,4 +1,6 @@
+#!/usr/bin/env bash
 
+echo "################"
 build_dir=$(pwd)
 
 echo "build_dir: ${build_dir}"

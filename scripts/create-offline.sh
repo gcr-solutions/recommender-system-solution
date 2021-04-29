@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+
+echo "################"
 echo "run $0 ..."
 pwd
 
