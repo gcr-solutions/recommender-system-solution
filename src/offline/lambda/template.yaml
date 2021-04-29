@@ -68,17 +68,6 @@ Resources:
         Key: !Sub "${S3Prefix}/code/lambda/s3-util-lambda.zip"
       Timeout: 900
 
-  QueryTrainingResultLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: rsdemo-QueryTrainingResultLambda
-      Handler: query-training-result-lambda.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}
-      CodeUri:
-        Bucket: !Ref Bucket
-        Key: !Sub "${S3Prefix}/code/lambda/query-training-result-lambda.zip"
-
-
   SNSMessageLambda:
     Type: AWS::Serverless::Function
     Properties:

@@ -14,14 +14,12 @@ PREFIX=sample-data
 lambda_funcs_name=(
  rsdemo-PreCheckLabmda
  rsdemo-S3UtilLabmda
- rsdemo-QueryTrainingResultLambda
  rsdemo-SNSMessageLambda
 )
 
 lambda_funcs_code=(
  precheck-lambda.zip
  s3-util-lambda.zip
- query-training-result-lambda.zip
  sns-message-lambda.zip
 )
 
