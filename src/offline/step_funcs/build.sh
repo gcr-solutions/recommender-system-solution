@@ -42,6 +42,5 @@ do
     --template-file ${template_file} --stack-name ${STACK_NAME} \
     --parameter-overrides ${PARAMETER_OVERRIDES} \
     --capabilities CAPABILITY_NAMED_IAM
-
 done
 

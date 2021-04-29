@@ -37,5 +37,3 @@ aws  cloudformation deploy --region ${REGION} \
 --parameter-overrides ${PARAMETER_OVERRIDES} \
 --capabilities CAPABILITY_NAMED_IAM
 
-fi
-
