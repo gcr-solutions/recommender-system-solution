@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
 echo "################"
+Red=$'\e[1;31m'
+Green=$'\e[1;32m'
+
+OK_print () {
+   echo "$Green $1 \e[0m"
+}
+Error_print() {
+	 echo "$Red $1 \e[0m"
+}
 
 echo "run $0 ..."
 pwd
@@ -44,12 +53,13 @@ aws  cloudformation deploy --region ${REGION} \
 --capabilities CAPABILITY_NAMED_IAM
 
  StackStatus=$(aws  cloudformation  describe-stacks --region ${REGION} --stack-name ${STACK_NAME} --output table | grep StackStatus)
- echo ${StackStatus}
  echo ${StackStatus} |  grep CREATE_COMPLETE > /dev/null
 
  if [[ $? -ne 0 ]]; then
-      echo "error!!!"
+      Error_print "error!!!  ${StackStatus}"
       exit 1
-fi
+ fi
+
+OK_print "${StackStatus}"
 
 exit 0
