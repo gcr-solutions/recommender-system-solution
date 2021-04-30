@@ -29,7 +29,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 */cdk.out/*
-*.npy*
 preprocess/*/*.txt
 MANIFEST
 
