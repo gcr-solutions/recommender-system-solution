@@ -48,11 +48,11 @@ Resources:
               "Type": "Parallel",
               "Branches": [
                 {
-                  "StartAt": "Wait 10 seconds",
+                  "StartAt": "Wait 9 seconds",
                   "States": {
-                    "Wait 10 seconds": {
+                    "Wait 9 seconds": {
                       "Type": "Wait",
-                      "Seconds": 10,
+                      "Seconds": 9,
                       "Next": "Item data processing"
                     },
                     "Item data processing": {
@@ -73,11 +73,11 @@ Resources:
                   }
                 },
                 {
-                  "StartAt": "Wait 1 seconds",
+                  "StartAt": "Wait 2 seconds",
                   "States": {
-                    "Wait 1 seconds": {
+                    "Wait 2 seconds": {
                       "Type": "Wait",
-                      "Seconds": 1,
+                      "Seconds": 2,
                       "Next": "Action data processing"
                     },
                     "Action data processing": {
