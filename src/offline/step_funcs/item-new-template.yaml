@@ -27,6 +27,12 @@ Parameters:
     Type: String
     Default: rsdemo-SNSMessageLambda
 
+  ItemFeatureUpdateBatchStepFuncName:
+    Type: String
+    #Default: rsdemo-News-ItemFeatureUpdateBatchStepFunc
+    Default: rsdemo-News-NoOpStepFunc  # for demo
+
+
 Resources:
   ItemNewStepFunc:
     Type: AWS::StepFunctions::StateMachine
@@ -35,188 +41,188 @@ Resources:
       StateMachineName: rsdemo-News-ItemNewStepFunc
       DefinitionString: !Sub |
         {
-                 "StartAt": "Process raw data",
-                 "TimeoutSeconds": 36000,
-                 "States": {
-                   "Process raw data": {
-                     "Type": "Parallel",
-                     "Branches": [
-                       {
-                         "StartAt": "Wait 10 seconds",
-                         "States": {
-                           "Wait 10 seconds": {
-                             "Type": "Wait",
-                             "Seconds": 10,
-                             "Next": "Item data processing"
-                           },
-                           "Item data processing": {
-                             "Type": "Task",
-                             "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                             "Parameters": {
-                               "Input": {
-                                 "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                                 "Bucket.$": "$.Bucket",
-                                 "S3Prefix.$": "$.S3Prefix"
-                               },
-                               "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemPreprocessingStepFunc",
-                               "Name.$": "States.Format('{}', $$.Execution.Name)"
-                             },
-                             "End": true,
-                             "ResultPath": "$.ItemPreprocessing"
-                           }
-                         }
-                       },
-                       {
-                         "StartAt": "Wait 1 seconds",
-                         "States": {
-                           "Wait 1 seconds": {
-                             "Type": "Wait",
-                             "Seconds": 1,
-                             "Next": "Action data processing"
-                           },
-                           "Action data processing": {
-                             "Type": "Task",
-                             "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                             "Parameters": {
-                               "Input": {
-                                 "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                                 "Bucket.$": "$.Bucket",
-                                 "S3Prefix.$": "$.S3Prefix"
-                               },
-                               "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionPreprocessingStepFunc",
-                               "Name.$": "States.Format('{}', $$.Execution.Name)"
-                             },
-                             "ResultPath": "$.ActionProcessing",
-                             "End": true
-                           }
-                         }
-                       }
-                     ],
-                     "ResultPath": null,
-                     "Next": "Process data"
-                   },
-                   "Process data": {
-                     "Type": "Parallel",
-                     "Branches": [
-                       {
-                         "StartAt": "Wait 10 seconds",
-                         "States": {
-                           "Wait 10 seconds": {
-                             "Type": "Wait",
-                             "Seconds": 10,
-                             "Next": "Inverted list"
-                           },
-                           "Inverted list": {
-                             "Type": "Task",
-                             "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                             "Parameters": {
-                               "Input": {
-                                 "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                                 "Bucket.$": "$.Bucket",
-                                 "S3Prefix.$": "$.S3Prefix"
-                               },
-                               "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-InvertedListStepFunc",
-                               "Name.$": "States.Format('{}', $$.Execution.Name)"
-                             },
-                             "ResultPath": "$.InvertedList",
-                             "End": true
-                           }
-                         }
-                       },
-                       {
-                         "StartAt": "Wait 1 seconds",
-                         "States": {
-                           "Wait 1 seconds": {
-                             "Type": "Wait",
-                             "Seconds": 1,
-                             "Next": "Add item user batch"
-                           },
-                           "Add item user batch": {
-                             "Type": "Task",
-                             "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                             "Parameters": {
-                               "Input": {
-                                 "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                                 "Bucket.$": "$.Bucket",
-                                 "S3Prefix.$": "$.S3Prefix"
-                               },
-                               "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AddItemUserBatchStepFunc",
-                               "Name.$": "States.Format('{}', $$.Execution.Name)"
-                             },
-                             "ResultPath": "$.AddItemUserBatch",
-                             "End": true
-                           }
-                         }
-                       }
-                     ],
-                     "ResultPath": null,
-                     "Next": "Model update (embedding)"
-                   },
-                   "Model update (embedding)": {
-                     "Type": "Task",
-                     "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                     "Parameters": {
-                       "Input": {
-                         "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                         "Bucket.$": "$.Bucket",
-                         "S3Prefix.$": "$.S3Prefix"
-                       },
-                       "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateEmbeddingStepFunc",
-                       "Name.$": "States.Format('{}', $$.Execution.Name)"
-                     },
-                     "ResultPath": "$.ModelUpdateEmbedding",
-                     "Next": "Item feature update batch"
-                   },
-                   "Item feature update batch": {
-                     "Type": "Task",
-                     "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                     "Parameters": {
-                       "Input": {
-                         "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                         "Bucket.$": "$.Bucket",
-                         "S3Prefix.$": "$.S3Prefix"
-                       },
-                       "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-NoOpStepFunc",
-                       "Name.$": "States.Format('{}', $$.Execution.Name)"
-                     },
-                     "Next": "Model update (action)",
-                     "ResultPath": "$.ItemFeatureUpdateBatch"
-                   },
-                   "Model update (action)": {
-                     "Type": "Task",
-                     "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                     "Parameters": {
-                       "Input": {
-                         "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                         "Bucket.$": "$.Bucket",
-                         "S3Prefix.$": "$.S3Prefix"
-                       },
-                       "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateActionStepFunc",
-                       "Name.$": "States.Format('{}', $$.Execution.Name)"
-                     },
-                     "Next": "Send notification",
-                     "ResultPath": "$.ModelUpdateAction"
-                   },
-                   "Send notification": {
-                     "Type": "Task",
-                     "Resource": "arn:aws:states:::lambda:invoke",
-                     "Parameters": {
-                       "FunctionName": "${SNSMessageLambda}",
-                       "Payload": {
-                         "file_type": "item-new",
-                         "message_type": "news",
-                         "Bucket.$": "$.Bucket",
-                         "S3Prefix.$": "$.S3Prefix"
-                       }
-                     },
-                     "ResultSelector": {
-                       "Payload.$": "$.Payload"
-                     },
-                     "Next": "Succeed",
-                     "ResultPath": "$.Notification"
-                   },
-                   "Succeed": {
-                     "Type": "Succeed"
-                   }
-                 }
-               }
+          "StartAt": "Process raw data",
+          "TimeoutSeconds": 36000,
+          "States": {
+            "Process raw data": {
+              "Type": "Parallel",
+              "Branches": [
+                {
+                  "StartAt": "Wait 10 seconds",
+                  "States": {
+                    "Wait 10 seconds": {
+                      "Type": "Wait",
+                      "Seconds": 10,
+                      "Next": "Item data processing"
+                    },
+                    "Item data processing": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+                      "Parameters": {
+                        "Input": {
+                          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                          "Bucket.$": "$.Bucket",
+                          "S3Prefix.$": "$.S3Prefix"
+                        },
+                        "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemPreprocessingStepFunc",
+                        "Name.$": "States.Format('{}', $$.Execution.Name)"
+                      },
+                      "End": true,
+                      "ResultPath": "$.ItemPreprocessing"
+                    }
+                  }
+                },
+                {
+                  "StartAt": "Wait 1 seconds",
+                  "States": {
+                    "Wait 1 seconds": {
+                      "Type": "Wait",
+                      "Seconds": 1,
+                      "Next": "Action data processing"
+                    },
+                    "Action data processing": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+                      "Parameters": {
+                        "Input": {
+                          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                          "Bucket.$": "$.Bucket",
+                          "S3Prefix.$": "$.S3Prefix"
+                        },
+                        "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionPreprocessingStepFunc",
+                        "Name.$": "States.Format('{}', $$.Execution.Name)"
+                      },
+                      "ResultPath": "$.ActionProcessing",
+                      "End": true
+                    }
+                  }
+                }
+              ],
+              "ResultPath": null,
+              "Next": "Process data"
+            },
+            "Process data": {
+              "Type": "Parallel",
+              "Branches": [
+                {
+                  "StartAt": "Wait 10 seconds",
+                  "States": {
+                    "Wait 10 seconds": {
+                      "Type": "Wait",
+                      "Seconds": 10,
+                      "Next": "Inverted list"
+                    },
+                    "Inverted list": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+                      "Parameters": {
+                        "Input": {
+                          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                          "Bucket.$": "$.Bucket",
+                          "S3Prefix.$": "$.S3Prefix"
+                        },
+                        "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-InvertedListStepFunc",
+                        "Name.$": "States.Format('{}', $$.Execution.Name)"
+                      },
+                      "ResultPath": "$.InvertedList",
+                      "End": true
+                    }
+                  }
+                },
+                {
+                  "StartAt": "Wait 1 seconds",
+                  "States": {
+                    "Wait 1 seconds": {
+                      "Type": "Wait",
+                      "Seconds": 1,
+                      "Next": "Add item user batch"
+                    },
+                    "Add item user batch": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+                      "Parameters": {
+                        "Input": {
+                          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                          "Bucket.$": "$.Bucket",
+                          "S3Prefix.$": "$.S3Prefix"
+                        },
+                        "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AddItemUserBatchStepFunc",
+                        "Name.$": "States.Format('{}', $$.Execution.Name)"
+                      },
+                      "ResultPath": "$.AddItemUserBatch",
+                      "End": true
+                    }
+                  }
+                }
+              ],
+              "ResultPath": null,
+              "Next": "Model update (embedding)"
+            },
+            "Model update (embedding)": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateEmbeddingStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.ModelUpdateEmbedding",
+              "Next": "Item feature update batch"
+            },
+            "Item feature update batch": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${ItemFeatureUpdateBatchStepFuncName}",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "Next": "Model update (action)",
+              "ResultPath": "$.ItemFeatureUpdateBatch"
+            },
+            "Model update (action)": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ModelUpdateActionStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "Next": "Send notification",
+              "ResultPath": "$.ModelUpdateAction"
+            },
+            "Send notification": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${SNSMessageLambda}",
+                "Payload": {
+                  "file_type": "item-new",
+                  "message_type": "news",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                }
+              },
+              "ResultSelector": {
+                "Payload.$": "$.Payload"
+              },
+              "Next": "Succeed",
+              "ResultPath": "$.Notification"
+            },
+            "Succeed": {
+              "Type": "Succeed"
+            }
+          }
+        }
