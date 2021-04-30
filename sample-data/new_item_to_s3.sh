@@ -31,4 +31,6 @@ if [[ $? -ne 0 ]]; then
       echo "error!!! aws  s3 sync . s3://${BUCKET_BUILD}/${PREFIX}/"
       exit 1
 fi
+rm ./ingest-data/item/item_new.csv
+
 
