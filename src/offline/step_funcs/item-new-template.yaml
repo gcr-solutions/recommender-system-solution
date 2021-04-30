@@ -134,7 +134,7 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemFeatureUpdateWorkshopBatchStepFunc",
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-NoOpStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "Next": "Model update (action)",

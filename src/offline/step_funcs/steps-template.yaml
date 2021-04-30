@@ -33,6 +33,22 @@ Parameters:
     Default: 522244679887.dkr.ecr.ap-northeast-1.amazonaws.com
 
 Resources:
+  NoOpStepFunc:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
+      StateMachineName: rsdemo-News-NoOpStepFunc
+      DefinitionString: !Sub |
+        {
+          "StartAt": "No-op",
+          "States": {
+            "No-op": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        }
+
   SMProcessingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -584,22 +600,6 @@ Resources:
             }
           }
         }
-
-    ItemFeatureUpdateWorkshopBatchStepFunc:
-      Type: AWS::StepFunctions::StateMachine
-      Properties:
-        RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
-        StateMachineName: rsdemo-News-ItemFeatureUpdateWorkshopBatchStepFunc
-        DefinitionString: !Sub |
-          {
-            "StartAt": "No-op",
-            "States": {
-              "No-op": {
-                "Type": "Pass",
-                "End": true
-              }
-            }
-          }
 
   ########################################################################################
   # Training step funcs
