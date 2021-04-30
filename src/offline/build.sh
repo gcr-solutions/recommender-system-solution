@@ -10,7 +10,7 @@ OK_print () {
    echo -e "$Green $1 \e[39m"
 }
 Error_print() {
-	 echo -e "$'\e[1;31m' $1 \e[39m"
+	 echo -e "$Red $1 \e[39m"
 }
 
 Yellow_print() {
