@@ -3,22 +3,22 @@
 echo "################"
 Red=$'\e[1;31m'
 Green=$'\e[1;32m'
-Yellow='\e[1;33m'
+Yellow=$'\e[1;33m'
 Blue=$'\e[1;34m'
 
 OK_print () {
-   echo "$Green $1 \e[0m"
+   echo -e "$Green $1 \e[39m"
 }
 Error_print() {
-	 echo "$Red $1 \e[0m"
+	 echo -e "$'\e[1;31m' $1 \e[39m"
 }
 
 Yellow_print() {
-  echo "$Yellow $1 \e[0m"
+  echo -e "$Yellow $1 \e[39m"
 }
 
 Blue_print() {
-  echo "$Blue $1 \e[0m"
+  echo -e "$Blue $1 \e[39m"
 }
 
 
