@@ -55,3 +55,12 @@ do
    fi
 done
 
+StepInput='{
+  "Bucket": "${BUCKET}",
+  "S3Prefix": "$S3Prefix",
+  "change_type": "CONTENT|ACTION|MODEL"
+}'
+echo ""
+echo "You can run stepfuncs with below input"
+echo ${StepInput}
+echo ""
