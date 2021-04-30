@@ -28,7 +28,7 @@ if [[ -z $REGION ]];then
     REGION='ap-northeast-1'
 fi
 
-echo "REGION: $REGION"
+Yellow_print "REGION: $REGION"
 
 AWS_ACCOUNT_ID=$(aws  sts get-caller-identity  --o text | awk '{print $1}')
 Yellow_print "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
