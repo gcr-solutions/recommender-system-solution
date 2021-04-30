@@ -35,64 +35,37 @@ Resources:
       StateMachineName: rsdemo-News-ActionNewStepFunc
       DefinitionString: !Sub |
         {
-          "StartAt": "Process raw data",
+          "StartAt": "Action processing",
           "TimeoutSeconds": 36000,
           "States": {
-            "Process raw data": {
-              "Type": "Parallel",
-              "Branches": [
-                {
-                  "StartAt": "Wait 1 seconds",
-                  "States": {
-                    "Wait 1 seconds": {
-                      "Type": "Wait",
-                      "Seconds": 1,
-                      "Next": "Action processing"
-                    },
-                    "Action processing": {
-                      "Type": "Task",
-                      "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                      "Parameters": {
-                        "Input": {
-                          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                          "Bucket.$":  "$.Bucket",
-                          "S3Prefix.$": "$.S3Prefix"
-                        },
-                        "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionPreprocessingStepFunc",
-                        "Name.$": "States.Format('{}', $$.Execution.Name)"
-                      },
-                      "ResultPath": "$.ActionProcessing",
-                      "End": true
-                    }
-                  }
+            "Action processing": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
                 },
-                {
-                  "StartAt": "Wait 10 seconds",
-                  "States": {
-                    "Wait 10 seconds": {
-                      "Type": "Wait",
-                      "Seconds": 10,
-                      "Next": "Inverted list"
-                    },
-                    "Inverted list": {
-                      "Type": "Task",
-                      "Resource": "arn:aws:states:::states:startExecution.sync:2",
-                      "Parameters": {
-                        "Input": {
-                          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                          "Bucket.$":  "$.Bucket",
-                          "S3Prefix.$": "$.S3Prefix"
-                        },
-                        "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-InvertedListStepFunc",
-                        "Name.$": "States.Format('{}', $$.Execution.Name)"
-                      },
-                      "ResultPath": "$.InvertedList",
-                      "End": true
-                    }
-                  }
-                }
-              ],
-              "ResultPath": null,
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionPreprocessingStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.ActionProcessing",
+              "Next": "Inverted list"
+            },
+            "Inverted list": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-InvertedListStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.InvertedList",
               "Next": "Portrait batch"
             },
             "Portrait batch": {
@@ -101,7 +74,7 @@ Resources:
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-PortraitBatchStepFunc",
@@ -116,7 +89,7 @@ Resources:
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-RecallBatchStepFunc",
@@ -131,7 +104,7 @@ Resources:
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-RankBatchStepFunc",
@@ -146,7 +119,7 @@ Resources:
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-FilterBatchStepFunc",
@@ -163,7 +136,7 @@ Resources:
                 "Payload": {
                   "file_type": "action-new",
                   "message_type": "news",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 }
               },
