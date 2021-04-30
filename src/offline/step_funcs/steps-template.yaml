@@ -585,6 +585,21 @@ Resources:
           }
         }
 
+    ItemFeatureUpdateWorkshopBatchStepFunc:
+      Type: AWS::StepFunctions::StateMachine
+      Properties:
+        RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
+        StateMachineName: rsdemo-News-ItemFeatureUpdateWorkshopBatchStepFunc
+        DefinitionString: !Sub |
+          {
+            "StartAt": "No-op",
+            "States": {
+              "No-op": {
+                "Type": "Pass",
+                "End": true
+              }
+            }
+          }
 
   ########################################################################################
   # Training step funcs
