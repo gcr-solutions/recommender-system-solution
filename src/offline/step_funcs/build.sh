@@ -79,6 +79,6 @@ StepInput="{
   \"change_type\": \"CONTENT|ACTION|MODEL\"
 }"
 echo ""
-OK_print "stepfuncs deploy completed. You can run stepfuncs with below input"
-echo ${StepInput}
+echo "stepfuncs deploy completed. You can run stepfuncs with below input"
+Blue_print ${StepInput}
 echo ""
