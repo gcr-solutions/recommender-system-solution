@@ -118,6 +118,7 @@ Resources:
                   "file_list": [
                    "system/ingest-data/action/",
                    "system/ingest-data/user/"
+                   "feature/content/inverted-list/news_id_news_feature_dict.pickle"
                   ]
                 }
               },
