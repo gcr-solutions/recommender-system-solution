@@ -311,7 +311,6 @@ Resources:
                   "prefix.$": "$.S3Prefix",
                   "file_list": [
                    "system/action-data/action.csv",
-                   "feature/recommend-list/portrait/portrait.pickle",
                    "feature/content/inverted-list/news_id_news_property_dict.pickle"
                   ]
                 }
