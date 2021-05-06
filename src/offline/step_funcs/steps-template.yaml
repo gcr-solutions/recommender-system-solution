@@ -26,7 +26,7 @@ Parameters:
   SNSMessageLambda:
     Type: String
     Default: rsdemo-SNSMessageLambda
-    
+
   ECRPrefix:
     Type: String
     #Default: public.ecr.aws/t8u1z3c8
@@ -117,7 +117,7 @@ Resources:
                   "prefix.$": "$.S3Prefix",
                   "file_list": [
                    "system/ingest-data/action/",
-                   "system/ingest-data/user/"
+                   "system/ingest-data/user/",
                    "feature/content/inverted-list/news_id_news_feature_dict.pickle"
                   ]
                 }
