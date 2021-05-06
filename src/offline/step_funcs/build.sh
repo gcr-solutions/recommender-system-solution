@@ -64,7 +64,7 @@ do
     --capabilities CAPABILITY_NAMED_IAM
 
      StackStatus=$(aws  cloudformation  describe-stacks --region ${REGION} --stack-name ${STACK_NAME} --output table | grep StackStatus)
-     echo ${StackStatus} |  grep CREATE_COMPLETE > /dev/null
+     echo ${StackStatus} |  egrep "(CREATE_COMPLETE)|(UPDATE_COMPLETE)" > /dev/null
 
      if [[ $? -ne 0 ]]; then
          Error_print "error!!!  ${StackStatus}"
