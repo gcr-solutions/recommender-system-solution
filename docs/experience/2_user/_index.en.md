@@ -1,6 +1,6 @@
 ---
-title: Experience As An End User
-weight: 40
+title: Browse the Recommender System as An End User
+weight: 42
 ---
 
 ## Explore the user experience
