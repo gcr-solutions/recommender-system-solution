@@ -41,7 +41,7 @@ spec:
             value: "recall"
           - name: RECALL_PORT
             value: "5500"
-          - name: OFFLINE_STEPFUNCS_ARN
-            value: $(OFFLINE_STEPFUNCS_ARN)
           - name: AWS_REGION
             value: $(AWS_REGION)
+          - name: S3_BUCKET
+            value: $(S3_BUCKET)

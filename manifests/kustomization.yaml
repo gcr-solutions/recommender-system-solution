@@ -102,8 +102,8 @@ vars:
     kind: ConfigMap
     name: rs-beta-config
 - fieldref:
-    fieldPath: data.offline_stepfuncs_arn
-  name: OFFLINE_STEPFUNCS_ARN
+    fieldPath: data.s3_bucket
+  name: S3_BUCKET
   objref:
     apiVersion: v1
     kind: ConfigMap

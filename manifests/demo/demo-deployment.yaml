@@ -40,11 +40,15 @@ spec:
           - name: LOCAL_DATA_FOLDER
             value: /rs-data/ 
           - name: CLICK_RECORD_BUCKET            
-            value: gcr-rs-ops-ap-southeast-1-522244679887
+            value: $(S3_BUCKET)
           - name: S3_BUCKET_DATA
-            value: gcr-rs-ops-ap-southeast-1-522244679887
+            value: $(S3_BUCKET)
           - name: CLICK_RECORD_FILE_PATH
-            value: user-data/action/
+            value: sample-data/system/ingest-data/action/
+          - name: USER_RECORD_FILE_PATH
+            value: sample-data/system/ingest-data/user/
+          - name: S3_BUCKET
+            value: $(S3_BUCKET)
         volumeMounts:
           - name: persistent-storage
             mountPath: /rs-data
