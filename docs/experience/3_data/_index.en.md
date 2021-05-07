@@ -1,5 +1,5 @@
 ---
-title: Data Exploration As And End User
+title: Data Exploration
 weight: 43
 ---
 

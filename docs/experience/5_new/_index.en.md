@@ -1,5 +1,5 @@
 ---
-title: What Happens When New Items Updated
+title: New Items Added
 weight: 45
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Browse the Recommender System as An End User
+title: Browse The Recommender System
 weight: 42
 ---
 

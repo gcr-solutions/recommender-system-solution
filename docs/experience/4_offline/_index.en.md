@@ -1,5 +1,5 @@
 ---
-title: The Offline Logic of Recommender System
+title: Trigger offline logic
 weight: 44
 ---
 
