@@ -7,7 +7,7 @@ echo "REGION: $REGION"
 AWS_ACCOUNT_ID=$(aws  sts get-caller-identity  --o text | awk '{print $1}')
 echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 
-BUCKET_BUILD=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
+BUCKET=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
 PREFIX=sample-data
 
 
@@ -31,7 +31,7 @@ for lambda_func_name in ${lambda_funcs_name[@]}; do
   code_file=${PREFIX}/code/lambda/${lambda_funcs_code[$i]}
   echo $code_file
   aws  lambda  update-function-code --function-name ${lambda_func_name} \
-  --s3-bucket ${BUCKET_BUILD} \
+  --s3-bucket ${BUCKET} \
   --s3-key $code_file >/dev/null
   i=$(( $i+1 ))
 done
