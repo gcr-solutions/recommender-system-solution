@@ -32,6 +32,13 @@ do
   fi
 done
 
+echo "ingressgateway_elb: $ingressgateway_elb"
+
+if [[ -z $ingressgateway_elb ]];then
+  echo "Error: cannot find istio ingress gateway"
+  exit 1
+fi
+
 dns_name=$(aws elb  describe-load-balancers --load-balancer-name $ingressgateway_elb --output text | grep LOADBALANCERDESCRIPTIONS | awk '{print $2 }')
 
 echo "dns_name: $dns_name"
