@@ -27,5 +27,11 @@ eksctl delete cluster --name=rs-beta
 This will take about ~20 minutes to release resources
 {{% /notice %}}
 
-8. In the [Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9/home?region=ap-northeast-1#), select gcr-rs-workshop env and click Delete button
+8. In the Cloud9 IDE Console, run below command to delete offline:
+```sh
+cd scripts
+./clean-offline.sh
+```
+
+9. In the [Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9/home?region=ap-northeast-1#), select gcr-rs-workshop env and click Delete button
 
