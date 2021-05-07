@@ -13,6 +13,9 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+echo "REGION: $REGION"
+echo "ACCOUNT_ID: $account_id"
+
 elb_names=($(aws elb  describe-load-balancers --output text | grep LOADBALANCERDESCRIPTIONS |  awk '{print $6 }'))
 
 echo "find $#elb_names elbs"
