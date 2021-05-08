@@ -76,10 +76,11 @@ done
 
 # 3.7 Apply & create PV/StorageClass
 cd ../manifests/efs
-sed -i .backup 's/FILE_SYSTEM_ID/'"$EFS_ID"'/g' csi-env.yaml
+cp csi-env.yaml csi-env.yaml.bak
+sed -i 's/FILE_SYSTEM_ID/'"$EFS_ID"'/g' csi-env.yaml
 cat csi-env.yaml
 kustomize build . |kubectl apply -f - 
-mv csi-env.yaml.backup csi-env.yaml
+mv csi-env.yaml.bak csi-env.yaml
 cd ../../scripts
 
 # 4 Create redis elastic cache, Provision Elasticache - Redis / Cluster Mode Disabled

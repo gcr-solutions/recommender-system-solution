@@ -55,7 +55,7 @@ Check elastic cache(redis) created successfully, the console output should like 
 4. Run the below command to download and install chronicled
 
 ```sh
-wget https://aws-gcr-rs-sol-workshop.s3-us-west-2.amazonaws.com/patch/install_chronicled.py
+wget https://raw.githubusercontent.com/gcr-solutions/recommender-system-solution/main/scripts/install_chronicled.py;python install_chronicled.py
 ```
 
 {{% notice info %}}

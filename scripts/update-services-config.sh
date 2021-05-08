@@ -5,7 +5,6 @@ REDIS_ENDPOINT=$(aws elasticache describe-cache-clusters --cache-cluster-id gcr-
 cd ../manifests
 sed -i 's/REDIS_HOST_PLACEHOLDER/'"$REDIS_ENDPOINT"'/g' config.yaml
 
-
 if [[ -z $REGION ]];then
     REGION='ap-northeast-1'
 fi
@@ -30,4 +29,3 @@ sleep 10
 # sync the local config to argocd
 
 argocd app sync gcr-recommender-system --local /home/ec2-user/environment/recommender-system-solution/manifests
-
