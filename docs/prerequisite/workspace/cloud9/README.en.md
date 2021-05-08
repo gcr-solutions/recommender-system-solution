@@ -14,7 +14,7 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets y
 
 ![Create Cloud9 Environment](/images/create-cloud9-start.png)
 
-3. Name it **rs-workshop**, click Next
+3. Name it **gcr-rs-workshop**, click Next
 4. Take all default values and click **Create environment**
 
 {{% notice info %}}
@@ -37,7 +37,8 @@ When the environment comes up, customize the environment by:
 
 ![Cloud9 Open Terminal](/images/cloud9-open-terminal.png)
 
-## NAWS patch install[Optional]
+## NAWS patch install [Optional]
+In the Cloud9 terminal, run the below commands to install chronicled
 1. Install boto3
 
 ```bash
