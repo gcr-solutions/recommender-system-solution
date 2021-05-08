@@ -24,4 +24,6 @@ If any error occurs, this icon will become red and you can click the link for th
 
 When the model has already been trained, the offline logic will notice the online service to reload model. In this case, the rank service will be noticed to reload the trained model.
 
+The other two offline functions will be introduced in the next page.
+
 
