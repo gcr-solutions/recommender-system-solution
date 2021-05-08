@@ -41,7 +41,7 @@ Check elastic cache(redis) created successfully, the console output should like 
 
 ![Verify EKS nodes](/images/check-redis.png)
 
-## NAWS patch install[Optional]
+## NAWS patch install [Optional]
 1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running;search=rs-beta-rs-cpu-ng-Node)
 
 2. Select one ec2 instance named **rs-beta-rs-cpu-ng-Node**, then click **connect**

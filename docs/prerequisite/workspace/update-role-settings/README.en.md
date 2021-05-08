@@ -8,11 +8,7 @@ Cloud9 normally manages IAM credentials dynamically. This isn't currently compat
 the EKS IAM authentication, so we will disable it and rely on the IAM role instead.
 {{% /notice %}}
 
-{{% notice info %}}
-Starting from here, when you see command to be entered such as below, you will enter these commands into Cloud9 IDE. You can use the **Copy to clipboard** feature (right hand upper corner) to simply copy and paste into Cloud9. In order to paste, you can use Ctrl + V for Windows or Command + V for Mac.
-{{% /notice %}}
-
-- Return to your Cloud9 workspace and click the gear icon (in top right corner)
+- Go to your Cloud9 workspace and click the gear icon (in top right corner)
 - Select **AWS SETTINGS**
 - Turn off **AWS managed temporary credentials**
 - Close the Preferences tab
@@ -39,7 +35,7 @@ export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
 ```
 
-Check if AWS_REGION is set to desired region
+Check if AWS_REGION is set to desired region, you should get "AWS_REGION is ap-northeast-1"
 
 ```sh
 test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set
@@ -62,4 +58,4 @@ Use the [GetCallerIdentity](https://docs.aws.amazon.com/cli/latest/reference/sts
 aws sts get-caller-identity --query Arn | grep gcr-rs-workshop-admin -q && echo "IAM role valid" || echo "IAM role NOT valid"
 ```
 
-If the IAM role is not valid, <span style="color: red;">**DO NOT PROCEED**</span>. Go back and confirm the steps on this page.
+You should get "IAM role valid" message, If the IAM role is not valid, <span style="color: red;">**DO NOT PROCEED**</span>. Go back and confirm the steps on this page.

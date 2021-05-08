@@ -35,3 +35,5 @@ cd scripts
 
 9. In the [Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9/home?region=ap-northeast-1#), select gcr-rs-workshop env and click Delete button
 
+10. Go to [IAM Role Console](https://console.aws.amazon.com/iam/home#/roles), select **gcr-rs-workshop-admin** role, and delete this role.
+

@@ -39,6 +39,7 @@ When the environment comes up, customize the environment by:
 
 ## NAWS patch install [Optional]
 In the Cloud9 terminal, run the below commands to install chronicled
+
 1. Install boto3
 
 ```bash
@@ -48,7 +49,7 @@ sudo pip3 install boto3
 2. Download install_chronicled.py script
 
 ```bash
-sudo wget https://aws-gcr-rs-sol-workshop.s3-us-west-2.amazonaws.com/patch/install_chronicled.py
+sudo wget https://raw.githubusercontent.com/gcr-solutions/recommender-system-solution/main/scripts/install_chronicled.py
 ```
 
 3. install chronicled

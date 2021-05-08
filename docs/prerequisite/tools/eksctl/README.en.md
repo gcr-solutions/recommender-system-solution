@@ -28,4 +28,4 @@ You should get a "No clusters found" message.
 eksctl version
 ```
 
-You should get a "0.46.0" version or newer.
+You should get a "0.48.0" version or newer.
