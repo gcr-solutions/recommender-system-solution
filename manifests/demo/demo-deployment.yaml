@@ -44,9 +44,9 @@ spec:
           - name: S3_BUCKET_DATA
             value: $(S3_BUCKET)
           - name: CLICK_RECORD_FILE_PATH
-            value: sample-data/system/ingest-data/action/
+            value: $(CLICK_RECORD_FILE_PATH)
           - name: USER_RECORD_FILE_PATH
-            value: sample-data/system/ingest-data/user/
+            value: $(USER_RECORD_FILE_PATH)
           - name: S3_BUCKET
             value: $(S3_BUCKET)
         volumeMounts:

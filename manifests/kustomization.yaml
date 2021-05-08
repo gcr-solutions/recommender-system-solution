@@ -108,3 +108,20 @@ vars:
     apiVersion: v1
     kind: ConfigMap
     name: rs-beta-config
+- fieldref:
+    fieldPath: data.click_record_file_path
+  name: CLICK_RECORD_FILE_PATH
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config
+- fieldref:
+    fieldPath: data.user_record_file_path
+  name: USER_RECORD_FILE_PATH
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: rs-beta-config        
+
+
+
