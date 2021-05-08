@@ -31,7 +31,7 @@ curl -X POST -d '{"message": {"file_type": "action-model","file_path": "sample-d
 sleep 10
 
 # embedding
-curl -X POST -d '{"message": {"file_type": "embedding","file_path": "sample-data/notification/embeddings/","file_name": ["dkn_context_embedding.npy","dkn_entity_embedding.npy","dkn_relation_embedding.npy","dkn_word_embedding.npy",]}}' -H "Content-Type:application/json" http://$dns_name/loader/notice
+curl -X POST -d '{"message": {"file_type": "embedding","file_path": "sample-data/notification/embeddings/","file_name": ["dkn_context_embedding.npy","dkn_entity_embedding.npy","dkn_relation_embedding.npy","dkn_word_embedding.npy"]}}' -H "Content-Type:application/json" http://$dns_name/loader/notice
 
 sleep 10
 # item record data
