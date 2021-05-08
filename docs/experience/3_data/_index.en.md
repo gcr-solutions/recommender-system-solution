@@ -3,14 +3,24 @@ title: Data Exploration
 weight: 43
 ---
 
-In this section, you will experience the CD(Continuous Deployment) process if one of recommender system service is changed, you’ll need the following steps:
+There is an icon in the GUI that you can enter into the administrator ui:
 
-1. Change demo service deployment config to new image tag
+![Admin-Icon](/images/admin-icon.png)
 
+Then you will see the administrator ui (TODO，准备500用户，点击次数5次以下).
 
-2. Update services deployment config to argo cd.
+![Admin-UI](/images/admin-ui.png)
 
+The statistics is carried automatically every 15 minutes. You can see that we have prepared over 2000 news for you. We have prepared 500 fake users for you. The more you click , you will more likely become the active user. The whole click number, hot topics and hot news are also displayed. 
 
-3. You will see the new demo service image dployed.
+There are many metrics for a recommender system. In this solution, we show the click rate and coverage rate.
 
-TODO picture
+\begin{equation}
+    \click_rate = \frac{clicked news}{exposed news}
+\end{equation}
+
+\begin{equation}
+    \coverage = \frac{exposed news}{whole news}
+\end{equation}
+
+The click rate evaluates the performance of recommendation list. The coverage rate shows how many news have been recommended to the user. From the perspective of the system, every news has each value and should recommended to the most suitable user.

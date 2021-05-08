@@ -1,0 +1,246 @@
+{
+ "total_item_count": 2128,
+ "recommender_click_cover_ratio": 0.3,
+ "item_click_ratio": 0.92,
+ "total_click_count": 5188,
+ "top_users": [
+  {
+   "user_id": "52a369e8-9dc3-11eb-a364-acde48001122",
+   "name": "innocentSeafowl4",
+   "count": 3
+  },
+  {
+   "user_id": "52a32dd4-9dc3-11eb-a364-acde48001122",
+   "name": "curiousLeopard0",
+   "count": 2
+  },
+  {
+   "user_id": "52a31722-9dc3-11eb-a364-acde48001122",
+   "name": "panickyWildfowl9",
+   "count": 2
+  },
+  {
+   "user_id": "52a3a64c-9dc3-11eb-a364-acde48001122",
+   "name": "gleefulEland5",
+   "count": 2
+  },
+  {
+   "user_id": "52a37d0c-9dc3-11eb-a364-acde48001122",
+   "name": "unhappySnipe0",
+   "count": 2
+  },
+  {
+   "user_id": "52a2d352-9dc3-11eb-a364-acde48001122",
+   "name": "pridefulTomatoe6",
+   "count": 2
+  },
+  {
+   "user_id": "52a23fd2-9dc3-11eb-a364-acde48001122",
+   "name": "obsessedLocust2",
+   "count": 2
+  },
+  {
+   "user_id": "52a29072-9dc3-11eb-a364-acde48001122",
+   "name": "sincereJerky0",
+   "count": 2
+  },
+  {
+   "user_id": "52a28dde-9dc3-11eb-a364-acde48001122",
+   "name": "dejectedTortoise4",
+   "count": 2
+  },
+  {
+   "user_id": "52a28bb8-9dc3-11eb-a364-acde48001122",
+   "name": "empathicSmelt3",
+   "count": 2
+  }
+ ],
+ "top_items": [
+  {
+   "id": "6552293280657179149",
+   "title": "加拿大班夫国家公园怎么玩？旅行达人给你推荐班夫旅行实用攻略",
+   "count": 2
+  },
+  {
+   "id": "6487184017585078541",
+   "title": "富士康总裁郭台铭放话：未来电商平台可能会消失！你怎么看？马云怎么办？",
+   "count": 2
+  },
+  {
+   "id": "6553622433398522382",
+   "title": "SE 公布 E3 发布会时间，英国麦当劳推出马里奥玩具｜Jump简报",
+   "count": 2
+  },
+  {
+   "id": "6552380335139586563",
+   "title": "冯提莫出任重庆共青团宣传大使 直言希望能给青少年带去正能量",
+   "count": 2
+  },
+  {
+   "id": "6552338472605057550",
+   "title": "泰安家长速看！泰安中小学2018暑假时间发布了！",
+   "count": 2
+  },
+  {
+   "id": "6551727668520288771",
+   "title": "最受中国游客欢迎的西班牙国营古堡酒店",
+   "count": 2
+  },
+  {
+   "id": "6552302342262227470",
+   "title": "全球最壕警队，迪拜又买新车了？法拉利、宾利、迈凯轮都吃灰了？",
+   "count": 2
+  },
+  {
+   "id": "6552467330671051271",
+   "title": "甘肃省社科联专家学者观摩临夏市旅游产业发展成果",
+   "count": 2
+  },
+  {
+   "id": "6552666691753476612",
+   "title": "87版红楼梦剧组再聚首，“板儿”风华正茂，“黛玉”芳龄永继",
+   "count": 2
+  },
+  {
+   "id": "6552333094777520643",
+   "title": "专为中国市场打造的韩国“轿跑”来袭，剑指思域、凌渡",
+   "count": 2
+  }
+ ],
+ "click_count_by_source": [
+  {
+   "source": "news_agriculture",
+   "source_code": "115",
+   "count": 182
+  },
+  {
+   "source": "news_house",
+   "source_code": "106",
+   "count": 210
+  },
+  {
+   "source": "news_world",
+   "source_code": "113",
+   "count": 239
+  },
+  {
+   "source": "news_finance",
+   "source_code": "104",
+   "count": 214
+  },
+  {
+   "source": "news_edu",
+   "source_code": "108",
+   "count": 198
+  },
+  {
+   "source": "news_game",
+   "source_code": "116",
+   "count": 213
+  },
+  {
+   "source": "news_travel",
+   "source_code": "112",
+   "count": 219
+  },
+  {
+   "source": "news_military",
+   "source_code": "110",
+   "count": 208
+  },
+  {
+   "source": "news_sports",
+   "source_code": "103",
+   "count": 220
+  },
+  {
+   "source": "stock",
+   "source_code": "114",
+   "count": 7
+  },
+  {
+   "source": "recommend",
+   "source_code": "1",
+   "count": 2432
+  },
+  {
+   "source": "news_tech",
+   "source_code": "109",
+   "count": 201
+  },
+  {
+   "source": "news_culture",
+   "source_code": "101",
+   "count": 207
+  },
+  {
+   "source": "news_car",
+   "source_code": "107",
+   "count": 206
+  },
+  {
+   "source": "news_story",
+   "source_code": "100",
+   "count": 42
+  },
+  {
+   "source": "news_entertainment",
+   "source_code": "102",
+   "count": 190
+  }
+ ],
+ "click_count_recommender_time_window": [
+  {
+   "start_time": 1618466400,
+   "end_time": 1618470000,
+   "is_recommender": true,
+   "count": 390
+  },
+  {
+   "start_time": 1618466400,
+   "end_time": 1618470000,
+   "is_recommender": false,
+   "count": 459
+  },
+  {
+   "start_time": 1618470000,
+   "end_time": 1618473600,
+   "is_recommender": false,
+   "count": 479
+  },
+  {
+   "start_time": 1618470000,
+   "end_time": 1618473600,
+   "is_recommender": true,
+   "count": 381
+  },
+  {
+   "start_time": 1618473600,
+   "end_time": 1618477200,
+   "is_recommender": false,
+   "count": 373
+  },
+  {
+   "start_time": 1618473600,
+   "end_time": 1618477200,
+   "is_recommender": true,
+   "count": 361
+  },
+  {
+   "start_time": 1618477200,
+   "end_time": 1618480800,
+   "is_recommender": true,
+   "count": 144
+  },
+  {
+   "start_time": 1618477200,
+   "end_time": 1618480800,
+   "is_recommender": false,
+   "count": 140
+  }
+ ],
+ "total_user_count": 1000,
+ "register_user_count": 1000,
+ "anonymous_user_count": 0,
+ "report_time": 1620431406
+}
