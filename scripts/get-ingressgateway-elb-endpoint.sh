@@ -16,4 +16,4 @@ done
 
 dns_name=$(aws elb describe-load-balancers --load-balancer-name $ingressgateway_elb --output text | grep LOADBALANCERDESCRIPTIONS | awk '{print $2 }')
 
-echo "dns_name: $dns_name"
+echo "endpoint: $dns_name"
