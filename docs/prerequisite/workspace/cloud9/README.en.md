@@ -38,23 +38,21 @@ When the environment comes up, customize the environment by:
 ![Cloud9 Open Terminal](/images/cloud9-open-terminal.png)
 
 ## NAWS patch install [Optional]
-In the Cloud9 terminal, run the below commands to install chronicled
+In the Cloud9 terminal, run the below command to install chronicled
 
-1. Install boto3
-
-```bash
+```sh
 sudo pip3 install boto3
 ```
 
 2. Download install_chronicled.py script
 
-```bash
+```sh
 sudo wget https://raw.githubusercontent.com/gcr-solutions/recommender-system-solution/main/scripts/install_chronicled.py
 ```
 
 3. install chronicled
 
-```bash
+```sh
 sudo python install_chronicled.py
 ```
 

@@ -20,26 +20,18 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 This will take about ~1 minutes to provision
 {{% /notice %}}
 
-the console will output **user** and **password** of argocd like below:
+the console will output **user name**, **password** and server **endpoint** of argocd like below:
 
 ![Argocd password](/images/argocd-password.png)
 
-3. Get argocd server elb **DNS name** through running below script:
 
-```sh
-./get-argocd-elb-dns-name.sh
-```
-The dns name displays in the last line like below:
-
-![Argocd password](/images/argocd-server-dns-name.png)
-
-Copy **DNS name** into browser to access argocd server portal, if you are the first time to access this endpoint, click **Advanced** and **Proceed to ...**
+Copy **endpoint** into browser to access argocd server portal, if you are the first time to access this endpoint, click **Advanced** and **Proceed to ...**
 
 ![Argocd First](/images/argocd-first.png)
 
 ![Argocd Second](/images/argocd-second.png)
 
-Input the admin as user name and password, then click **SIGN IN**, the portal should looks like below:
+Input **user name** and **password**, then click **SIGN IN**, the portal should looks like below:
 
 ![Argocd Signin](/images/argocd-signin.png)
 
