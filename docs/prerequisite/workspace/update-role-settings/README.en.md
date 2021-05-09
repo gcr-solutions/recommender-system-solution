@@ -35,7 +35,7 @@ export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
 ```
 
-Check if AWS_REGION is set to desired region, you should get "AWS_REGION is ap-northeast-1"
+Check if AWS_REGION is set to desired region, you should get **AWS_REGION is ap-northeast-1**
 
 ```sh
 test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set
@@ -58,4 +58,4 @@ Use the [GetCallerIdentity](https://docs.aws.amazon.com/cli/latest/reference/sts
 aws sts get-caller-identity --query Arn | grep gcr-rs-workshop-admin -q && echo "IAM role valid" || echo "IAM role NOT valid"
 ```
 
-You should get "IAM role valid" message, If the IAM role is not valid, <span style="color: red;">**DO NOT PROCEED**</span>. Go back and confirm the steps on this page.
+You should get **IAM role valid** message, If the IAM role is not valid, <span style="color: red;">**DO NOT PROCEED**</span>. Go back and confirm the steps on this page.

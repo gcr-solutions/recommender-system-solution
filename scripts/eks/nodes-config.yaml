@@ -20,6 +20,8 @@ nodeGroups:
         - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess        
       withAddonPolicies:
         imageBuilder: true
         externalDNS: true

@@ -22,10 +22,10 @@ This will install `eksctl` in your **Cloud9** environment. To test to make sure 
 eksctl get cluster
 ```
 
-You should get a "No clusters found" message.
+You should get a **No clusters found** message.
 
 ```
 eksctl version
 ```
 
-You should get a "0.48.0" version or newer.
+You should get a **0.48.0** version or newer.
