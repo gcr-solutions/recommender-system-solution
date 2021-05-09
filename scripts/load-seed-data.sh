@@ -18,7 +18,7 @@ done
 
 dns_name=$(aws elb describe-load-balancers --load-balancer-name $system_elb --output text | grep LOADBALANCERDESCRIPTIONS | awk '{print $2 }')
 
-echo "dns_name: $dns_name"
+echo "endpoint: $dns_name"
 
 #inverted-list
 curl -X POST -d '{"message": {"file_type": "inverted-list", "file_path": "sample-data/notification/inverted-list/","file_name": ["embed_raw_item_mapping.pickle","embed_raw_user_mapping.pickle","filter_batch_result.pickle","news_entities_news_ids_dict.pickle","news_id_news_feature_dict.pickle","news_id_news_property_dict.pickle","news_keywords_news_ids_dict.pickle","news_type_news_ids_dict.pickle","news_words_news_ids_dict.pickle","portrait.pickle","rank_batch_result.pickle","raw_embed_item_mapping.pickle","raw_embed_user_mapping.pickle","recall_batch_result.pickle"]}}' -H "Content-Type:application/json" http://$dns_name/loader/notice

@@ -10,7 +10,7 @@ The recommender system implements continuous deployment through the argo cd. Thi
 
 Change docker image tag:
 ```sh
-cd /home/ec2-user/environment/recommender-system-solution/manifest
+cd /home/ec2-user/environment/recommender-system-solution/manifests
 
 sed -i 's/latest/'cd-test'/g' kustomization.yaml
 ```
