@@ -18,7 +18,7 @@ PREFIX=sample-data
 
 echo "BUCKET=${BUCKET}"
 
-aws  s3 cp item_new.csv s3://${BUCKET}/${PREFIX}/ingest-data/item/
+aws  s3 cp new_news.csv s3://${BUCKET}/${PREFIX}/ingest-data/item/
 
 if [[ $? -ne 0 ]]; then
       echo "error!!! aws s3 cp item_new.csv s3://${BUCKET}/${PREFIX}/ingest-data/item/"
