@@ -118,7 +118,8 @@ Resources:
                   "file_list": [
                    "system/ingest-data/action/",
                    "system/ingest-data/user/",
-                   "feature/content/inverted-list/news_id_news_feature_dict.pickle"
+                   "feature/content/inverted-list/news_id_news_feature_dict.pickle",
+                   "feature/action/raw_embed_user_mapping.pickle"
                   ]
                 }
               },
