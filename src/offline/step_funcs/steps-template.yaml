@@ -214,7 +214,7 @@ Resources:
                   "bucket.$": "$.Bucket",
                   "prefix.$": "$.S3Prefix",
                   "file_list": [
-                   "system/action-data/action.csv",
+                   "system/item-data/item.csv",
                    "model/meta_files/kg_dbpedia.txt",
                    "model/meta_files/entities_dbpedia.dict",
                    "model/meta_files/relations_dbpedia.dict",
