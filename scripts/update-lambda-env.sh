@@ -2,6 +2,10 @@
 
 echo "################"
 
+if [[ -z $AWS_REGION ]];then
+    REGION=$AWS_REGION
+fi
+
 if [[ -z $REGION ]];then
     REGION='ap-northeast-1'
 fi

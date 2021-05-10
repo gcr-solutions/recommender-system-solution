@@ -25,7 +25,13 @@ echo endpoint: $endpoint
 
 argocd --insecure login $endpoint:443 --username admin --password $ARGOCD_PASSWORD
 
-# 2 Create argocd application
+# 2 update lambda env
+
+echo "update-lambda-env"
+./update-lambda-env.sh
+
+
+# 3 Create argocd application
 argocd app create gcr-recommender-system --repo https://github.com/gcr-solutions/recommender-system-solution.git --path manifests --dest-namespace \
 rs-beta --dest-server https://kubernetes.default.svc --kustomize-image gcr.io/heptio-images/ks-guestbook-demo:0.1
 
