@@ -29,7 +29,7 @@ This will take about ~20 minutes to release resources
 
 8. In the Cloud9 IDE Console, run below command to delete offline:
 ```sh
-cd scripts
+cd /home/ec2-user/environment/recommender-system-solution/scripts
 ./clean-offline.sh
 ```
 

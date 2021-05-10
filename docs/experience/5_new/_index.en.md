@@ -11,6 +11,15 @@ We have prepared some news to be added for you:
 
 ![news-to-add](/images/news-to-add.png)
 
+
+Add new items to recommender system
+```shell
+cd /home/ec2-user/environment/recommender-system-solution/sample-data
+
+./new_item_to_s3.sh
+
+```
+
 You should never see them before you run these two functions. First, you should run the offline logic for new content:
 
 ![item-offline](/images/item-offline.png)
