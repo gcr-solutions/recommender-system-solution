@@ -34,6 +34,10 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+if [[ $AWS_REGION ]]; then
+    export REGION=$AWS_REGION
+fi
+
 if [[ -z $REGION ]];then
     export REGION='ap-northeast-1'
 fi
