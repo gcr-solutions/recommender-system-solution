@@ -37,7 +37,7 @@ rs-beta --dest-server https://kubernetes.default.svc --kustomize-image gcr.io/he
 
 sleep 20
 
-# 3 Sync local config
+# 4 Sync local config
 # 1 update config
 # 1.1 update redis config
 REDIS_ENDPOINT=$(aws elasticache describe-cache-clusters --cache-cluster-id gcr-rs-workshop-redis-cluster --show-cache-node-info \
