@@ -61,4 +61,6 @@ if [[ $? -ne 0 ]]; then
       exit 1
 fi
 OK_print "Offline deploy successfully"
+echo "Done"
+
 
