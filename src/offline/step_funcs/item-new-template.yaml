@@ -71,23 +71,8 @@ Resources:
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${ItemFeatureUpdateBatchStepFuncName}",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "Next": "Action data processing",
+              "Next": "Inverted list",
               "ResultPath": "$.ItemFeatureUpdateBatch"
-            },
-            "Action data processing": {
-              "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
-              "Parameters": {
-                "Input": {
-                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$": "$.Bucket",
-                  "S3Prefix.$": "$.S3Prefix"
-                },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionPreprocessingStepFunc",
-                "Name.$": "States.Format('{}', $$.Execution.Name)"
-              },
-              "ResultPath": "$.ActionProcessing",
-              "Next": "Inverted list"
             },
             "Inverted list": {
               "Type": "Task",
