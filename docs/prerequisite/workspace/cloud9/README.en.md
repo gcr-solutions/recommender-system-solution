@@ -15,7 +15,7 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets y
 ![Create Cloud9 Environment](/images/create-cloud9-start.png)
 
 3. Name it **gcr-rs-workshop**, click Next
-4. Take all default values and click **Create environment**
+4. Take all default values, click **Next step** and **Create environment**
 
 {{% notice info %}}
 This will take about 1-2 minutes to provision
