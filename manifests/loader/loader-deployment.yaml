@@ -28,7 +28,7 @@ spec:
             memory: 2048Mi
         env:
           - name: S3_BUCKET_DATA
-            value: aws-gcr-rs-sol-workshop-ap-southeast-1-522244679887
+            value: $(S3_BUCKET)
           - name: PICKLE_PATH
             value: sample-data/notification/inverted-list/
           - name: RECORDS_PATH
