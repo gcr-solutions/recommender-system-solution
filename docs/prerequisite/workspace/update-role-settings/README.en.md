@@ -41,7 +41,7 @@ Check if AWS_REGION is set to desired region, you should get **AWS_REGION is ap-
 test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set
 ```
 
- Let's save these into bash_profile
+ Run below commands to save these into bash_profile
 
 ```sh
 echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile

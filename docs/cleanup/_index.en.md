@@ -37,3 +37,5 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 
 10. Go to [IAM Role Console](https://console.aws.amazon.com/iam/home#/roles), select **gcr-rs-workshop-admin** role, and delete this role.
 
+11. Go to [EC2 Key Pairs](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#KeyPairs:search=gcr-rs-workshop-key), select **gcr-rs-workshop-key**, and delete it.
+
