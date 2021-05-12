@@ -1,8 +1,8 @@
 {
- "total_item_count": 2128,
- "recommender_click_cover_ratio": 0.3,
+ "total_item_count": 2630,
+ "recommender_click_cover_ratio": 0.76,
  "item_click_ratio": 0.92,
- "total_click_count": 5188,
+ "total_click_count": 4873,
  "top_users": [
   {
    "user_id": "52a369e8-9dc3-11eb-a364-acde48001122",
@@ -10,28 +10,18 @@
    "count": 3
   },
   {
-   "user_id": "52a26390-9dc3-11eb-a364-acde48001122",
-   "name": "morbidPoultry2",
-   "count": 2
-  },
-  {
-   "user_id": "52a350ca-9dc3-11eb-a364-acde48001122",
-   "name": "ecstaticRat1",
-   "count": 2
-  },
-  {
-   "user_id": "52a31722-9dc3-11eb-a364-acde48001122",
-   "name": "panickyWildfowl9",
-   "count": 2
-  },
-  {
    "user_id": "52a28bb8-9dc3-11eb-a364-acde48001122",
    "name": "empathicSmelt3",
    "count": 2
   },
   {
-   "user_id": "52a2588c-9dc3-11eb-a364-acde48001122",
-   "name": "anxiousGatorade5",
+   "user_id": "52a25b20-9dc3-11eb-a364-acde48001122",
+   "name": "debonairFlamingo8",
+   "count": 2
+  },
+  {
+   "user_id": "52a28dde-9dc3-11eb-a364-acde48001122",
+   "name": "dejectedTortoise4",
    "count": 2
   },
   {
@@ -40,40 +30,35 @@
    "count": 2
   },
   {
-   "user_id": "52a25576-9dc3-11eb-a364-acde48001122",
-   "name": "blissfulChile5",
+   "user_id": "52a256ca-9dc3-11eb-a364-acde48001122",
+   "name": "pridefulDunbird7",
    "count": 2
   },
   {
-   "user_id": "52a23fd2-9dc3-11eb-a364-acde48001122",
-   "name": "obsessedLocust2",
+   "user_id": "52a3570a-9dc3-11eb-a364-acde48001122",
+   "name": "morbidPoultry9",
    "count": 2
   },
   {
-   "user_id": "52a39562-9dc3-11eb-a364-acde48001122",
-   "name": "cautiousSausage8",
+   "user_id": "52a3ba06-9dc3-11eb-a364-acde48001122",
+   "name": "annoyedTomatoe2",
+   "count": 2
+  },
+  {
+   "user_id": "52a3e12a-9dc3-11eb-a364-acde48001122",
+   "name": "sincereRuffs7",
+   "count": 2
+  },
+  {
+   "user_id": "52a3cf00-9dc3-11eb-a364-acde48001122",
+   "name": "panickyOrange5",
    "count": 2
   }
  ],
  "top_items": [
   {
-   "id": "6552333094777520643",
-   "title": "专为中国市场打造的韩国“轿跑”来袭，剑指思域、凌渡",
-   "count": 2
-  },
-  {
-   "id": "6552666691753476612",
-   "title": "87版红楼梦剧组再聚首，“板儿”风华正茂，“黛玉”芳龄永继",
-   "count": 2
-  },
-  {
-   "id": "6552352961794671112",
-   "title": "衡水中学校长张文茂应邀参加北京大学建校120周年庆祝活动",
-   "count": 2
-  },
-  {
-   "id": "6552401718930309639",
-   "title": "一汽丰田华南奕泽粉丝万人鉴面会，让奕切即将改变！",
+   "id": "6551143270947226126",
+   "title": "雷军难成华人首富，身家2000亿仅排第四；三星亏3亿元欲撤出中国",
    "count": 2
   },
   {
@@ -82,8 +67,13 @@
    "count": 2
   },
   {
-   "id": "6552321422855766542",
-   "title": "中国领事馆提醒远离夏威夷火山和地震危险区域",
+   "id": "6552293280657179149",
+   "title": "加拿大班夫国家公园怎么玩？旅行达人给你推荐班夫旅行实用攻略",
+   "count": 2
+  },
+  {
+   "id": "6552666691753476612",
+   "title": "87版红楼梦剧组再聚首，“板儿”风华正茂，“黛玉”芳龄永继",
    "count": 2
   },
   {
@@ -92,18 +82,28 @@
    "count": 2
   },
   {
-   "id": "6552293280657179149",
-   "title": "加拿大班夫国家公园怎么玩？旅行达人给你推荐班夫旅行实用攻略",
+   "id": "6552302342262227470",
+   "title": "全球最壕警队，迪拜又买新车了？法拉利、宾利、迈凯轮都吃灰了？",
    "count": 2
   },
   {
-   "id": "6551727668520288771",
-   "title": "最受中国游客欢迎的西班牙国营古堡酒店",
+   "id": "6552314579228033543",
+   "title": "不想惹麻烦？英媒称印要驻中印边境部队“避免冲突”",
    "count": 2
   },
   {
-   "id": "6552453767525040647",
-   "title": "美议员麦凯恩自称不知能活多久，家人不希望特朗普参加其葬礼",
+   "id": "6552441882054492686",
+   "title": "英雄联盟两大主播隔空互怼 虎牙主播官总被爆料是国服高端局导演",
+   "count": 2
+  },
+  {
+   "id": "6552395485154378254",
+   "title": "英雄联盟赛事官网MSI助威排名：Uzi居榜首，Peanut位列第三",
+   "count": 2
+  },
+  {
+   "id": "6552333094777520643",
+   "title": "专为中国市场打造的韩国“轿跑”来袭，剑指思域、凌渡",
    "count": 2
   }
  ],
@@ -111,72 +111,72 @@
   {
    "source": "news_agriculture",
    "source_code": "115",
-   "count": 182
+   "count": 171
   },
   {
    "source": "news_house",
    "source_code": "106",
-   "count": 210
+   "count": 207
   },
   {
    "source": "news_world",
    "source_code": "113",
-   "count": 239
+   "count": 193
   },
   {
    "source": "news_finance",
    "source_code": "104",
-   "count": 214
+   "count": 195
   },
   {
    "source": "news_edu",
    "source_code": "108",
-   "count": 198
+   "count": 190
   },
   {
    "source": "news_game",
    "source_code": "116",
-   "count": 213
+   "count": 206
   },
   {
    "source": "news_travel",
    "source_code": "112",
-   "count": 219
+   "count": 212
   },
   {
    "source": "news_military",
    "source_code": "110",
-   "count": 208
+   "count": 183
   },
   {
    "source": "news_sports",
    "source_code": "103",
-   "count": 220
+   "count": 217
   },
   {
    "source": "stock",
    "source_code": "114",
-   "count": 7
+   "count": 5
   },
   {
    "source": "recommend",
    "source_code": "1",
-   "count": 2432
+   "count": 2284
   },
   {
    "source": "news_tech",
    "source_code": "109",
-   "count": 201
+   "count": 190
   },
   {
    "source": "news_culture",
    "source_code": "101",
-   "count": 207
+   "count": 193
   },
   {
    "source": "news_car",
    "source_code": "107",
-   "count": 206
+   "count": 199
   },
   {
    "source": "news_story",
@@ -186,7 +186,7 @@
   {
    "source": "news_entertainment",
    "source_code": "102",
-   "count": 190
+   "count": 186
   }
  ],
  "click_count_recommender_time_window": [
@@ -194,53 +194,53 @@
    "start_time": 1618466400,
    "end_time": 1618470000,
    "is_recommender": true,
-   "count": 390
+   "count": 371
   },
   {
    "start_time": 1618466400,
    "end_time": 1618470000,
    "is_recommender": false,
-   "count": 459
+   "count": 430
   },
   {
    "start_time": 1618470000,
    "end_time": 1618473600,
    "is_recommender": false,
-   "count": 479
+   "count": 443
   },
   {
    "start_time": 1618470000,
    "end_time": 1618473600,
    "is_recommender": true,
-   "count": 381
+   "count": 358
   },
   {
    "start_time": 1618473600,
    "end_time": 1618477200,
    "is_recommender": false,
-   "count": 373
+   "count": 357
   },
   {
    "start_time": 1618473600,
    "end_time": 1618477200,
    "is_recommender": true,
-   "count": 361
+   "count": 338
   },
   {
    "start_time": 1618477200,
    "end_time": 1618480800,
    "is_recommender": true,
-   "count": 144
+   "count": 135
   },
   {
    "start_time": 1618477200,
    "end_time": 1618480800,
    "is_recommender": false,
-   "count": 140
+   "count": 135
   }
  ],
  "total_user_count": 1000,
  "register_user_count": 1000,
  "anonymous_user_count": 0,
- "report_time": 1620290208
+ "report_time": 1620809519
 }
