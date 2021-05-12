@@ -24,21 +24,16 @@ echo "endpoint: $dns_name"
 echo "load pickle data!!"
 curl -X POST -d '{"message": {"file_type": "inverted-list", "file_path": "sample-data/notification/inverted-list/","file_name": ["embed_raw_item_mapping.pickle","embed_raw_user_mapping.pickle","filter_batch_result.pickle","news_entities_news_ids_dict.pickle","news_id_news_feature_dict.pickle","news_id_news_property_dict.pickle","news_keywords_news_ids_dict.pickle","news_type_news_ids_dict.pickle","news_words_news_ids_dict.pickle","portrait.pickle","rank_batch_result.pickle","raw_embed_item_mapping.pickle","raw_embed_user_mapping.pickle","recall_batch_result.pickle","recall_config.pickle","filter_config.pickle"]}}' -H "Content-Type:application/json" http://$dns_name/loader/notice
 
-sleep 20
-
 # action-model
-echo "load model data!!"
+echo "load model data!!\n"
 curl -X POST -d '{"message": {"file_type": "action-model","file_path": "sample-data/notification/action-model/","file_name": ["model.tar.gz"]}}' -H "Content-Type:application/json" http://$dns_name/loader/notice
 
-sleep 20
-
 # embedding
-echo "load embedding data!!"
+echo "\nload embedding data!!"
 curl -X POST -d '{"message": {"file_type": "embedding","file_path": "sample-data/notification/embeddings/","file_name": ["dkn_context_embedding.npy","dkn_entity_embedding.npy","dkn_relation_embedding.npy","dkn_word_embedding.npy"]}}' -H "Content-Type:application/json" http://$dns_name/loader/notice
 
-sleep 20
 # item record data
-echo "load news record data!!"
+echo "\nload news record data!!\n"
 curl -X POST -d '{"message": {"file_type": "news_records","file_path": "sample-data/system/item-data/","file_name": ["item.csv"]}}' -H "Content-Type:application/json" http://$dns_name/api/v1/demo/notice
 
-echo 'Complete'
+echo '\nLoad seed data complete!'
