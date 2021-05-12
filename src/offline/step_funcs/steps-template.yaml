@@ -699,7 +699,7 @@ Resources:
                   ]
                 },
                 "OutputDataConfig": {
-                  "S3OutputPath.$": "States.Format('s3://{}/{}/model/rank/content/dkn_embedding/', $.Bucket,  $.S3Prefix)"
+                  "S3OutputPath.$": "States.Format('s3://{}/{}/model/rank/content/dkn_embedding_train_output/', $.Bucket,  $.S3Prefix)"
                 },
                 "StoppingCondition": {
                   "MaxRuntimeInSeconds": 86400
@@ -788,7 +788,7 @@ Resources:
                   }
                 ],
                 "OutputDataConfig": {
-                  "S3OutputPath.$": "States.Format('s3://{}/{}/model/rank/action/dkn/', $.Bucket,  $.S3Prefix)"
+                  "S3OutputPath.$": "States.Format('s3://{}/{}/model/rank/action/dkn_train_output/', $.Bucket,  $.S3Prefix)"
                 },
                 "StoppingCondition": {
                   "MaxRuntimeInSeconds": 86400
