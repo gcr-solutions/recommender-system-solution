@@ -4,4 +4,11 @@ metadata:
   namespace: istio-system
   name: default-istiocontrolplane
 spec:
-  profile: default
+  components:
+    ingressGateways:
+      - enabled: true
+        name: istio-ingressgateway
+      - enabled: true
+        name: istio-ingressgateway-news-dev
+        label:
+          istio: ingressgateway-news-dev
