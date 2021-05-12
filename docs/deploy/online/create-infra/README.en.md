@@ -42,9 +42,9 @@ kubectl get node
 ![Verify EKS nodes](/images/check-eks-nodes.png)
 
 ## NAWS patch install [Optional]
-1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running;search=rs-beta-rs-cpu-ng-Node)
+1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running;search=gcr-rs-workshop-cluster-rs-cpu-ng-Node)
 
-2. Select one ec2 instance named **rs-beta-rs-cpu-ng-Node**, then click **connect**
+2. Select one ec2 instance named **gcr-rs-workshop-cluster-rs-cpu-ng-Node**, then click **connect**
 
 ![EC2 Dashboard](/images/ec2-dashboard.png)
 
@@ -59,5 +59,5 @@ wget https://raw.githubusercontent.com/gcr-solutions/recommender-system-solution
 ```
 
 {{% notice info %}}
-You need to repeat above operation for all ec2 instances named **rs-beta-rs-cpu-ng-Node**
+You need to repeat above operation for all ec2 instances named **gcr-rs-workshop-cluster-rs-cpu-ng-Node**
 {{% /notice %}}

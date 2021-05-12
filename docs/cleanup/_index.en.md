@@ -27,12 +27,12 @@ kubectl delete -f istio-deployment.yaml
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-7. In the [IAM Role Console](https://console.aws.amazon.com/iam/home?#/roles), select roles which name prefix is "eksctl-rs-beta" to delete
+7. In the [IAM Role Console](https://console.aws.amazon.com/iam/home?#/roles), select roles which name prefix is "eksctl-gcr-rs-workshop-cluster" to delete
 
 8. In the Cloud9 IDE Console, run below command to delete eks cluster:
 
 ```sh
-eksctl delete cluster --name=rs-beta
+eksctl delete cluster --name=gcr-rs-workshop-cluster
 ```
 
 {{% notice info %}}

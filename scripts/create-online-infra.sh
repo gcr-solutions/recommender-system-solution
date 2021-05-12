@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export EKS_CLUSTER=rs-beta
+export EKS_CLUSTER=gcr-rs-workshop-cluster
 
 # 1. Create EKS Cluster
 # # 1.1 Provision EKS cluster 
