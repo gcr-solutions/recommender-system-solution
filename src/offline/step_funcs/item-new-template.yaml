@@ -56,8 +56,38 @@ Resources:
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemPreprocessingStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "Next": "Item feature update batch",
+              "Next": "User processing",
               "ResultPath": "$.ItemPreprocessing"
+            },
+            "User processing": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-UserPreprocessingStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.UserProcessing",
+              "Next": "Add item user batch"
+            },
+            "Add item user batch": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AddItemUserBatchStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.AddItemUserBatch",
+              "Next": "Item feature update batch"
             },
             "Item feature update batch": {
               "Type": "Task",
@@ -87,21 +117,6 @@ Resources:
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.InvertedList",
-              "Next": "Add item user batch"
-            },
-            "Add item user batch": {
-              "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
-              "Parameters": {
-                "Input": {
-                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$": "$.Bucket",
-                  "S3Prefix.$": "$.S3Prefix"
-                },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AddItemUserBatchStepFunc",
-                "Name.$": "States.Format('{}', $$.Execution.Name)"
-              },
-              "ResultPath": "$.AddItemUserBatch",
               "Next": "Model update (embedding)"
             },
             "Model update (embedding)": {
