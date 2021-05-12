@@ -13,7 +13,7 @@ Hopefully you’ve enjoyed the workshop and learned a few new things. Now follow
 
 4. In the [ElasticCache Subnet Group](https://ap-northeast-1.console.aws.amazon.com/elasticache/home?region=ap-northeast-1#cache-subnet-groups:), select the group named **gcr-rs-workshop-redis-subnet-group** to delete.
 
-5. In the [Security Group Console](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#SecurityGroups:), select the security groups named **gcr-rs-workshop-efs-nfs-sg**, **gcr-rs-workshop-redis-sg** to delete them.  TODO
+5. In the [Security Group Console](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#SecurityGroups:), select the security groups named **gcr-rs-workshop-efs-nfs-sg**, **gcr-rs-workshop-redis-sg** to delete them.
 
 6. In the [IAM Role Console](https://console.aws.amazon.com/iam/home?#/roles), select roles which name prefix is "eksctl-rs-beta" to delete
 
@@ -36,4 +36,6 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 9. In the [Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9/home?region=ap-northeast-1#), select gcr-rs-workshop env and click Delete button
 
 10. Go to [IAM Role Console](https://console.aws.amazon.com/iam/home#/roles), select **gcr-rs-workshop-admin** role, and delete this role.
+
+11. Go to [EC2 Key Pairs](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#KeyPairs:search=gcr-rs-workshop-key), select **gcr-rs-workshop-key**, and delete it.
 

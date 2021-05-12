@@ -10,6 +10,9 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 
 ./create-offline.sh
 ```
+{{% notice info %}}
+This will take about ~7 minutes to provision
+{{% /notice %}}
 
 When deployment completed, you will see below screen:
 

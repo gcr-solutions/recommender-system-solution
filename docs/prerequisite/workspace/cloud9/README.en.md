@@ -15,7 +15,7 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets y
 ![Create Cloud9 Environment](/images/create-cloud9-start.png)
 
 3. Name it **gcr-rs-workshop**, click Next
-4. Take all default values and click **Create environment**
+4. Take all default values, click **Next step** and **Create environment**
 
 {{% notice info %}}
 This will take about 1-2 minutes to provision
@@ -36,24 +36,5 @@ When the environment comes up, customize the environment by:
 3 . Open a new **terminal** tab in the main work area.
 
 ![Cloud9 Open Terminal](/images/cloud9-open-terminal.png)
-
-## NAWS patch install [Optional]
-In the Cloud9 terminal, run the below command to install chronicled
-
-```sh
-sudo pip3 install boto3
-```
-
-2. Download install_chronicled.py script
-
-```sh
-sudo wget https://raw.githubusercontent.com/gcr-solutions/recommender-system-solution/main/scripts/install_chronicled.py
-```
-
-3. install chronicled
-
-```sh
-sudo python install_chronicled.py
-```
 
 
