@@ -37,9 +37,39 @@ Resources:
       StateMachineName: rsdemo-News-TrainModelStepFunc
       DefinitionString: !Sub |
         {
-          "StartAt": "Action processing",
+          "StartAt": "User processing",
           "TimeoutSeconds": 36000,
           "States": {
+            "User processing": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-UserPreprocessingStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.UserProcessing",
+              "Next": "Add item user batch"
+            },
+            "Add item user batch": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AddItemUserBatchStepFunc",
+                "Name.$": "States.Format('{}', $$.Execution.Name)"
+              },
+              "ResultPath": "$.AddItemUserBatch",
+              "Next": "Action processing"
+            },
             "Action processing": {
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
@@ -108,4 +138,5 @@ Resources:
             }
           }
         }
+
 
