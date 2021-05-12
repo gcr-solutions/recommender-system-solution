@@ -29,9 +29,8 @@ Parameters:
 
   ItemFeatureUpdateBatchStepFuncName:
     Type: String
-    #Default: rsdemo-News-ItemFeatureUpdateBatchStepFunc
-    Default: rsdemo-News-NoOpStepFunc  # for demo
-
+    Default: rsdemo-News-ItemFeatureUpdateBatchStepFunc
+    #Default: rsdemo-News-NoOpStepFunc  # for demo
 
 Resources:
   ItemNewStepFunc:

@@ -50,4 +50,13 @@ if [[ $? -ne 0 ]]; then
       exit 1
 fi
 
+echo "Copy complete_dkn_word_embedding.npy ..."
+aws s3 cp s3://aws-gcr-rs-sol-demo-ap-southeast-1-522244679887/sample-data/model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy \
+s3://${BUCKET_BUILD}/${PREFIX}/model/rank/content/dkn_embedding_latest/complete_dkn_word_embedding.npy  --acl bucket-owner-full-control
+
+if [[ $? -ne 0 ]]; then
+      Error_print "error!!! Copy complete_dkn_word_embedding.npy "
+      exit 1
+fi
+
 OK_print "data sync completed"
