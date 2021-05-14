@@ -14,5 +14,22 @@ You’ll need the following steps:
 
 ## API Overview 
 
+There are three types of API
+- retrieve 
+  
+  `/retrieve/{userId}` - get the recommended item list for a user
+  
+- event
+  
+   `/event/portrait/{userId}` - trigger portrait update for a user
+
+   `/event/recall/{userId}`  - trigger recall for a user 
+
+- admin
+   
+   `/event/start_train` - trigger offline training job
+  
+   `/event/batch_update` - trigger offline batch job, re-generating recommended item list for all users
+
 ![RS API overview](/images/rs-api-overview.png)
 
