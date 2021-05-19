@@ -1,6 +1,7 @@
 ---
 title: Data Exploration
 weight: 43
+markup: mmark
 ---
 
 There is an icon in the GUI that you can enter into the administrator ui:
@@ -15,12 +16,12 @@ The statistics is carried automatically every 15 minutes. You can see that we ha
 
 There are many metrics for a recommender system. In this solution, we show the click rate and coverage rate.
 
-\begin{equation}
-    \click_rate = \frac{clicked news}{exposed news}
-\end{equation}
+$$
+    click_rate = \frac{clicked_news}{exposed_news}
+$$
 
-\begin{equation}
-    \coverage = \frac{exposed news}{whole news}
-\end{equation}
+$$
+    coverage_rate = \frac{exposed_news}{whole_news}
+$$
 
 The click rate evaluates the performance of recommendation list. The coverage rate shows how many news have been recommended to the user. From the perspective of the system, every news has each value and should recommended to the most suitable user.
