@@ -15,7 +15,7 @@ nodeGroups:
     volumeSize: 80
     ssh:
       allow: true
-      enableSsm: true      
+      enableSsm: true
     iam:
       attachPolicyARNs:
         - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
