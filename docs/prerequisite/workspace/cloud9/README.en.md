@@ -9,13 +9,13 @@ AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets y
 
 1. If you don’t already have an AWS account with Administrator access: [create one now by clicking here](https://aws.amazon.com/getting-started/)
 2. Go to [AWS Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9)
-2. Use the region drop list to select **Asia Pacific (Tokyo)ap-northeast-1**
-3. Click **Create environment** button to create an cloud9 environment
+3. Use the region drop list to select **Asia Pacific (Tokyo)ap-northeast-1**
+4. Click **Create environment** button to create an cloud9 environment
 
 ![Create Cloud9 Environment](/images/create-cloud9-start.png)
 
-3. Name it **gcr-rs-workshop**, click Next
-4. Take all default values, click **Next step** and **Create environment**
+5. Name it **gcr-rs-workshop**, click Next
+6. Take all default values, click **Next step** and **Create environment**
 
 {{% notice info %}}
 This will take about 1-2 minutes to provision
