@@ -20,3 +20,4 @@ kubectl version --client
 ```
 
 You should see the `kubectl` version message.
+![kubectl version](/images/kubectl-version.png)

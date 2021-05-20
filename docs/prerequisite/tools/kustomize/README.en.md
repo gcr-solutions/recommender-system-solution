@@ -21,3 +21,5 @@ Verify the install with:
 ```sh
 kustomize version
 ```
+You should see the message like below:
+![kustomize version](/images/kustomize-version.png)
