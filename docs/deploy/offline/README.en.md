@@ -1,6 +1,6 @@
 ---
 title: Deploy The Offline Logic
-weight: 2
+weight: 3
 ---
 
 In this step, you will deploy Recommender System Offline 
