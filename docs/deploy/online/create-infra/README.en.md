@@ -40,24 +40,3 @@ Verify eks nodes created successfully, there should be two nodes and status shou
 kubectl get node
 ```
 ![Verify EKS nodes](/images/check-eks-nodes.png)
-
-## NAWS patch install [Optional]
-1. Go to EC2 dashboard, [click](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#Instances:instanceState=running;search=gcr-rs-workshop-cluster-rs-cpu-ng-Node)
-
-2. Select one ec2 instance named **gcr-rs-workshop-cluster-rs-cpu-ng-Node**, then click **connect**
-
-![EC2 Dashboard](/images/ec2-dashboard.png)
-
-3. Connect to ec2 instance, click **connect**
-
-![EC2 Dashboard](/images/ec2-connect.png)
-
-4. Run the below command to download and install chronicled
-
-```sh
-wget https://raw.githubusercontent.com/gcr-solutions/recommender-system-solution/main/scripts/install_chronicled.py;python install_chronicled.py
-```
-
-{{% notice info %}}
-You need to repeat above operation for all ec2 instances named **gcr-rs-workshop-cluster-rs-cpu-ng-Node**
-{{% /notice %}}
