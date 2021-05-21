@@ -1,6 +1,6 @@
 ---
 title: Deploy The Online Part
-weight: 2
+weight: 3
 ---
 
 In this module, we will deploy **GCR Recommender System Online Part**
