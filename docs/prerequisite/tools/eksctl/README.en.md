@@ -26,4 +26,3 @@ eksctl version
 ```
 
 You should get a "**0.48.0**" version or newer.
-![eksctl version](/images/eks-version.png)
