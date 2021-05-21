@@ -3,11 +3,7 @@ title: New Items Added And Batch Update
 weight: 45
 ---
 
-The recommender system does not only have new action data collected. In real scenario, new items, e.g. news, movies, music..., will be added to the system and should be integrated in the whole system. We have prepared the following two logic for this requirement:
-
-![item-batch-offline](/images/item-batch-offline.png)
-
-We have prepared some news to be added for you:
+The recommender system does not only have new action data collected. In real scenario, new items, e.g. news, movies, music..., will be added to the system and should be integrated in the whole system. We have prepared the logic for adding news items. Suppose We have some news to be added:
 
 ![news-to-add](/images/news-to-add.png)
 
