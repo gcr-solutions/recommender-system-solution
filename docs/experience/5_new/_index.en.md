@@ -16,7 +16,7 @@ cd /home/ec2-user/environment/recommender-system-solution/sample-data
 
 ```
 
-You should never see them before you run these two functions. First, you should run the offline logic for new content:
+You should never see them before. First, you should run the offline logic for new content:
 
 ![item-offline](/images/item-offline.png)
 
@@ -24,9 +24,11 @@ The logic behind this function is shown below:
 
 ![content-logic-image](/images/content-logic-image.png)
 
-You can tell that the whole news are analyzed at first and then relating models are updated. After that, you should click the icon for batch process:
+You can tell that the whole news are analyzed at first and then relating models are updated.
 
-![batch-offline](/images/batch-offline.png)
+{{% notice info %}}
+This will take about ~30 minutes to prepare
+{{% /notice %}}
 
 When all these functions are finished, you should likely see these added news recommended for you in the system:
 
