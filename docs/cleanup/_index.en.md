@@ -8,6 +8,10 @@ Hopefully you’ve enjoyed the workshop and learned a few new things. Now follow
 1. In the [EFS Console](https://ap-northeast-1.console.aws.amazon.com/efs/home?region=ap-northeast-1#/file-systems), select **RS-EFS-FileSystem** File system and click Delete button
 
 2. In the [ElasticCache Redis Console](https://ap-northeast-1.console.aws.amazon.com/elasticache/home?region=ap-northeast-1#redis:), select cluster named **gcr-rs-workshop-redis-cluster** to delete
+
+Choose "No" in "Create final backup" option:
+![Delete redis](/images/redis-delete-backup.png)
+
 {{% notice info %}}
 This will take about ~5 minutes to release resources
 {{% /notice %}}
