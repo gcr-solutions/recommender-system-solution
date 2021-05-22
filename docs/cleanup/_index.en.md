@@ -24,6 +24,7 @@ This will take about ~5 minutes to release resources
 ```sh
 cd /home/ec2-user/environment/recommender-system-solution/manifests
 kubectl delete -f istio-deployment.yaml
+
 ```
 
 6. Run below command to delete argo cd server
