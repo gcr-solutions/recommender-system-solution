@@ -17,7 +17,7 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 ./setup-argocd-server.sh
 ```
 {{% notice info %}}
-This will take about ~1 minutes to provision
+This will take about 1 minutes to provision
 {{% /notice %}}
 
 the console will output **user name**, **password** and server **endpoint** of argocd like below:

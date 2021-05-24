@@ -41,7 +41,7 @@ eksctl delete cluster --name=gcr-rs-workshop-cluster
 ```
 
 {{% notice info %}}
-This will take about ~20 minutes to release resources
+This will take about 20 minutes to release resources
 {{% /notice %}}
 
 9. In the Cloud9 IDE Console, run below command to delete offline:

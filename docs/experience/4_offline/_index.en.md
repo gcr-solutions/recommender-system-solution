@@ -11,7 +11,14 @@ As the recommender system runs, more and more action data is gathered in the sys
 
 ![Action-Icon-Yellow](/images/action-icon-gray.png)
 
-This means the step function behind is triggered. Wait for about 5 minutes and this icon will become green again:
+
+This means the step function behind is triggered.
+
+{{% notice info %}}
+This will take about 30 minutes to prepare
+{{% /notice %}}
+
+When the training finishes this icon will become purple again:
 
 ![Action-Icon-Green](/images/action-icon-green.png)
 
