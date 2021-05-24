@@ -75,6 +75,13 @@ kustomize build . |kubectl apply -f -
 mv csi-env.yaml.bak csi-env.yaml
 cd ../../scripts
 
+# 3.8 create VPC endpoint
+aws ec2 create-vpc-endpoint --vpc-id $EKS_VPC_ID \
+    --vpc-endpoint-type Interface 
+    --service-name com.amazonaws.ap-northeast-1.elasticfilesystem
+    --subnet-ids $SUBNET_IDS
+    --security-group-id $NFS_SECURITY_GROUP_ID
+
 # 4 Create redis elastic cache, Provision Elasticache - Redis / Cluster Mode Disabled
 # 4.1 Create subnet groups
 ids=`echo $SUBNET_IDS | xargs -n1 | sort -u | xargs \
