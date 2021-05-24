@@ -13,7 +13,7 @@ Choose "No" in "Create final backup" option:
 ![Delete redis](/images/redis-delete-backup.png)
 
 {{% notice info %}}
-This will take about ~5 minutes to release resources
+This will take about 5 minutes to release resources
 {{% /notice %}}
 
 3. After above **gcr-rs-workshop-redis-cluster** is deleted, go to [ElasticCache Subnet Group](https://ap-northeast-1.console.aws.amazon.com/elasticache/home?region=ap-northeast-1#cache-subnet-groups:), select the group named **gcr-rs-workshop-redis-subnet-group** to delete.
