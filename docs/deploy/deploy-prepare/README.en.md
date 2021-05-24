@@ -16,4 +16,5 @@ cd /home/ec2-user/environment
 ```sh
 git clone https://github.com/gcr-solutions/recommender-system-solution.git
 cd recommender-system-solution/
+
 ```

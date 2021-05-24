@@ -8,7 +8,3 @@ spec:
     ingressGateways:
       - enabled: true
         name: istio-ingressgateway
-      - enabled: true
-        name: istio-ingressgateway-news-dev
-        label:
-          istio: ingressgateway-news-dev

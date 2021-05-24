@@ -17,7 +17,7 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 ./create-argocd-application.sh
 ```
 
-After about ~1 minutes, the console will output as below:
+After about 1 minutes, the console will output as below:
 
 ![Argocd create application](/images/argocd-create-app.png)
 
@@ -27,7 +27,17 @@ After about ~1 minutes, the console will output as below:
 
 4. Access recommender system demo ui to verify services have been deployed successfully
 
-Get ui endpoint:
+5. Load the seed data into the system. Go to /home/ec2-user/environment/recommender-system-solution/scripts directory
+
+```sh
+cd /home/ec2-user/environment/recommender-system-solution/scripts
+```
+
+```sh
+./load-seed-data.sh
+```
+
+6. Get the GUI endpoint:
 
 ```sh
 ./get-ingressgateway-elb-endpoint.sh
