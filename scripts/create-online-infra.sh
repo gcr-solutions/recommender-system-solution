@@ -77,9 +77,9 @@ cd ../../scripts
 
 # 3.8 create VPC endpoint
 aws ec2 create-vpc-endpoint --vpc-id $EKS_VPC_ID \
-    --vpc-endpoint-type Interface 
-    --service-name com.amazonaws.ap-northeast-1.elasticfilesystem
-    --subnet-ids $SUBNET_IDS
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.elasticfilesystem \
+    --subnet-ids $SUBNET_IDS \
     --security-group-id $NFS_SECURITY_GROUP_ID
 
 # 4 Create redis elastic cache, Provision Elasticache - Redis / Cluster Mode Disabled
