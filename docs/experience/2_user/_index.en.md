@@ -20,7 +20,7 @@ Next time, you can input the same name to get recommendations based on the relat
 
 ![Look-Around](/images/look-around.png)
 
-Suppose you login the system as the **gcr-rec-user**. You will see the following page:
+Suppose you login the system as the `gcr-rec-user`. You will see the following page:
 
 ![Cold-Start](/images/cold-start.png)
 
