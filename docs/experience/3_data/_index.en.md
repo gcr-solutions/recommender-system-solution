@@ -16,12 +16,8 @@ The statistics is carried automatically every 15 minutes. You can see that we ha
 
 There are many metrics for a recommender system. In this solution, we show the click rate and coverage rate.
 
-$$
-    click_rate = \frac{clicked_news}{exposed_news}
-$$
+![Click-Rate](/images/click-rate.png)
 
-$$
-    coverage_rate = \frac{exposed_news}{whole_news}
-$$
+![Coverage-Rate](/images/coverage-rate.png)
 
 The click rate evaluates the performance of recommendation list. The coverage rate shows how many news have been recommended to the user. From the perspective of the system, every news has each value and should recommended to the most suitable user.
