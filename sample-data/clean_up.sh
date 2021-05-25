@@ -16,6 +16,7 @@ echo "AWS_ACCOUNT_ID: ${AWS_ACCOUNT_ID}"
 BUCKET=aws-gcr-rs-sol-workshop-${REGION}-${AWS_ACCOUNT_ID}
 S3Prefix=sample-data
 
-aws  s3 rm s3://${BUCKET}/${S3Prefix}  --recursive
-
+#aws  s3 rm s3://${BUCKET}/${S3Prefix}  --recursive
+aws s3 rm s3://${BUCKET}/ --recursive
+aws s3api delete-bucket --bucket ${BUCKET}
 
