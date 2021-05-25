@@ -34,7 +34,7 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 ```
 
 ```sh
-./load-seed-data-worskhop.sh
+./load-seed-data.sh
 ```
 
 6. Get the GUI endpoint:
