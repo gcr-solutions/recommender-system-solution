@@ -27,7 +27,7 @@ The logic behind this function is shown below:
 You can tell that the whole news are analyzed at first and then relating models are updated.
 
 {{% notice info %}}
-This will take about 30 minutes to prepare
+This will take about 60 minutes to finish
 {{% /notice %}}
 
 When all these functions are finished, you should likely see these added news recommended for you in the system:
