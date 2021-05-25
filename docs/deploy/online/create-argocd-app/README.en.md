@@ -21,13 +21,11 @@ After about 1 minutes, the console will output as below:
 
 ![Argocd create application](/images/argocd-create-app.png)
 
-3. Access argo cd portal to check services deployment status, it should like below:
+3. Access argo cd portal to check services deployment status. **Please make sure all the heart status become green and all the rotating tags become stable!!**:
 
 ![Argocd application status](/images/argocd-app-status.png)
 
-4. Access recommender system demo ui to verify services have been deployed successfully
-
-5. Load the seed data into the system. Go to /home/ec2-user/environment/recommender-system-solution/scripts directory
+4. Load the seed data into the system. Go to /home/ec2-user/environment/recommender-system-solution/scripts directory
 
 ```sh
 cd /home/ec2-user/environment/recommender-system-solution/scripts
@@ -37,7 +35,7 @@ cd /home/ec2-user/environment/recommender-system-solution/scripts
 ./load-seed-data.sh
 ```
 
-6. Get the GUI endpoint:
+5. Get the GUI endpoint:
 
 ```sh
 ./get-ingressgateway-elb-endpoint.sh
