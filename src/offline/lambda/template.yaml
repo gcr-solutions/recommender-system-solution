@@ -12,6 +12,7 @@ Globals:
     MemorySize: 1024
     Environment:
       Variables:
+        Stage: !Sub "${Stage}"
         botoConfig: '{"user_agent_extra": "AwsSolution/SO8010/0.1.0"}'
   Api:
     Cors:
@@ -20,6 +21,10 @@ Globals:
       AllowOrigin: "'*'"
 
 Parameters:
+  Stage:
+    Type: String
+    Default: demo
+
   Bucket:
     Description: S3 Bucket for RecSys
     Type: String
