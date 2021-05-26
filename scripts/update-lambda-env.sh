@@ -55,6 +55,6 @@ SNS_TOPIC_ARN="arn:aws:sns:${REGION}:${account_id}:rsdemo-offline-sns"
 echo $SNS_TOPIC_ARN
 
 aws lambda   update-function-configuration  --function-name rsdemo-SNSMessageLambda \
---environment "Variables={ONLINE_LOADER_URL=${loader_url},botoConfig='${botoConfig}',SNS_TOPIC_ARN='${SNS_TOPIC_ARN}'}" >/dev/null
+--environment "Variables={Stage=demo,ONLINE_LOADER_URL=${loader_url},botoConfig='${botoConfig}',SNS_TOPIC_ARN='${SNS_TOPIC_ARN}'}" >/dev/null
 
 
