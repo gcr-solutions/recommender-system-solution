@@ -122,7 +122,7 @@ Resources:
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "ImageName": "rs/news-assembled-train-model-gpu",
                   "ContainerArguments.$": "States.Array('--bucket', $.Bucket, '--prefix', $.S3Prefix)",
-                  "InstanceType": "ml.m5.xlarge"
+                  "InstanceType": "ml.p2.xlarge"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-SMProcessingStepFunc",
                 "Name.$": "States.Format('Nasstrainm{}', $.Precheck.Payload.UID)"
