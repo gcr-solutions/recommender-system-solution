@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-# cd /home/ec2-user/environment/recommender-system-solution/manifests
-# kubectl delete -f istio-deployment.yaml
+cd /home/ec2-user/environment/recommender-system-solution/manifests
+kubectl delete -f istio-deployment.yaml
 
-# kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-# sleep 10
+sleep 10
 
 echo "start check istio ingress gateway security group"
 i=1
