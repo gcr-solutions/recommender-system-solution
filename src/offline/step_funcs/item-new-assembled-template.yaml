@@ -78,7 +78,7 @@ Resources:
                   "InstanceType": "ml.m5.xlarge"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-SMProcessingStepFunc",
-                "Name.$": "States.Format('Nactionpre{}', $.Precheck.Payload.UID)"
+                "Name.$": "States.Format('Nassdatap{}', $.Precheck.Payload.UID)"
               },
               "End": true
             }
@@ -125,7 +125,7 @@ Resources:
                   "InstanceType": "ml.m5.xlarge"
                 },
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-SMProcessingStepFunc",
-                "Name.$": "States.Format('Nactionpre{}', $.Precheck.Payload.UID)"
+                "Name.$": "States.Format('Nasstrainm{}', $.Precheck.Payload.UID)"
               },
               "End": true
             }
