@@ -8,8 +8,6 @@ set -e
 
 # sleep 10
 
-# echo 'check related resources have been cleaned up'
-
 echo "start check istio ingress gateway security group"
 i=1
 ISTIO_SG_ID=""
@@ -27,13 +25,13 @@ do
 done
 
 echo "start check argocd server security group"
-j=0
+j=1
 ARGOCD_SG_ID=""
 while [ $j -le 3 ]
 do
   ARGOCD_SG_ID=$(aws ec2 describe-security-groups --filter Name=tag:kubernetes.io/cluster/gcr-rs-workshop-cluster,Values=owned Name=description,Values=*argocd/argocd-server* --query "SecurityGroups[*].[GroupId]" --output text)
   if [ "$ARGOCD_SG_ID" == "" ];then
-  	echo "delete argocd security group successfully!"
+    echo "delete argocd security group successfully!"
     break
   else
     echo "wait for wait for argocd server security group deleted!"
@@ -44,3 +42,13 @@ done
 
 echo $ISTIO_SG_ID
 echo $ARGOCD_SG_ID
+
+if [ "$ISTIO_SG_ID" != "" ];then
+  echo "delete istio security group!"
+  aws ec2 delete-security-group --group-id $ISTIO_SG_ID
+fi
+
+if [ "$ARGOCD_SG_ID" != "" ];then
+  echo "delete argocd security group!"
+  aws ec2 delete-security-group --group-id $ARGOCD_SG_ID
+fi
