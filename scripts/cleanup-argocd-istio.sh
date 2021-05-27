@@ -18,10 +18,8 @@ do
   if [ "$ISTIO_SG_ID" == "" ];then
     echo "delete istio security group successfully!"
     break
-  sleep 3
-  else
-  	    echo "You are not allowed!"
   fi
+  sleep 3
   let i++
 done
 
@@ -32,8 +30,9 @@ do
   ARGOCD_SG_ID=$(aws ec2 describe-security-groups --filter Name=tag:kubernetes.io/cluster/gcr-rs-workshop-cluster,Values=owned Name=description,Values=*argocd/argocd-server* --query "SecurityGroups[*].[GroupId]" --output text)
   if [ "$ARGOCD_SG_ID" == "" ];then
   	echo "delete argocd security group successfully!"
-    break    
-  sleep 3    
+    break
+  fi
+  sleep 3
   let j++
 done
 
