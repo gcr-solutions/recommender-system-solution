@@ -20,21 +20,15 @@ This will take about 5 minutes to release resources
 
 4. In the [Security Group Console](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#SecurityGroups:), select the security groups which name prefix is `gcr-rs-workshop-efs-nfs-sg`, `gcr-rs-workshop-redis-sg`, then delete these security groups.
 
-5. Run below command to delete istio ingress gateway
+5. Run below command to delete istio ingress gateway and argo cd server
 ```sh
-cd /home/ec2-user/environment/recommender-system-solution/manifests
-kubectl delete -f istio-deployment.yaml
-
+cd /home/ec2-user/environment/recommender-system-solution/scripts
+./cleanup-argocd-istio.sh
 ```
 
-6. Run below command to delete argo cd server
-```sh
-kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-```
+6. In the [IAM Role Console](https://console.aws.amazon.com/iam/home?#/roles), select roles which name prefix is `eksctl-gcr-rs-workshop-cluster` to delete
 
-7. In the [IAM Role Console](https://console.aws.amazon.com/iam/home?#/roles), select roles which name prefix is `eksctl-gcr-rs-workshop-cluster` to delete
-
-8. In the Cloud9 IDE Console, run below command to delete eks cluster:
+7. In the Cloud9 IDE Console, run below command to delete eks cluster:
 
 ```sh
 eksctl delete cluster --name=gcr-rs-workshop-cluster
@@ -44,15 +38,15 @@ eksctl delete cluster --name=gcr-rs-workshop-cluster
 This will take about 20 minutes to release resources
 {{% /notice %}}
 
-9. In the Cloud9 IDE Console, run below command to delete offline:
+8. In the Cloud9 IDE Console, run below command to delete offline:
 ```sh
 cd /home/ec2-user/environment/recommender-system-solution/scripts
 ./clean-offline.sh
 ```
 
-10. In the [Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9/home?region=ap-northeast-1#), select gcr-rs-workshop env and click Delete button
+9. In the [Cloud9 Console](https://ap-northeast-1.console.aws.amazon.com/cloud9/home?region=ap-northeast-1#), select gcr-rs-workshop env and click Delete button
 
-11. Go to [IAM Role Console](https://console.aws.amazon.com/iam/home#/roles), select `gcr-rs-workshop-admin` role, and delete this role.
+10. Go to [IAM Role Console](https://console.aws.amazon.com/iam/home#/roles), select `gcr-rs-workshop-admin` role, and delete this role.
 
-12. Go to [EC2 Key Pairs](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#KeyPairs:search=gcr-rs-workshop-key), select `gcr-rs-workshop-key`, and delete it.
+11. Go to [EC2 Key Pairs](https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#KeyPairs:search=gcr-rs-workshop-key), select `gcr-rs-workshop-key`, and delete it.
 
