@@ -45,6 +45,8 @@ Access ui through browser, it should like below:
 
 ![Demo UI](/images/demo-ui.png)
 
+Congratulations!!! The recommender system has been deployed successfully!!
+
 
 
 
