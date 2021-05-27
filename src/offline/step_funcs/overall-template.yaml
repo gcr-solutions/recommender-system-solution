@@ -88,7 +88,7 @@ Resources:
                   "Bucket.$":  "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ItemNewStepFunc",
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AssIteNewStepFunc",
                 "Name.$": "States.Format('oc{}', $$.Execution.Name)"
               },
               "End": true

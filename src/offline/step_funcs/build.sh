@@ -45,6 +45,7 @@ steps
 dashboard
 action-new
 item-new
+item-new-assembled
 train-model
 overall
 )
