@@ -38,7 +38,6 @@ EFS_ID=$(aws efs create-file-system \
   --performance-mode generalPurpose \
   --throughput-mode bursting \
   --tags Key=Name,Value=RS-EFS-FileSystem \
-  --availability-zone-name ap-northeast-1a \
   --encrypted |jq '.FileSystemId' -r)
 
 echo EFS_ID: $EFS_ID

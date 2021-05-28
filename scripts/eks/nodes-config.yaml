@@ -10,7 +10,7 @@ nodeGroups:
   - name: rs-cpu-ng
     labels: { role: rs-cpu-ng }
     instanceType: r5.2xlarge
-    minSize: 3
+    minSize: 2
     maxSize: 4
     volumeSize: 80
     ssh:
