@@ -15,7 +15,7 @@ As the recommender system runs, more and more action data is gathered in the sys
 This means the step function behind is triggered.
 
 {{% notice info %}}
-This will take about 30 minutes to finish
+This will take about 15 minutes to finish
 {{% /notice %}}
 
 When the training finishes this icon will become purple again:
