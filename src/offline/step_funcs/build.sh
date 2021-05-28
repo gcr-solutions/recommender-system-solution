@@ -47,6 +47,7 @@ action-new
 item-new
 item-new-assembled
 train-model
+train-action-model
 overall
 )
 

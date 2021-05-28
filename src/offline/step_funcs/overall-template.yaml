@@ -102,7 +102,7 @@ Resources:
                   "Bucket.$":  "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-TrainModelStepFunc",
+                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-TrainActionModelStepFunc",
                 "Name.$": "States.Format('ot{}', $$.Execution.Name)"
               },
               "End": true
