@@ -7,4 +7,4 @@ To start the workshop, you’ll need the following steps:
 
 - [Setting up Workspace](./workspace/)
 - [Setting up tools](./tools/)
-- [Check Sagemaker limit in your AWS account] (./check-sm-limit/)
+- [Check Sagemaker limit] (./check-sm-limit/)
