@@ -1,7 +1,8 @@
 ---
-title: Check Sagemaker resources limit in your AWS account
+title: Check Sagemaker resources limit
 weight: 10
 ---
+Check Sagemaker resources limit in your AWS account
 
 1. Go to link `https://sagemaker-tools.corp.amazon.com/limits`
 
