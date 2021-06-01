@@ -19,6 +19,6 @@ Check limit for `training-job/ml.p2.xlarge`, it should be at least 1 limit, bett
 
 ![Sagemaker processing job limit](/images/sm-limit-processing.png)
 
-Check limit for `processing-job/ml.m5.xlarge`, it should be at least 1 limit, better request for 3. 
+4. Check limit for `processing-job/ml.m5.xlarge`, it should be at least 1 limit, better request for 3. 
 
 ![Sagemaker processing job limit for m5.xlarge](/images/sm-limit-processing-m5-xlarge.png)
