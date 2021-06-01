@@ -20,7 +20,7 @@ Next time, you can input the same name to get recommendations based on the relat
 
 ![Look-Around](/images/look-around.png)
 
-Suppose you login the system as the `gcr-rec-user`. You will see the following page:
+Suppose you login the system as the `gcr-rs-admin`. You will see the following page:
 
 ![Cold-Start](/images/cold-start.png)
 
@@ -41,7 +41,7 @@ Actually, you can navigate different types of news and pick up what you like. Th
 ![Different-Types-News](/images/dtn.png)
 
 After clicking at three pieces of news, you will see the recommendation list in the first channel. The recommendation result consists of two parts. The first 
-part is top recommendation according to the most interested type in your portrait. In this example, it seems that **gcr-rec-user** is very interested in
+part is top recommendation according to the most interested type in your portrait. In this example, it seems that **gcr-rs-admin** is very interested in
 the entertainment, the first 2-3 lines of recommendation list are entertainment news:
 
 ![Top-Type-News](/images/top-type-news.png)
@@ -77,7 +77,7 @@ complex algorithms to rank these 1,000 items and find top 100 ones. Before pushi
 ![Recall-Rank-Filter](/images/recall-rank-filter.png)
 
 This is the 4-way recall logic, including news type, news keywords, news entity embedding learned from knowledge graph and user portrait. The recall logic finds
-the mosting promising candidates from these perspectives:
+the most promising candidates from these perspectives:
 
 ![Recall-Logic](/images/recall-logic.png)
 
