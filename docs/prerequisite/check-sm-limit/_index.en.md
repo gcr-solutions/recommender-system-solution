@@ -6,22 +6,23 @@ weight: 20
 Check Sagemaker resources limit in your AWS account
 
 1. Go to link `https://sagemaker-tools.corp.amazon.com/limits`
-
+   fill your AWS account id and select region `ap-northeast-1`
+   
    ![Sagemaker limit request](/images/sm-limit-req.png)
 
 
-2. Check Sagemaker **training job** resources limit
+2. Check **Sagemaker Training** resources limit
 
-   check limit for `training-job/ml.p2.xlarge`, it should be at least 1, better request for 3. 
+   select **RESOURCE TYPE:** `Sagemaker Training`, check limit for `training-job/ml.p2.xlarge`, it should be at least 1, better request for 3. 
 
    ![Sagemaker training job limit](/images/sm-limit-training.png)
 
    ![Sagemaker training job limit for p2.xlarge](/images/sm-limit-training-p2.png)
 
 
-3. Check Sagemaker **processing job** resources limit
+3. Check **Sagemaker Processing** resources limit
 
-   check limit for `processing-job/ml.m5.xlarge`, it should be at least 1, better request for 3. 
+   select **RESOURCE TYPE:** `Sagemaker Processing`, check limit for `processing-job/ml.m5.xlarge`, it should be at least 1, better request for 3. 
 
    ![Sagemaker processing job limit](/images/sm-limit-processing.png)
 
