@@ -1,6 +1,6 @@
 ---
 title: Setup All the Required tools
-weight: 20
+weight: 30
 ---
 
 TO complete this workshop, you will need to install following tools:

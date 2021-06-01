@@ -1,6 +1,6 @@
 ---
 title: Check Sagemaker resources limit
-weight: 10
+weight: 20
 ---
 
 Check Sagemaker resources limit in your AWS account
@@ -10,18 +10,18 @@ Check Sagemaker resources limit in your AWS account
    ![Sagemaker limit request](/images/sm-limit-req.png)
 
 
-2. Check Sagemaker training job resources limit
+2. Check Sagemaker **training job** resources limit
 
-   Check limit for `training-job/ml.p2.xlarge`, it should be at least 1, better request for 3. 
+   check limit for `training-job/ml.p2.xlarge`, it should be at least 1, better request for 3. 
 
    ![Sagemaker training job limit](/images/sm-limit-training.png)
 
    ![Sagemaker training job limit for p2.xlarge](/images/sm-limit-training-p2.png)
 
 
-3. Check Sagemaker processing job resources limit
+3. Check Sagemaker **processing job** resources limit
 
-   Check limit for `processing-job/ml.m5.xlarge`, it should be at least 1, better request for 3. 
+   check limit for `processing-job/ml.m5.xlarge`, it should be at least 1, better request for 3. 
 
    ![Sagemaker processing job limit](/images/sm-limit-processing.png)
 
