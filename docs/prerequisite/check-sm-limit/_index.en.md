@@ -3,8 +3,6 @@ title: Check SageMaker resources limit
 weight: 20
 ---
 
-Check SageMaker resources limit in your AWS account
-
 1. Go to link `https://sagemaker-tools.corp.amazon.com/limits`
    fill your AWS account id and select region `ap-northeast-1`
    
