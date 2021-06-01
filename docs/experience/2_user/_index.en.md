@@ -77,7 +77,7 @@ complex algorithms to rank these 1,000 items and find top 100 ones. Before pushi
 ![Recall-Rank-Filter](/images/recall-rank-filter.png)
 
 This is the 4-way recall logic, including news type, news keywords, news entity embedding learned from knowledge graph and user portrait. The recall logic finds
-the mosting promising candidates from these perspectives:
+the most promising candidates from these perspectives:
 
 ![Recall-Logic](/images/recall-logic.png)
 
