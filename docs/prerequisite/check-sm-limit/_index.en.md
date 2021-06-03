@@ -1,6 +1,6 @@
 ---
 title: Check SageMaker resources limit
-weight: 20
+weight: 10
 ---
 
 Below SageMaker resources are required when run the offline processing and training jobs.

@@ -82,7 +82,7 @@ the most promising candidates from these perspectives:
 ![Recall-Logic](/images/recall-logic.png)
 
 The rank logic is the knowledge-graph based ranking algorithm (DKN). The click history of the current user is sent to the model. All the news are encoded using
-knowledge graph and the model predicts whether the current user will click the candidated news:
+knowledge graph and the model predicts whether the current user will click the alternative news:
 
 ![Rank-Logic](/images/rank-logic.png)
 
