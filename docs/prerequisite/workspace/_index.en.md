@@ -1,6 +1,6 @@
 ---
 title: Workspace setup
-weight: 10
+weight: 20
 ---
 
 This section includes following steps:

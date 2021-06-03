@@ -1,6 +1,6 @@
 ---
 title: Check SageMaker resources limit
-weight: 20
+weight: 10
 ---
 
 1. Go to link `https://sagemaker-tools.corp.amazon.com/limits`
