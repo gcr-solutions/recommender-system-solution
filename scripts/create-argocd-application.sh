@@ -1,23 +1,7 @@
 # 1 login argo cd server
 ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-elb_names=($(aws elb describe-load-balancers --output text | grep LOADBALANCERDESCRIPTIONS |  awk '{print $6 }'))
-
-echo "find $#elb_names elbs"
-
-argocdserver_elb=''
-for elb in ${elb_names[@]};
-do
-  echo "check elb $elb ..."
-  aws elb describe-tags --load-balancer-name $elb --output text  | grep 'argocd-server'
-  if [[ $? -eq '0' ]];then
-     echo "find argocd-server $elb"
-     argocdserver_elb=$elb
-     break
-  fi
-done
-
-endpoint=$(aws elb describe-load-balancers --load-balancer-name $argocdserver_elb --output text | grep LOADBALANCERDESCRIPTIONS | awk '{print $2 }')
+endpoint=$(kubectl get svc argocd-server -n argocd -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
 echo user name: admin
 echo password: $ARGOCD_PASSWORD
