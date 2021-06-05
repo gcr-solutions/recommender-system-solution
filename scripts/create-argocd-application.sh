@@ -52,6 +52,6 @@ sleep 10
 
 # sync the local config to argocd
 
-argocd app sync gcr-recommender-system --local /home/ec2-user/environment/recommender-system-solution/manifests
+argocd app sync gcr-recommender-system --local ../manifests
 
 
