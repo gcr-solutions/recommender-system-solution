@@ -16,6 +16,6 @@ This will take about 10 minutes to provision, For saving your time, you can go t
 
 When deployment completed, you will see below screen:
 
-![offline_deploy](/images/offline_deploy.png)
+![offline-deploy](/images/offline-deploy.png)
 
 
