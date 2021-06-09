@@ -18,7 +18,7 @@ PREFIX=sample-data
 
 echo "BUCKET=${BUCKET}"
 echo "Create S3 Bucket: ${BUCKET} if not exist"
-aws  s3 mb s3://${BUCKET}  >/dev/null 2>&1
+aws  s3 mb s3://${BUCKET}  >/dev/null 2>&1 || true
 echo "s3 sync lambda_code/ s3://${BUCKET}/${PREFIX}/code/lambda/"
 aws  s3 sync lambda_code/ s3://${BUCKET}/${PREFIX}/code/lambda/
 if [[ $? -ne 0 ]]; then

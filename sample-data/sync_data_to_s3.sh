@@ -38,7 +38,7 @@ PREFIX=sample-data
 
 echo "BUCKET_BUILD=${BUCKET_BUILD}"
 echo "Create S3 Bucket: ${BUCKET_BUILD} if not exist"
-aws  s3 mb s3://${BUCKET_BUILD}  >/dev/null 2>&1
+aws  s3 mb s3://${BUCKET_BUILD}  >/dev/null 2>&1 || true
 
 echo "########################################################"
 Blue_print "aws  s3 sync . s3://${BUCKET_BUILD}/${PREFIX}/"
