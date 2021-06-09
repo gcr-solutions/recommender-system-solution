@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 if [[ -z $REGION ]];then
     REGION='ap-northeast-1'
