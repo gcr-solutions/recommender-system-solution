@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
 # 1 update config
 # 1.1 update redis config
 REDIS_ENDPOINT=$(aws elasticache describe-cache-clusters --cache-cluster-id gcr-rs-workshop-redis-cluster --show-cache-node-info \

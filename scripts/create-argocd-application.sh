@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
 # 1 login argo cd server
 ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 

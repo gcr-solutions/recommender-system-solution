@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
 # 1 setup argocd server
 kubectl create namespace argocd
 

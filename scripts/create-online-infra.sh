@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 export EKS_CLUSTER=gcr-rs-workshop-cluster

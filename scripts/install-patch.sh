@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 echo "install boto3..."
 sudo pip3 install boto3

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 cd /home/ec2-user/environment/recommender-system-solution/manifests
