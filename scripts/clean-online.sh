@@ -122,8 +122,8 @@ for ROLE_NAME in $(echo $ROLE_NAMES); do
     echo detach policy $POLICY_ARN for role $ROLE_NAME
     aws iam detach-role-policy --role-name $ROLE_NAME --policy-arn $POLICY_ARN
   done
-  echo delete role $ROLE_NAME
-  aws iam delete-role --role-name $ROLE_NAME
+  # echo delete role $ROLE_NAME
+  # aws iam delete-role --role-name $ROLE_NAME
 done
 
 #remove eks cluster
