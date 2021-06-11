@@ -155,11 +155,11 @@ Resources:
           }
         }
 
-  AssIteNewStepFunc:
+  AssItemNewStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
       RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
-      StateMachineName: !Sub ${NamePrefix}-News-AssIteNewStepFunc
+      StateMachineName: !Sub ${NamePrefix}-News-AssItemNewStepFunc
       DefinitionString: !Sub |
         {
           "StartAt": "Data processing",

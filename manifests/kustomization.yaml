@@ -24,6 +24,8 @@ resources:
 
 # all with following *kustomization*
 images:
+- name: gcr.io/heptio-images/ks-guestbook-demo
+  newTag: "0.1"
 - name: rs/demo
   newName: public.ecr.aws/t8u1z3c8/rs/demo
   newTag: latest
@@ -62,7 +64,7 @@ images:
   newTag: latest
 - name: rs/ui
   newName: public.ecr.aws/t8u1z3c8/rs/ui
-  newTag: latest  
+  newTag: latest
 
 
 vars:
@@ -121,7 +123,4 @@ vars:
   objref:
     apiVersion: v1
     kind: ConfigMap
-    name: rs-beta-config        
-
-
-
+    name: rs-beta-config
