@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-cd /home/ec2-user/environment/recommender-system-solution/manifests
+cd ../manifests
 kubectl delete -f istio-deployment.yaml
 
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
