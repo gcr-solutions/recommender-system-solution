@@ -54,21 +54,6 @@ if [ "$NFS_SECURITY_GROUP_ID" != "" ]; then
   aws ec2 delete-security-group --group-id $NFS_SECURITY_GROUP_ID
 fi
 
-# i=1
-# NFS_SECURITY_GROUP_ID=""
-# while [ $i -le 20 ]
-# do
-#   NFS_SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$EKS_VPC_ID Name=group-name,Values=gcr-rs-workshop-efs-nfs-sg | jq '.SecurityGroups[].GroupId' -r)
-#   if [ "$NFS_SECURITY_GROUP_ID" == "" ];then
-#     echo "delete gcr-rs-workshop-efs-nfs-sg security group successfully!"
-#     break
-#   else
-#     echo "wait for gcr-rs-workshop-efs-nfs-sg security group deleted!"
-#   fi
-#   sleep 10
-#   let i++
-# done
-
 #delete Elastic Cache Redis
 echo "################ start clean Elasticache Redis resources ################ "
 ELASTIC_CACHE_CLUSTER=$(aws elasticache describe-cache-clusters | jq '.CacheClusters[] | select(.CacheClusterId=="gcr-rs-workshop-redis-cluster")')
@@ -94,26 +79,11 @@ if [ "$REDIS_SECURITY_GROUP_ID" != "" ]; then
   aws ec2 delete-security-group --group-id $REDIS_SECURITY_GROUP_ID
 fi
 
-# i=1
-# REDIS_SECURITY_GROUP_ID=""
-# while [ $i -le 20 ]
-# do
-#   REDIS_SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$EKS_VPC_ID Name=group-name,Values=gcr-rs-workshop-redis-sg | jq '.SecurityGroups[].GroupId' -r)
-#   if [ "$REDIS_SECURITY_GROUP_ID" == "" ];then
-#     echo "delete gcr-rs-workshop-efs-nfs-sg security group successfully!"
-#     break
-#   else
-#     echo "wait for gcr-rs-workshop-efs-nfs-sg security group deleted!"
-#   fi
-#   sleep 10
-#   let i++
-# done
-
 #clean argocd and istio resources
-# ./cleanup-argocd-istio.sh
+./cleanup-argocd-istio.sh
 
 #remove eks cluster roles
-echo "################ start Elasticache Redis resources ################ "
+echo "################ Detach eks cluster roles ################ "
 
 ROLE_NAMES=$(aws iam list-roles | jq '.[][].RoleName' -r | grep eksctl-gcr-rs-workshop-cluster*)
 for ROLE_NAME in $(echo $ROLE_NAMES); do
@@ -127,4 +97,5 @@ for ROLE_NAME in $(echo $ROLE_NAMES); do
 done
 
 #remove eks cluster
+echo "################ Delete eks cluster ################ "
 eksctl delete cluster --name=$EKS_CLUSTER
