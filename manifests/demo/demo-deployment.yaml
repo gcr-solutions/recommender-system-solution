@@ -49,6 +49,8 @@ spec:
             value: $(USER_RECORD_FILE_PATH)
           - name: S3_BUCKET
             value: $(S3_BUCKET)
+          - name: AWS_REGION
+            value: $(AWS_REGION)
         volumeMounts:
           - name: persistent-storage
             mountPath: /rs-data
