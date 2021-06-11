@@ -18,11 +18,24 @@ do
   aws efs delete-mount-target --mount-target-id $MOUNT_TARGET_ID
 done
 
+i=1
+MOUNT_TARGET_IDS=""
+while true
+do
+  MOUNT_TARGET_IDS=$(aws efs describe-mount-targets --file-system-id $EFS_ID | jq '.[][].MountTargetId' -r)
+  if [ "$MOUNT_TARGET_IDS" == "" ];then
+    echo "delete GCR-RS-WORKSHOP-EFS-FileSystem EFS mount target successfully!"
+    break
+  else
+    echo "wait for GCR-RS-WORKSHOP-EFS-FileSystem EFS mount target deleted!"    
+  fi
+  sleep 10
+done
+
+
 echo remove EFS File System: $EFS_ID
 
 aws efs delete-file-system --file-system-id $EFS_ID
-
-# sleep 10
 
 i=1
 EFS_ID=""
