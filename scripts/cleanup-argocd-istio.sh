@@ -2,6 +2,8 @@
 set -e
 
 cd ../manifests
+echo "################ start clean istio and argocd resources ################ "
+
 kubectl delete -f istio-deployment.yaml
 
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
@@ -18,7 +20,7 @@ do
     echo "delete istio security group successfully!"
     break
   else
-    echo "wait for wait for istio security group deleted!"    
+    echo "wait for istio security group deleted!"    
   fi
   sleep 3
   let i++
@@ -34,7 +36,7 @@ do
     echo "delete argocd security group successfully!"
     break
   else
-    echo "wait for wait for argocd server security group deleted!"
+    echo "wait for argocd server security group deleted!"
   fi
   sleep 3
   let j++
@@ -52,3 +54,5 @@ if [ "$ARGOCD_SG_ID" != "" ];then
   echo "delete argocd security group!"
   aws ec2 delete-security-group --group-id $ARGOCD_SG_ID
 fi
+
+../scripts
