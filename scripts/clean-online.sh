@@ -110,7 +110,7 @@ fi
 # done
 
 #clean argocd and istio resources
-./cleanup-argocd-istio.sh
+# ./cleanup-argocd-istio.sh
 
 #remove eks cluster roles
 echo "################ start Elasticache Redis resources ################ "
