@@ -84,15 +84,15 @@ if [ "$ELASTIC_CACHE_CLUSTER" != "" ]; then
     fi
     sleep 20
   done
+  aws elasticache delete-cache-subnet-group --cache-subnet-group-name gcr-rs-workshop-redis-subnet-group
 fi
-
-aws elasticache delete-cache-subnet-group --cache-subnet-group-name gcr-rs-workshop-redis-subnet-group
 
 #delete REDIS Cache security group
 REDIS_SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$EKS_VPC_ID Name=group-name,Values=gcr-rs-workshop-redis-sg | jq '.SecurityGroups[].GroupId' -r)
-echo $REDIS_SECURITY_GROUP_ID
-
-aws ec2 delete-security-group --group-id $REDIS_SECURITY_GROUP_ID
+if [ "$REDIS_SECURITY_GROUP_ID" != "" ]; then
+  echo delete redis security group $REDIS_SECURITY_GROUP_ID
+  aws ec2 delete-security-group --group-id $REDIS_SECURITY_GROUP_ID
+fi
 
 # i=1
 # REDIS_SECURITY_GROUP_ID=""
