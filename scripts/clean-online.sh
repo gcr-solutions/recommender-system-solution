@@ -11,6 +11,15 @@ echo "################ start clean EFS resource ################ "
 #delete EFS file system
 EFS_ID=$(aws efs describe-file-systems | jq '.[][] | select(.Tags[].Value=="GCR-RS-WORKSHOP-EFS-FileSystem")' | jq '.FileSystemId' -r)
 
+MOUNT_TARGET_IDS=$(aws efs describe-mount-targets --file-system-id $EFS_ID | jq '.[][].MountTargetId' -r)
+for MOUNT_TARGET_ID in `echo $MOUNT_TARGET_IDS`
+do
+  echo remove $MOUNT_TARGET_ID
+  aws efs delete-mount-target --mount-target-id $MOUNT_TARGET_ID
+done
+
+echo remove EFS File System: $EFS_ID
+
 aws efs delete-file-system --file-system-id $EFS_ID
 
 # sleep 10
