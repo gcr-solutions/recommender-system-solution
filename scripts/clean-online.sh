@@ -117,8 +117,9 @@ echo "################ start Elasticache Redis resources ################ "
 
 ROLE_NAMES=$(aws iam list-roles | jq '.[][].RoleName' -r | grep eksctl-gcr-rs-workshop-cluster*)
 for ROLE_NAME in $(echo $ROLE_NAMES); do
-  echo remove $ROLE_NAME
-  aws iam delete-role --role-name $ROLE_NAME
+  echo detach $ROLE_NAME policy
+  # aws iam delete-role --role-name $ROLE_NAME
+  aws iam detach-role-policy --role-name $ROLE_NAME
 done
 
 #remove eks cluster
