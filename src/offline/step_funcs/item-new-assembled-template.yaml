@@ -116,9 +116,9 @@ Resources:
                 "Payload.$": "$.Payload"
               },
               "ResultPath": "$.Precheck",
-              "Next": "Train model (embedding)"
+              "Next": "Train model"
             },
-            "Train model (embedding)": {
+            "Train model": {
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
@@ -177,10 +177,10 @@ Resources:
                 "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AssDataPreprocessingStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "Next": "Train model",
+              "Next": "Train model (embedding)",
               "ResultPath": "$.AssDataPreprocessing"
             },
-            "Train model": {
+            "Train model (embedding)": {
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
               "Parameters": {
