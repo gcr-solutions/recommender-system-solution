@@ -18,7 +18,6 @@ do
   aws efs delete-mount-target --mount-target-id $MOUNT_TARGET_ID
 done
 
-i=1
 MOUNT_TARGET_IDS=""
 while true
 do
@@ -32,14 +31,12 @@ do
   sleep 10
 done
 
-
 echo remove EFS File System: $EFS_ID
 
 aws efs delete-file-system --file-system-id $EFS_ID
 
-i=1
 EFS_ID=""
-while [ $i -le 20 ]
+while true
 do
   EFS_ID=$(aws efs describe-file-systems | jq '.[][] | select(.Tags[].Value=="GCR-RS-WORKSHOP-EFS-FileSystem")' | jq '.FileSystemId' -r)
   if [ "$EFS_ID" == "" ];then
@@ -49,14 +46,13 @@ do
     echo "wait for GCR-RS-WORKSHOP-EFS-FileSystem EFS deleted!"    
   fi
   sleep 10
-  let i++
 done
 
 #delete EFS file system security group
 NFS_SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$EKS_VPC_ID Name=group-name,Values=gcr-rs-workshop-efs-nfs-sg | jq '.SecurityGroups[].GroupId' -r)
-echo $NFS_SECURITY_GROUP_ID
+echo remove security group $NFS_SECURITY_GROUP_ID
 
-aws ec2 delete-security-group --group-name $NFS_SECURITY_GROUP_ID
+aws ec2 delete-security-group --group-id $NFS_SECURITY_GROUP_ID
 
 # i=1
 # NFS_SECURITY_GROUP_ID=""
@@ -98,7 +94,7 @@ aws elasticache delete-cache-subnet-group --cache-subnet-group-name gcr-rs-works
 REDIS_SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$EKS_VPC_ID Name=group-name,Values=gcr-rs-workshop-redis-sg | jq '.SecurityGroups[].GroupId' -r)
 echo $REDIS_SECURITY_GROUP_ID
 
-aws ec2 delete-security-group --group-name $REDIS_SECURITY_GROUP_ID
+aws ec2 delete-security-group --group-id $REDIS_SECURITY_GROUP_ID
 
 # i=1
 # REDIS_SECURITY_GROUP_ID=""
