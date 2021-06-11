@@ -116,9 +116,9 @@ Resources:
                 "Payload.$": "$.Payload"
               },
               "ResultPath": "$.Precheck",
-              "Next": "Train model"
+              "Next": "Train model (embedding)"
             },
-            "Train model": {
+            "Train model (embedding)": {
               "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
