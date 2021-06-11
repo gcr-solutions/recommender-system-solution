@@ -26,7 +26,7 @@ if [ "$EFS_ID" != "" ]; then
     else
       echo "wait for GCR-RS-WORKSHOP-EFS-FileSystem EFS mount target deleted!"
     fi
-    sleep 10
+    sleep 20
   done
 
   echo remove EFS File System: $EFS_ID
@@ -40,9 +40,9 @@ if [ "$EFS_ID" != "" ]; then
       echo "delete GCR-RS-WORKSHOP-EFS-FileSystem EFS successfully!"
       break
     else
-      echo "wait for GCR-RS-WORKSHOP-EFS-FileSystem EFS deleted!"
+      echo "deleting GCR-RS-WORKSHOP-EFS-FileSystem EFS!"
     fi
-    sleep 10
+    sleep 20
   done
 fi
 
@@ -70,22 +70,21 @@ fi
 # done
 
 #delete Elastic Cache Redis
-echo "################ start Elasticache Redis resources ################ "
-
-aws elasticache delete-cache-cluster --cache-cluster-id gcr-rs-workshop-redis-cluster
-i=1
-ELASTIC_CACHE_CLUSTER=""
-while [ $i -le 20 ]; do
-  ELASTIC_CACHE_CLUSTER=$(aws elasticache describe-cache-clusters | jq '.CacheClusters[] | select(.CacheClusterId=="gcr-rs-workshop-redis-cluster")')
-  if [ "$ELASTIC_CACHE_CLUSTER" == "" ]; then
-    echo "delete gcr-rs-workshop-redis-cluster successfully!"
-    break
-  else
-    echo "wait for gcr-rs-workshop-redis-cluster deleted!"
-  fi
-  sleep 10
-  let i++
-done
+echo "################ start clean Elasticache Redis resources ################ "
+ELASTIC_CACHE_CLUSTER=$(aws elasticache describe-cache-clusters | jq '.CacheClusters[] | select(.CacheClusterId=="gcr-rs-workshop-redis-cluster")')
+if [ "$ELASTIC_CACHE_CLUSTER" != "" ]; then
+  aws elasticache delete-cache-cluster --cache-cluster-id gcr-rs-workshop-redis-cluster
+  while true; do
+    ELASTIC_CACHE_CLUSTER=$(aws elasticache describe-cache-clusters | jq '.CacheClusters[] | select(.CacheClusterId=="gcr-rs-workshop-redis-cluster")')
+    if [ "$ELASTIC_CACHE_CLUSTER" == "" ]; then
+      echo "delete gcr-rs-workshop-redis-cluster successfully!"
+      break
+    else
+      echo "deleting gcr-rs-workshop-redis-cluster!"
+    fi
+    sleep 20
+  done
+fi
 
 aws elasticache delete-cache-subnet-group --cache-subnet-group-name gcr-rs-workshop-redis-subnet-group
 
