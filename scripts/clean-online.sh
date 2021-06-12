@@ -24,7 +24,7 @@ if [ "$EFS_ID" != "" ]; then
       echo "delete GCR-RS-WORKSHOP-EFS-FileSystem EFS mount target successfully!"
       break
     else
-      echo "wait for GCR-RS-WORKSHOP-EFS-FileSystem EFS mount target deleted!"
+      echo "deleting GCR-RS-WORKSHOP-EFS-FileSystem EFS mount target!"
     fi
     sleep 20
   done
