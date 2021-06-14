@@ -37,7 +37,7 @@ kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernete
 EFS_ID=$(aws efs create-file-system \
   --performance-mode generalPurpose \
   --throughput-mode bursting \
-  --tags Key=Name,Value=RS-EFS-FileSystem \
+  --tags Key=Name,Value=GCR-RS-WORKSHOP-EFS-FileSystem \
   --encrypted |jq '.FileSystemId' -r)
 
 echo EFS_ID: $EFS_ID
