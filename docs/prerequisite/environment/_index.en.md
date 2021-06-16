@@ -17,7 +17,7 @@ We recommend you use the latest version of **Chrome** to complete this workshop.
 ## AWS Command Line Interface
 To complete certain workshop modules, you’ll need the AWS Command Line Interface (CLI) and a Bash environment. You’ll use the AWS CLI to interface with AWS services.
 
-For these workshops, AWS Cloud9 is used to avoid problems that can arise configuring the CLI on your machine. AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It has the AWS CLI pre-installed so you don’t need to install files or configure your laptop to use the AWS CLI. For Cloud9 setup directions for these workshops, see [Cloud9 Setup](../workspace/cloud9/). Do NOT attempt to use a locally installed AWS CLI during a live workshop because there is insufficient time during a live workshop to resolve related issues.
+For these workshops, AWS Cloud9 is used to avoid problems that can arise configuring the CLI on your machine. AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It has the AWS CLI pre-installed so you don’t need to install files or configure your laptop to use the AWS CLI. For Cloud9 setup directions for these workshops, see **Cloud9 Setup**. Do NOT attempt to use a locally installed AWS CLI during a live workshop because there is insufficient time during a live workshop to resolve related issues.
 
 ## SageMaker Resource Requirement
 To test certain workshop functions, your SageMaker resource limit need to meet the minimum requirement as below. Check and increase the SageMaker resource limit by clicking [here](https://sagemaker-tools.corp.amazon.com/limits)
