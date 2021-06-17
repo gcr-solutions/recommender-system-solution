@@ -44,10 +44,9 @@ all_stepfuncs=(
 steps
 dashboard
 action-new
-item-new
 item-new-assembled
 train-model
-train-action-model
+user-new
 overall
 )
 

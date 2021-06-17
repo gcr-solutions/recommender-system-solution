@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-    (SO8010)
+  (SO8010)
 
-    CloudFormation for RecSys StepFuncs
+  CloudFormation for RecSys StepFuncs
 
 
 Parameters:
@@ -31,20 +31,18 @@ Parameters:
     Type: String
     Default: SNSMessageLambda
 
-
-
 Resources:
-  TrainModelStepFunc:
+  UserNewStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
       RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
-      StateMachineName: !Sub ${NamePrefix}-News-TrainModelStepFunc
+      StateMachineName: !Sub ${NamePrefix}-News-UserNewStepFunc
       DefinitionString: !Sub |
         {
-          "StartAt": "Prepare training data",
+          "StartAt": "User processing",
           "TimeoutSeconds": 36000,
           "States": {
-            "Prepare training data": {
+            "User processing": {
               "Type": "Task",
               "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
@@ -53,13 +51,13 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-PrepareTrainingDataStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-UserPreprocessingStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "ResultPath": "$.PrepareTrainingData",
-              "Next": "Model update (action)"
+              "ResultPath": "$.UserProcessing",
+              "Next": "Add user batch"
             },
-            "Model update (action)": {
+            "Add user batch": {
               "Type": "Task",
               "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
@@ -68,33 +66,14 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-ModelUpdateActionStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AddUserBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "Next": "Send notification",
-              "ResultPath": "$.ModelUpdateAction"
-            },
-            "Send notification": {
-              "Type": "Task",
-              "Resource": "arn:${AWS::Partition}:states:::lambda:invoke",
-              "Parameters": {
-                "FunctionName": "${NamePrefix}-${SNSMessageLambda}",
-                "Payload": {
-                  "file_type": "train-model",
-                  "message_type": "news",
-                  "Bucket.$": "$.Bucket",
-                  "S3Prefix.$": "$.S3Prefix"
-                }
-              },
-              "ResultSelector": {
-                "Payload.$": "$.Payload"
-              },
-              "Next": "Succeed",
-              "ResultPath": "$.Notification"
+              "ResultPath": "$.AddUserBatch",
+               "Next": "Succeed"
             },
             "Succeed": {
               "Type": "Succeed"
             }
           }
         }
-

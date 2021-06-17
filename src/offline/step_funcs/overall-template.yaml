@@ -7,33 +7,37 @@ Description: >
 
 
 Parameters:
+  NamePrefix:
+    Type: String
+    Default: rsdemo
+
   StepFuncAndLambdaRoleName:
     Type: String
-    Default: rsdemo-LambdaAndStepFuncsRole
+    Default: LambdaAndStepFuncsRole
 
   SagemakerRoleName:
     Type: String
-    Default: rsdemo-SMRole
+    Default: SMRole
 
   S3UtilLabmda:
     Type: String
-    Default: rsdemo-S3UtilLabmda
+    Default: S3UtilLabmda
 
   PreCheckLabmda:
     Type: String
-    Default: rsdemo-PreCheckLabmda
+    Default: PreCheckLabmda
 
   SNSMessageLambda:
     Type: String
-    Default: rsdemo-SNSMessageLambda
+    Default: SNSMessageLambda
 
 
 Resources:
   OverallStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
-      StateMachineName: rsdemo-News-OverallStepFunc
+      RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
+      StateMachineName: !Sub ${NamePrefix}-News-OverallStepFunc
       DefinitionString: !Sub |
         {
           "StartAt": "Detect change type",
@@ -45,12 +49,17 @@ Resources:
                 {
                   "Variable": "$.change_type",
                   "IsPresent": false,
-                  "Next": "Action new"
+                  "Next": "Action new (batch update)"
                 },
                 {
                   "Variable": "$.change_type",
                   "StringEquals": "ACTION",
-                  "Next": "Action new"
+                  "Next": "Action new (batch update)"
+                },
+                {
+                  "Variable": "$.change_type",
+                  "StringEquals": "USER",
+                  "Next": "User new"
                 },
                 {
                   "Variable": "$.change_type",
@@ -63,46 +72,60 @@ Resources:
                   "Next": "Train model"
                 }
               ],
-              "Default": "Action new"
+              "Default": "Action new (batch update)"
             },
-            "Action new": {
+            "Action new (batch update)": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionNewStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-ActionNewStepFunc",
                 "Name.$": "States.Format('oa{}', $$.Execution.Name)"
+              },
+              "End": true
+            },
+            "User new": {
+              "Type": "Task",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "Input": {
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
+                  "Bucket.$": "$.Bucket",
+                  "S3Prefix.$": "$.S3Prefix"
+                },
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-UserNewStepFunc",
+                "Name.$": "States.Format('oc{}', $$.Execution.Name)"
               },
               "End": true
             },
             "Content new": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AssItemNewStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AssItemNewStepFunc",
                 "Name.$": "States.Format('oc{}', $$.Execution.Name)"
               },
               "End": true
             },
             "Train model": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$":  "$.Bucket",
+                  "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-TrainActionModelStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-TrainModelStepFunc",
                 "Name.$": "States.Format('ot{}', $$.Execution.Name)"
               },
               "End": true
