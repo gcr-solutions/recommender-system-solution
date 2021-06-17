@@ -31,10 +31,9 @@ Parameters:
     Type: String
     Default: SNSMessageLambda
 
-  ItemFeatureUpdateBatchStepFuncName:
+  ImageTag:
     Type: String
-    Default: News-ItemFeatureUpdateBatchStepFunc
-    #Default: News-NoOpStepFunc  # for demo
+    Default: latest
 
 
 Resources:
@@ -118,7 +117,7 @@ Resources:
               "Resource": "arn:${AWS::Partition}:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/rs/news-assembled-train-model-gpu:${Stage}",
+                  "TrainingImage": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/rs/news-assembled-train-model-gpu:${ImageTag}",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
