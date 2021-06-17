@@ -54,7 +54,7 @@ Resources:
               "Resource": "arn:${AWS::Partition}:states:::sagemaker:createProcessingJob.sync",
               "Parameters": {
                 "AppSpecification": {
-                  "ImageUri.$": "States.Format('${ECRPrefix}/{}:{ImageTag}', $.ImageName)",
+                  "ImageUri.$": "States.Format('${ECRPrefix}/{}:${ImageTag}', $.ImageName)",
                   "ContainerArguments.$": "$.ContainerArguments"
                 },
                 "ProcessingResources": {
@@ -772,7 +772,7 @@ Resources:
               "Resource": "arn:${AWS::Partition}:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${ECRPrefix}/rs/news-model-update-embedding-gpu:{ImageTag}",
+                  "TrainingImage": "${ECRPrefix}/rs/news-model-update-embedding-gpu:${ImageTag}",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
@@ -839,7 +839,7 @@ Resources:
               "Resource": "arn:${AWS::Partition}:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${ECRPrefix}/rs/news-model-update-action-gpu:{ImageTag}",
+                  "TrainingImage": "${ECRPrefix}/rs/news-model-update-action-gpu:${ImageTag}",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
