@@ -77,7 +77,7 @@ done
 StepInput="{
   \"Bucket\": \"${BUCKET}\",
   \"S3Prefix\": \"$S3Prefix\",
-  \"change_type\": \"CONTENT|ACTION|MODEL\"
+  \"change_type\": \"CONTENT|ACTION|MODEL|USER\"
 }"
 echo ""
 echo "You can run stepfuncs with below input"
