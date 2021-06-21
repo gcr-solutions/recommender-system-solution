@@ -25,7 +25,7 @@ cd /home/ec2-user/environment/recommender-system-solution/sample-data
 
 ![content-logic-image](/images/content-logic-image.png)
 
-您可以看到系统将分析所有的新闻，并更新相关的模型。
+您可以看到系统将处理与分析所有的数据，并更新相关的模型。
 
 {{% notice info %}}
 这将需要大约 30 分钟完成 
