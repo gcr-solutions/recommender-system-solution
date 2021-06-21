@@ -11,7 +11,7 @@ weight: 3
 
 ![EC2 Modify Role](/images/ec2-modify-role.png)
 
-3. 从 **IAM Role** 下拉列表中选择 **gcr-rs-workshop-admin**，然后选择 **保存** 
+3. 从 **IAM Role** 下拉列表中选择 **gcr-rs-workshop-admin**，然后选择 **Save** 
 
 ![EC2 Modify Role](/images/ec2-select-role.png)
 

@@ -20,7 +20,7 @@ Cloud9 通常动态管理 IAM 凭证。 这当前与 EKS IAM 身份验证不兼�
 sudo yum -y install jq
 ```
 
-为确保临时凭据尚未到位，我们还将删除任何现有的凭证文件：
+为确保尚未使用临时证书，我们还将删除所有现有的证书：
 
 ```sh
 rm -vf ${HOME}/.aws/credentials

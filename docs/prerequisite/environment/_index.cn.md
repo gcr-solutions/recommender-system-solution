@@ -14,7 +14,7 @@ weight: 10
 ## 浏览器
 我们建议您使用最新版本的 **Chrome** 来完成本次研讨会。 
 
-## AWS Command Line Interface
+## AWS 命令行界面
 要完成此workshop的某些模块，您需要 AWS 命令行界面 (CLI) 和 Bash 环境。 您将使用 AWS CLI 与 AWS 服务交互。
 
 对于此workshop，AWS Cloud9 用于避免在您的机器上配置 CLI 可能出现的问题。 AWS Cloud9 是一个基于云的集成开发环境 (IDE)，让您只需一个浏览器即可编写、运行和调试代码。 它预先安装了 AWS CLI，因此您无需安装文件或配置您的笔记本电脑即可使用 AWS CLI。 有关此workshop的 Cloud9 设置说明，请参阅 **设置 Cloud9**。 请勿在现场workshop演示期间尝试使用本地安装的 AWS CLI，因为现场演示期间没有足够的时间来解决相关问题。
