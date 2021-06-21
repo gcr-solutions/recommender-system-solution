@@ -31,21 +31,20 @@ Parameters:
     Type: String
     Default: SNSMessageLambda
 
-  ItemFeatureUpdateBatchStepFuncName:
-    Type: String
-    Default: News-ItemFeatureUpdateBatchStepFunc
-    #Default: News-NoOpStepFunc  # for demo
-
   ECRPrefix:
     Type: String
-    #Default: public.ecr.aws/t8u1z3c8
     Default: 522244679887.dkr.ecr.ap-northeast-1.amazonaws.com
+
+  ImageTag:
+    Type: String
+    Default: latest
+
 
 Resources:
   AssDataPreprocessingStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
+      RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: !Sub ${NamePrefix}-News-AssDataPreprocessingStepFunc
       DefinitionString: !Sub |
         {
@@ -53,7 +52,7 @@ Resources:
           "States": {
             "Pre check": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::lambda:invoke",
+              "Resource": "arn:${AWS::Partition}:states:::lambda:invoke",
               "Parameters": {
                 "FunctionName": "${NamePrefix}-${PreCheckLabmda}",
                 "Payload": {
@@ -73,7 +72,7 @@ Resources:
             },
             "Run processing": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
@@ -81,7 +80,7 @@ Resources:
                   "ContainerArguments.$": "States.Array('--bucket', $.Bucket, '--prefix', $.S3Prefix)",
                   "InstanceType": "ml.m5.xlarge"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-SMProcessingStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-SMProcessingStepFunc",
                 "Name.$": "States.Format('Nassdatap{}', $.Precheck.Payload.UID)"
               },
               "End": true
@@ -92,7 +91,7 @@ Resources:
   AssTrainModelStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
+      RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: !Sub ${NamePrefix}-News-AssTrainModelStepFunc
       DefinitionString: !Sub |
         {
@@ -100,7 +99,7 @@ Resources:
           "States": {
             "Pre check": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::lambda:invoke",
+              "Resource": "arn:${AWS::Partition}:states:::lambda:invoke",
               "Parameters": {
                 "FunctionName": "${NamePrefix}-${PreCheckLabmda}",
                 "Payload": {
@@ -119,10 +118,10 @@ Resources:
               "Next": "Train model"
             },
             "Train model": {
-              "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+              "Resource": "arn:${AWS::Partition}:states:::sagemaker:createTrainingJob.sync",
               "Parameters": {
                 "AlgorithmSpecification": {
-                  "TrainingImage": "${ECRPrefix}/rs/news-assembled-train-model-gpu:latest",
+                  "TrainingImage": "${ECRPrefix}/rs/news-assembled-train-model-gpu:${ImageTag}",
                   "TrainingInputMode": "File",
                   "MetricDefinitions": [
                     {
@@ -142,7 +141,7 @@ Resources:
                   "InstanceType": "ml.p2.xlarge",
                   "VolumeSizeInGB": 5
                 },
-                "RoleArn": "arn:aws:iam::${AWS::AccountId}:role/service-role/${NamePrefix}-${SagemakerRoleName}-${AWS::Region}",
+                "RoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/${NamePrefix}-${SagemakerRoleName}-${AWS::Region}",
                 "HyperParameters": {
                   "bucket.$": "$.Bucket",
                   "prefix.$": "$.S3Prefix"
@@ -158,7 +157,7 @@ Resources:
   AssItemNewStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
+      RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
       StateMachineName: !Sub ${NamePrefix}-News-AssItemNewStepFunc
       DefinitionString: !Sub |
         {
@@ -167,14 +166,14 @@ Resources:
           "States": {
             "Data processing": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AssDataPreprocessingStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AssDataPreprocessingStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "Next": "Train model (embedding)",
@@ -182,14 +181,14 @@ Resources:
             },
             "Train model (embedding)": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AssTrainModelStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-AssTrainModelStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.AssTrainModel",
@@ -197,7 +196,7 @@ Resources:
             },
             "Send notification": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::lambda:invoke",
+              "Resource": "arn:${AWS::Partition}:states:::lambda:invoke",
               "Parameters": {
                 "FunctionName": "${NamePrefix}-${SNSMessageLambda}",
                 "Payload": {

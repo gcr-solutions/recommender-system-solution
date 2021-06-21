@@ -7,107 +7,81 @@ Description: >
 
 
 Parameters:
+  NamePrefix:
+    Type: String
+    Default: rsdemo
+
   StepFuncAndLambdaRoleName:
     Type: String
-    Default: rsdemo-LambdaAndStepFuncsRole
+    Default: LambdaAndStepFuncsRole
 
   SagemakerRoleName:
     Type: String
-    Default: rsdemo-SMRole
+    Default: SMRole
 
   S3UtilLabmda:
     Type: String
-    Default: rsdemo-S3UtilLabmda
+    Default: S3UtilLabmda
 
   PreCheckLabmda:
     Type: String
-    Default: rsdemo-PreCheckLabmda
+    Default: PreCheckLabmda
 
   SNSMessageLambda:
     Type: String
-    Default: rsdemo-SNSMessageLambda
+    Default: SNSMessageLambda
 
 Resources:
   ActionNewStepFunc:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/${StepFuncAndLambdaRoleName}-${AWS::Region}"
-      StateMachineName: rsdemo-News-ActionNewStepFunc
+      RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
+      StateMachineName: !Sub ${NamePrefix}-News-ActionNewStepFunc
       DefinitionString: !Sub |
         {
-          "StartAt": "User processing",
+          "StartAt": "Action processing",
           "TimeoutSeconds": 36000,
           "States": {
-            "User processing": {
-              "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
-              "Parameters": {
-                "Input": {
-                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$": "$.Bucket",
-                  "S3Prefix.$": "$.S3Prefix"
-                },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-UserPreprocessingStepFunc",
-                "Name.$": "States.Format('{}', $$.Execution.Name)"
-              },
-              "ResultPath": "$.UserProcessing",
-              "Next": "Add item user batch"
-            },
-            "Add item user batch": {
-              "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
-              "Parameters": {
-                "Input": {
-                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
-                  "Bucket.$": "$.Bucket",
-                  "S3Prefix.$": "$.S3Prefix"
-                },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-AddItemUserBatchStepFunc",
-                "Name.$": "States.Format('{}', $$.Execution.Name)"
-              },
-              "ResultPath": "$.AddItemUserBatch",
-              "Next": "Action processing"
-            },
             "Action processing": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-ActionPreprocessingStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-ActionPreprocessingStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.ActionProcessing",
-              "Next": "Inverted list"
+              "Next": "Weight update batch"
             },
-            "Inverted list": {
+            "Weight update batch": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-InvertedListStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-WeightUpdateBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
-              "ResultPath": "$.InvertedList",
+              "ResultPath": "$.WeightUpdateBatch",
               "Next": "Portrait batch"
             },
             "Portrait batch": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-PortraitBatchStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-PortraitBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.PortraitBatch",
@@ -115,14 +89,14 @@ Resources:
             },
             "Recall batch": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-RecallBatchStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-RecallBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.RecallBatch",
@@ -130,14 +104,14 @@ Resources:
             },
             "Rank batch": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-RankBatchStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-RankBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.RankBatch",
@@ -145,14 +119,14 @@ Resources:
             },
             "Filter batch": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Resource": "arn:${AWS::Partition}:states:::states:startExecution.sync:2",
               "Parameters": {
                 "Input": {
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id",
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rsdemo-News-FilterBatchStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-FilterBatchStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.FilterBatch",
@@ -160,9 +134,9 @@ Resources:
             },
             "Send notification": {
               "Type": "Task",
-              "Resource": "arn:aws:states:::lambda:invoke",
+              "Resource": "arn:${AWS::Partition}:states:::lambda:invoke",
               "Parameters": {
-                "FunctionName": "${SNSMessageLambda}",
+                "FunctionName": "${NamePrefix}-${SNSMessageLambda}",
                 "Payload": {
                   "file_type": "action-new",
                   "message_type": "news",
