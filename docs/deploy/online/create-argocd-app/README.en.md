@@ -25,13 +25,11 @@ After about 1 minutes, the console will output as below:
 
 ![Argocd application status](/images/argocd-app-status.png)
 
-4. Load the seed data into the system. Go to /home/ec2-user/environment/recommender-system-solution/scripts directory
+4. Load the seed data into the system. 
 
 ```sh
 cd /home/ec2-user/environment/recommender-system-solution/scripts
-```
 
-```sh
 ./load-seed-data.sh
 ```
 
