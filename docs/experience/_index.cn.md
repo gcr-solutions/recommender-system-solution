@@ -1,10 +1,10 @@
 ---
-title: How Does The Recommender System Work
+title: 推荐系统工作原理
 weight: 40
 ---
 
-This solution is built for three types of user, the end user, the administrator and the developer.
+该解决方案是为三种类型的用户构建的，即最终用户、管理员和开发人员。 
 
 ![Different Roles for Recommender System](/images/diff-role-recsys.png)
 
-As an end user for the recommender system, you will log into the system, change your portrait, click items and get recommendation results in real time. As an administrator, you can analyze the statistics of the system. Besides, you can trigger model training, add new items and batch process. As a developer, you can continue to improve the performance of recommender system. The story line of news recommendation is prepared in this part. During story line, you will know how the recommender system works.
+作为推荐系统的最终用户，您可以登录系统，更改您的头像，点击项目并实时获得推荐结果。 作为管理员，您可以获取推荐系统的统计信息并进行分析。 此外，您可以使用模型训练、添加新物品和批处理的功能。 作为开发人员，您可以不断提高推荐系统的性能。 这部分准备了新闻推荐的故事线。 在故事情节中，您将了解推荐系统的工作原理。 

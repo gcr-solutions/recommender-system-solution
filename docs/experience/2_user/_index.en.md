@@ -76,13 +76,11 @@ complex algorithms to rank these 1,000 items and find top 100 ones. Before pushi
 
 ![Recall-Rank-Filter](/images/recall-rank-filter.png)
 
-This is the 4-way recall logic, including news type, news keywords, news entity embedding learned from knowledge graph and user portrait. The recall logic finds
-the most promising candidates from these perspectives:
+这是4路召回逻辑，包括新闻类型、新闻关键词、从知识图谱学习的新闻实体嵌入和用户画像。 召回逻辑从这些角度找到最有希望的候选者： 
 
 ![Recall-Logic](/images/recall-logic.png)
 
-The rank logic is the knowledge-graph based ranking algorithm (DKN). The click history of the current user is sent to the model. All the news are encoded using
-knowledge graph and the model predicts whether the current user will click the alternative news:
+排名逻辑是通过基于知识图谱的排名算法（DKN）实现的。 当前用户的点击记录被发送到训练模型，所有新闻都通过知识图谱进行编码，然后模型将预测当前用户是否会点击这些新闻： 
 
 ![Rank-Logic](/images/rank-logic.png)
 
