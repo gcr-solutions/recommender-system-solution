@@ -903,7 +903,7 @@ Resources:
     Type: AWS::StepFunctions::StateMachine
     Properties:
       RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${NamePrefix}-${StepFuncAndLambdaRoleName}-${AWS::Region}"
-      StateMachineName: !Sub rs-${Stage}-News-NotificationStepFunc
+      StateMachineName: !Sub ${NamePrefix}-News-NotificationStepFunc
       DefinitionString: !Sub |
         {
             "StartAt": "Send notification",
