@@ -188,7 +188,7 @@ Resources:
                   "Bucket.$": "$.Bucket",
                   "S3Prefix.$": "$.S3Prefix"
                 },
-                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:rs-${Stage}-News-InvertedListStepFunc",
+                "StateMachineArn": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${NamePrefix}-News-InvertedListStepFunc",
                 "Name.$": "States.Format('{}', $$.Execution.Name)"
               },
               "ResultPath": "$.InvertedList",
